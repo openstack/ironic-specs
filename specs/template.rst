@@ -140,6 +140,15 @@ content of the JSON dict and an ability to validate it.
 
 Reuse of existing predefined parameter types is highly encouraged.
 
+RPC API impact
+--------------
+
+Changes which affect the RPC API should be listed here. For example:
+
+* What are the changes, if any, to existing API calls?
+
+* What new API calls are being added? Will these be using cast() or call()?
+
 Driver API impact
 -----------------
 

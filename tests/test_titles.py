@@ -48,6 +48,7 @@ class TestTitles(testtools.TestCase):
         self.assertIn('Alternatives', titles[proposed])
         self.assertIn('Data model impact', titles[proposed])
         self.assertIn('REST API impact', titles[proposed])
+        self.assertIn('RPC API impact', titles[proposed])
         self.assertIn('Driver API impact', titles[proposed])
         self.assertIn('Nova driver impact', titles[proposed])
         self.assertIn('Security impact', titles[proposed])
@@ -91,7 +92,7 @@ class TestTitles(testtools.TestCase):
             (len(matches), tpl))
 
     def test_template(self):
-        files = ['specs/template.rst'] + glob.glob('specs/*/*')
+        files = ['specs/template.rst'] + glob.glob('specs/kilo/*')
         for filename in files:
             self.assertTrue(filename.endswith(".rst"),
                             "spec's file must uses 'rst' extension.")
