@@ -39,7 +39,7 @@ class TestTitles(testtools.TestCase):
         return titles
 
     def _check_titles(self, titles):
-        self.assertEqual(7, len(titles))
+        self.assertEqual(8, len(titles))
         problem = 'Problem description'
         self.assertIn(problem, titles)
 
@@ -68,6 +68,9 @@ class TestTitles(testtools.TestCase):
 
         testing = 'Testing'
         self.assertIn(testing, titles)
+
+        compat = 'Upgrades and Backwards Compatibility'
+        self.assertIn(compat, titles)
 
         docs = 'Documentation Impact'
         self.assertIn(docs, titles)

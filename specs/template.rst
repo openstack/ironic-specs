@@ -12,8 +12,10 @@ Include the URL of your launchpad blueprint:
 
 https://blueprints.launchpad.net/ironic/+spec/example
 
-Introduction paragraph -- why are we doing anything? A single paragraph of
-prose that operators can understand.
+Introduction paragraph -- start here.
+
+Why are we doing anything? This should be a single paragraph of prose that
+operators can understand.
 
 Some notes about using this template:
 
@@ -61,6 +63,10 @@ propose to solve this problem?
 
 If this is one part of a larger effort make it clear where this piece ends.
 In other words, what is the scope of this effort?
+
+If you are unsure whether this proposal is aligned with the project's mission
+and scope, stop here and get feedback from the ironic-drivers and ironic-core
+teams before fleshing out all the details below.
 
 Alternatives
 ------------
@@ -129,6 +135,9 @@ Each API method which is either added or changed should have the following
 
 * Is a corresponding change in the client library and CLI necessary?
 
+* Is this change discoverable by clients? Not all clients will upgrade at the
+  same time, so this change must work with older clients without breaking them.
+
 Note that the schema should be defined as restrictively as possible. Parameters
 which are required should be marked as such and only under exceptional
 circumstances should additional parameters which are not defined in the schema
@@ -148,6 +157,10 @@ Changes which affect the RPC API should be listed here. For example:
 * What are the changes, if any, to existing API calls?
 
 * What new API calls are being added? Will these be using cast() or call()?
+
+* ironic-api and ironic-conductor services must be upgradable independently.
+  What is the upgrade process for rolling this change out to an existing
+  deployment?
 
 Driver API impact
 -----------------
@@ -173,12 +186,20 @@ in this section.
 * Will the new interface or method need to be invoked when the hash ring
   rebalances, for example to rebuild local state on a new conductor service?
 
+* How does this affect upgrades? Third-party drivers could be updated
+  independently from this change, and care must be taken not to break
+  backwards-compatibility within our Driver API.
+
 Nova driver impact
 ------------------
 
 Chances are, if this change affects the REST or Driver APIs, it will also
-affect the Nova driver in some way. Questions which need to be addressed in
-this section include:
+affect the Nova driver in some way. If this requires a functional change in
+Nova, chances are the Nova team will require a spec to discuss the changes to
+their project as well. Provide a link to that here, or a justification for why
+that is not needed.
+
+Questions which need to be addressed in this section include:
 
 * What is the impact on Nova?
 
@@ -259,8 +280,8 @@ pattern of existing code.
 Examples of things to consider here include:
 
 * A periodic task might look like a small addition, but all periodic tasks run
-  in a single thread so a periodic task that takes a long time to run will
-  have an effect on the timing of other periodic tasks.
+  in a single thread so a periodic task that takes a long time to run will have
+  an effect on the timing of other periodic tasks.
 
 * A small change in a utility function or a commonly used decorator can have a
   large impact on performance.
@@ -368,6 +389,27 @@ tests would need to be included.
 Is this untestable in gate given current limitations (specific hardware /
 software configurations available)? If so, are there mitigation plans (3rd
 party testing, gate enhancements, etc)?
+
+
+Upgrades and Backwards Compatibility
+====================================
+
+Care must be taken to support our users by not breaking backwards compatibility
+with either REST API or Driver API changes.
+
+* If your proposal includes any changes to the REST API, describe how existing
+  clients will continue to function when interacting with an upgraded API
+  server.
+
+* If your proposal includes any changes to the Driver API, describe how
+  existing driver implementations will continue to function when loaded by a
+  conductor running with the new driver base class.
+
+* Describe what testing you will be adding to ensure that backwards
+  compatibility is maintained.
+
+* If deprecating an existing feature or API, describe the deprecation plan, and
+  for how long compatibility will be maintained.
 
 
 Documentation Impact
