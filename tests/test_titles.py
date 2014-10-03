@@ -17,6 +17,9 @@ import docutils.core
 import testtools
 
 
+RELEASE = 'kilo'
+
+
 class TestTitles(testtools.TestCase):
     def _get_title(self, section_tree):
         section = {
@@ -38,45 +41,27 @@ class TestTitles(testtools.TestCase):
                 titles[section['name']] = section['subtitles']
         return titles
 
-    def _check_titles(self, titles):
-        self.assertEqual(8, len(titles))
-        problem = 'Problem description'
-        self.assertIn(problem, titles)
+    def _check_titles(self, filename, expect, actual):
+        missing_sections = [x for x in expect.keys() if x not in actual.keys()]
+        extra_sections = [x for x in actual.keys() if x not in expect.keys()]
 
-        proposed = 'Proposed change'
-        self.assertIn(proposed, titles)
-        self.assertIn('Alternatives', titles[proposed])
-        self.assertIn('Data model impact', titles[proposed])
-        self.assertIn('REST API impact', titles[proposed])
-        self.assertIn('RPC API impact', titles[proposed])
-        self.assertIn('Driver API impact', titles[proposed])
-        self.assertIn('Nova driver impact', titles[proposed])
-        self.assertIn('Security impact', titles[proposed])
-        self.assertIn('Other end user impact', titles[proposed])
-        self.assertIn('Scalability impact', titles[proposed])
-        self.assertIn('Performance Impact', titles[proposed])
-        self.assertIn('Other deployer impact', titles[proposed])
-        self.assertIn('Developer impact', titles[proposed])
+        msgs = []
+        if len(missing_sections) > 0:
+            msgs.append("Missing sections: %s" % missing_sections)
+        if len(extra_sections) > 0:
+            msgs.append("Extra sections: %s" % extra_sections)
 
-        impl = 'Implementation'
-        self.assertIn(impl, titles)
-        self.assertIn('Assignee(s)', titles[impl])
-        self.assertIn('Work Items', titles[impl])
+        for section in expect.keys():
+            missing_subsections = [x for x in expect[section]
+                                   if x not in actual[section]]
+            # extra subsections are allowed
+            if len(missing_subsections) > 0:
+                msgs.append("Section '%s' is missing subsections: %s"
+                            % (section, missing_subsections))
 
-        deps = 'Dependencies'
-        self.assertIn(deps, titles)
-
-        testing = 'Testing'
-        self.assertIn(testing, titles)
-
-        compat = 'Upgrades and Backwards Compatibility'
-        self.assertIn(compat, titles)
-
-        docs = 'Documentation Impact'
-        self.assertIn(docs, titles)
-
-        refs = 'References'
-        self.assertIn(refs, titles)
+        if len(msgs) > 0:
+            self.fail("While checking '%s':\n  %s"
+                      % (filename, "\n  ".join(msgs)))
 
     def _check_lines_wrapping(self, tpl, raw):
         for i, line in enumerate(raw.split("\n")):
@@ -94,8 +79,20 @@ class TestTitles(testtools.TestCase):
             "Found %s literal carriage returns in file %s" %
             (len(matches), tpl))
 
+    def _check_trailing_spaces(self, tpl, raw):
+        for i, line in enumerate(raw.split("\n")):
+            trailing_spaces = re.findall(" +$", line)
+            self.assertEqual(len(trailing_spaces),0,
+                    "Found trailing spaces on line %s of %s" % (i+1, tpl))
+
     def test_template(self):
-        files = ['specs/template.rst'] + glob.glob('specs/kilo/*')
+        with open("specs/template.rst") as f:
+            template = f.read()
+        spec = docutils.core.publish_doctree(template)
+        template_titles = self._get_titles(spec)
+
+        files = glob.glob('specs/%s/*' % RELEASE)
+
         for filename in files:
             self.assertTrue(filename.endswith(".rst"),
                             "spec's file must uses 'rst' extension.")
@@ -104,6 +101,7 @@ class TestTitles(testtools.TestCase):
 
             spec = docutils.core.publish_doctree(data)
             titles = self._get_titles(spec)
-            self._check_titles(titles)
+            self._check_titles(filename, template_titles, titles)
             self._check_lines_wrapping(filename, data)
             self._check_no_cr(filename, data)
+            self._check_trailing_spaces(filename, data)
