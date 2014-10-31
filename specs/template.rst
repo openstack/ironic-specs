@@ -42,6 +42,13 @@ Some notes about using this template:
   having to look at additional files which can not be viewed in gerrit.  It
   will also allow inline feedback on the diagram itself.
 
+* If your specification proposes any changes to the Ironic REST API such
+  as changing parameters which can be returned or accepted, or even
+  the semantics of what happens when a client calls into the API, then
+  you should add the APIImpact flag to the commit message. Specifications with
+  the APIImpact flag can be found with the following query:
+
+  https://review.openstack.org/#/q/status:open+project:openstack/ironic-specs+message:apiimpact,n,z
 
 Problem description
 ===================
