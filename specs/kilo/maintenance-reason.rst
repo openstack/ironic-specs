@@ -143,9 +143,22 @@ Other end user impact
 
 Support for this will be added in python-ironicclient. The CLI will look like:
 
-* `ironic node-set-maintenance-mode on "Some reason."`
+::
 
-* `ironic node-set-maintenance-mode off`
+  usage: ironic node-set-maintenance [--reason <reason>]
+                                     <node id> <maintenance mode>
+
+  Set maintenance mode on or off.
+
+  Positional arguments:
+    <node id>           UUID of node
+    <maintenance mode>  Supported states: 'on' or 'off'
+
+  Optional arguments:
+    --reason <reason>   The reason for setting maintenance mode to "on"; not
+                        valid when setting to "off".
+
+
 
 Scalability impact
 ------------------
@@ -214,6 +227,8 @@ Upgrades and Backwards Compatibility
 
 This change will be backwards compatible with existing clients, as they may
 still use the node.update call to set maintenance on or off.
+However, updating via the node.update call will be deprecated, and this
+capability will be removed after Kilo (in L*).
 
 To avoid having an outdated maintenance reason, using the node.update call
 to set maintenance mode off will clear the maintenance reason.
