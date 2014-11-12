@@ -74,7 +74,7 @@ configurations on-the-fly that would be beneficial.
 
 Once we have the generic mechanism mapping all vendor methods, (the
 second part of the proposal) we can then expose those via our API. By
-issuing a GET on the root vendor element of our API it will return the
+issuing a GET on ../vendor_passhru/methods endpoint it will return the
 available methods for that driver or node. For each method, it will
 include a description, the supported HTTP methods and whether it is a
 synchronous or asynchronous operation.
@@ -120,11 +120,11 @@ REST API impact
   (OK) for methods running in synchronous mode, but will also return
   HTTP 202 (Accepted) for methods running asynchronously.
 
-* GET /v1/nodes/<uuid>/vendor_passthru without specifying a method will
-  return a list of vendor methods and its metadata supported by that node.
+* GET /v1/nodes/<uuid>/vendor_passthru/methods will return a list of
+  vendor methods and its metadata supported by that node.
 
-* GET /v1/drivers/<driver>/vendor_passthru without specifying a method will
-  return a list of vendor methods and its metadata supported by that driver.
+* GET /v1/drivers/<driver>/vendor_passthru/methods will return a list
+  of vendor methods and its metadata supported by that driver.
 
 Note: Both endpoints already support returning error HTTP codes like
 HTTP 400 (BadRequest) and so on.
