@@ -19,6 +19,12 @@ import testtools
 
 RELEASE = 'kilo'
 
+DRAFT_DIR = 'backlog'
+DRAFT_REQUIRED_TITLES = {
+        'Problem description': [],
+        'Proposed change': [],
+        }
+
 
 class TestTitles(testtools.TestCase):
     def _get_title(self, section_tree):
@@ -41,9 +47,10 @@ class TestTitles(testtools.TestCase):
                 titles[section['name']] = section['subtitles']
         return titles
 
-    def _check_titles(self, filename, expect, actual):
+    def _check_titles(self, filename, expect, allowed, actual):
         missing_sections = [x for x in expect.keys() if x not in actual.keys()]
-        extra_sections = [x for x in actual.keys() if x not in expect.keys()]
+        extra_sections = [x for x in actual.keys() if x not in
+                dict(expect.items() + allowed.items())]
 
         msgs = []
         if len(missing_sections) > 0:
@@ -85,23 +92,47 @@ class TestTitles(testtools.TestCase):
             self.assertEqual(len(trailing_spaces),0,
                     "Found trailing spaces on line %s of %s" % (i+1, tpl))
 
-    def test_template(self):
+    def _check_file_ext(self, filename):
+        self.assertTrue(filename.endswith(".rst"),
+                        "spec's file must uses 'rst' extension.")
+
+    def _get_spec_titles(self, filename):
+        with open(filename) as f:
+            data = f.read()
+
+        spec = docutils.core.publish_doctree(data)
+        titles = self._get_titles(spec)
+        return (data, titles)
+
+    def _get_template_titles(self):
         with open("specs/template.rst") as f:
             template = f.read()
         spec = docutils.core.publish_doctree(template)
         template_titles = self._get_titles(spec)
+        return template_titles
 
+    def test_current_cycle_template(self):
+        template_titles = self._get_template_titles()
         files = glob.glob('specs/%s/*' % RELEASE)
 
         for filename in files:
-            self.assertTrue(filename.endswith(".rst"),
-                            "spec's file must uses 'rst' extension.")
-            with open(filename) as f:
-                data = f.read()
+            self._check_file_ext(filename)
 
-            spec = docutils.core.publish_doctree(data)
-            titles = self._get_titles(spec)
-            self._check_titles(filename, template_titles, titles)
+            (data, titles) = self._get_spec_titles(filename)
+            self._check_titles(filename, template_titles, {}, titles)
+            self._check_lines_wrapping(filename, data)
+            self._check_no_cr(filename, data)
+            self._check_trailing_spaces(filename, data)
+
+    def test_backlog(self):
+        template_titles = self._get_template_titles()
+        files = glob.glob('specs/%s/*' % DRAFT_DIR)
+
+        for filename in files:
+            self._check_file_ext(filename)
+            (data, titles) = self._get_spec_titles(filename)
+            self._check_titles(filename, DRAFT_REQUIRED_TITLES,
+                                template_titles, titles)
             self._check_lines_wrapping(filename, data)
             self._check_no_cr(filename, data)
             self._check_trailing_spaces(filename, data)
