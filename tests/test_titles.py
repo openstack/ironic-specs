@@ -96,6 +96,22 @@ class TestTitles(testtools.TestCase):
         self.assertTrue(filename.endswith(".rst"),
                         "spec's file must uses 'rst' extension.")
 
+    def _check_license(self, raw):
+        # Check for the presense of this license string somewhere within the
+        # header of the spec file, ignoring newlines and blank lines and any
+        # other lines before or after it.
+        license_check_str = (
+            " This work is licensed under a Creative Commons Attribution 3.0"
+            " Unported License."
+            " http://creativecommons.org/licenses/by/3.0/legalcode")
+
+        header_check = ""
+        for i, line in enumerate(raw.split("\n")):
+            if line.startswith('='):
+                break
+            header_check = header_check + line
+        self.assertTrue(license_check_str in header_check)
+
     def _get_spec_titles(self, filename):
         with open(filename) as f:
             data = f.read()
@@ -123,6 +139,7 @@ class TestTitles(testtools.TestCase):
             self._check_lines_wrapping(filename, data)
             self._check_no_cr(filename, data)
             self._check_trailing_spaces(filename, data)
+            self._check_license(data)
 
     def test_backlog(self):
         template_titles = self._get_template_titles()
