@@ -226,9 +226,10 @@ Upgrades and Backwards Compatibility
 ====================================
 
 This change will be backwards compatible with existing clients, as they may
-still use the node.update call to set maintenance on or off.
-However, updating via the node.update call will be deprecated, and this
-capability will be removed after Kilo (in L*).
+still use the node.update call to set maintenance on or off. Updating via
+the node.update call will not be deprecated in v1, since there isn't any
+reasonable programmatic way to inform users of its deprecation. It will be
+deprecated in v2.
 
 To avoid having an outdated maintenance reason, using the node.update call
 to set maintenance mode off will clear the maintenance reason.
