@@ -70,9 +70,8 @@ None
 Data model impact
 -----------------
 
-There should be a 1:1 mapping between a <logical name> and a <node uuid> for
-a particular tenant.  We can consider a <logical name> as an alias for a
-<node uuid>.
+There should be a 1:1 mapping between a <logical name> and a <node uuid>.
+We can consider a <logical name> as an alias for a <node uuid>.
 
 When the version of ironic that includes these changes is run against an
 existing installation, the database will be upgraded to support the addition
@@ -222,7 +221,9 @@ Unit testing will be sufficient to verify the veracity of this change
 
 Upgrades and Backwards Compatibility
 ====================================
-None
+As mentioned above, when the code that includes this change is run against a
+previous Ironic install that does not have this change, the database will
+need to have it's schema updated to add in the additional field 'name'.
 
 Documentation Impact
 ====================
