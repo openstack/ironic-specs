@@ -11,6 +11,8 @@ Introduce Driver Capabilities
 This spec introduces inspectable (via Ironic API) capabilities for Ironic
 drivers.
 
+https://blueprints.launchpad.net/ironic/+spec/driver-capabilities
+
 Problem description
 ===================
 
