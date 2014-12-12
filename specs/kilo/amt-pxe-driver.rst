@@ -10,7 +10,7 @@ AMT PXE Driver
 
 https://blueprints.launchpad.net/ironic/+spec/amt-pxe-driver
 
-This blueprint implements a new driver -- "PXEAndAMTToolDriver" which
+This blueprint implements a new driver -- "PXEAndAMTDriver" which
 supports deployment for AMT/vPro system on Desktops.
 
 Problem description
@@ -21,15 +21,16 @@ within AMT/vPro system. This BP will extend Ironic to Desktop area.
 
 Proposed change
 ===============
-Implement a new driver -- "PXEAndAMTToolDriver" -- that uses
-amttool to control the power of nodes with AMT System and uses
+Implement a new driver -- "PXEAndAMTDriver" -- that uses
+amt to control the power of nodes with AMT System and uses
 pxe to deliver the image to nodes. Following are details,
 
-* Add new class PXEAndAMTToolDriver inherited from base.BaseDriver
+* Add new class PXEAndAMTDriver inherited from base.BaseDriver
   in ironic/drivers/pxe.py
 
 * Add new class AMTPower inherited from base.PowerInterface
-  in ironic/drivers/modules/amttool.py
+  in ironic/drivers/modules/amt/power.py
+
   - ``validate()`` - Validate the node driver info
 
   - ``get_power_state()`` - Get the power state from the node
@@ -40,14 +41,50 @@ pxe to deliver the image to nodes. Following are details,
   - ``reboot()`` - reboot the node
 
 * Add new class AMTMangement inherited from base.ManagementInterface
-  in ironic/drivers/modules/amttool.py
-  - ``set_boot_device()`` - Set the boot device of the node
+  in ironic/drivers/modules/amt/management.py
+
+  - ``validate()`` - Validate the node driver info
+
+  - ``ensure_next_boot_device()`` - ensure the next boot device of the node
+
+    .. note::
+        AMT/vPro only accept the first boot device and ignore the rest
+        if we send multiple _set_boot_device_order requests to AMT nodes.
+        For example, when the user set boot device twice, the node will
+        boot with the first one. So AMT driver only save amt_boot_device
+        into DB via set_boot_device() and send the request to the node via
+        ensure_next_boot_device() before set the node power on.
+        So that AMT driver can support users to set boot device multiple times
+        like other drivers.
+
+  - ``set_boot_device()`` - Set the boot device of the node.
+
+    .. note::
+        As AMT/vPro doesnt support set boot device persistent in BM node
+        like BMC, it only set boot device for one time. So AMT driver call
+        ensure_next_boot_device() between every power cycle if boot device
+        is persistent.
+        AMT driver saves amt_boot_device/amt_boot_persistent into
+        node.driver_internal_info, which will be read by
+        ensure_next_boot_device().
 
   - ``get_boot_device()`` - Get the boot device of the node
 
+* Add a condition to enable AMT driver to call ensure_next_boot_device in
+  pxe._continue_deploy
+
+   .. note::
+        During PXE deploy processing, after finish dd, the target machine will
+        reboot by ramdisk rather than Ironic. AMT Driver has to call
+        ensure_next_boot_device again in _continue_deploy().
+
 Alternatives
 ------------
-None
+* Save amt_boot_device and amt_boot_persistent in:
+    * "driver_info" but user will aware the change of boot device and
+      could be different from his input.
+
+    * "extra" but not for use from inside Ironic.
 
 Data model impact
 -----------------
@@ -87,9 +124,22 @@ None
 
 Other deployer impact
 ---------------------
-Additionally two fields need to be provided with driver_info
-  * ``amt_address`` - node's IP address to connect to.
-  * ``amt_password`` - node's password.
+The following driver_info fields are required:
+
+* amt_address: hostname or IP of AMT node
+* amt_password: password used for connect to AMT node
+* amt_username: username used for connect to AMT node
+* amt_protocol: protocol used for connect to AMT node (optional)
+
+The following parameters are added into newly created [amt] section
+in ironic.conf.
+
+* protocol: default value of AMT (http/https) protocol. The default
+  value is http
+* max_retry: default retries for AMT power operations. The default
+  value is 3 times.
+* action_wait: default seconds for driver to wait for retries. The default
+  value is 10 seconds.
 
 Developer impact
 ----------------
@@ -106,7 +156,7 @@ Primary assignee:
 
 Work Items
 ----------
-Implement ``PXEAndAMTToolDriver`` class inherited from
+Implement ``PXEAndAMTDriver`` class inherited from
 ``base.BaseDriver``.
 
 Implement ``AMTPower`` class inherited from ``base.PowerInterface``
@@ -117,8 +167,15 @@ Implement ``AMTManagement`` class inherited from
 
 Dependencies
 ============
-amttool
-It can be installed with package amtterm.
+openwsman-python package
+
+    .. note::
+        AMT deprecated SOAP (amttool) support after the latest version 9.0.
+        http://en.wikipedia.org/wiki/Intel_AMT_versions
+        "Intel AMT 9.0 — SOAP(EOI) protocol removed."
+        So AMT only support WS-MAN protocol (openwsman) now.
+        The solution with openwsman works for AMT 7.0/8.0/9.0.
+        AMT 7.0 is released in 2010, so most PCs with vPro are involved.
 
 Testing
 =======
