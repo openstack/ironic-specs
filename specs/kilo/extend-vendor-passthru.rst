@@ -8,7 +8,7 @@
 Extend Vendor Passthru
 ======================
 
-https://blueprints.launchpad.net/ironic/+spec/extended-vendor-passthru
+https://blueprints.launchpad.net/ironic/+spec/extend-vendor-passthru
 
 Make the VendorPassthru and DriverVendorPassthru more consistent
 and extend it to support running vendor methods synchronously and
