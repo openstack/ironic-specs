@@ -11,6 +11,7 @@
 # under the License.
 
 import glob
+import os.path
 import re
 
 import docutils.core
@@ -19,11 +20,15 @@ import testtools
 
 RELEASE = 'kilo'
 
+FIRST_TITLE = 'Problem description'
+
 DRAFT_DIR = 'backlog'
 DRAFT_REQUIRED_TITLES = {
-        'Problem description': [],
+        FIRST_TITLE: [],
         'Proposed change': [],
         }
+
+BLUEPRINT_URL = 'https://blueprints.launchpad.net/ironic/+spec/'
 
 
 class TestTitles(testtools.TestCase):
@@ -96,8 +101,32 @@ class TestTitles(testtools.TestCase):
         self.assertTrue(filename.endswith(".rst"),
                         "spec's file must uses 'rst' extension.")
 
+    def _check_filename(self, filename, raw):
+        """Check that the filename matches the blueprint name.
+
+        Checks that the URL for the blueprint is mentioned, and that the
+        filename matches the name of the blueprint. This assumes that the
+        blueprint URL occurs on a line without any other text and the URL
+        occurs before the first section (title) of the specification.
+
+        param filename: path/name of the file
+        param raw: the data in the file
+        """
+
+        (root, _) = os.path.splitext(os.path.basename(filename))
+        for i, line in enumerate(raw.split("\n")):
+            if BLUEPRINT_URL in line:
+               self.assertTrue(line.endswith(root),
+                       "Filename '%s' must match blueprint name '%s'" %
+                       (filename, line))
+               return
+
+            if line.startswith(FIRST_TITLE):
+                break
+        self.fail("URL of launchpad blueprint is missing")
+
     def _check_license(self, raw):
-        # Check for the presense of this license string somewhere within the
+        # Check for the presence of this license string somewhere within the
         # header of the spec file, ignoring newlines and blank lines and any
         # other lines before or after it.
         license_check_str = (
@@ -140,6 +169,7 @@ class TestTitles(testtools.TestCase):
             self._check_no_cr(filename, data)
             self._check_trailing_spaces(filename, data)
             self._check_license(data)
+            self._check_filename(filename, data)
 
     def test_backlog(self):
         template_titles = self._get_template_titles()
@@ -153,3 +183,4 @@ class TestTitles(testtools.TestCase):
             self._check_lines_wrapping(filename, data)
             self._check_no_cr(filename, data)
             self._check_trailing_spaces(filename, data)
+            self._check_filename(filename, data)
