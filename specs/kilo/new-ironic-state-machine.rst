@@ -50,28 +50,24 @@ Proposed change
 
 Current state machine::
 
-     NOSTATE//NONE -------------------\
-          ^             R:active      |
-          |                           |
-          +                           |
-     (DELETED//DELETED)               |
-          ^                           v
-          +                   +--->[DEPLOYING//DEPLOYDONE]---->DEPLOYFAIL//NONE
-     [DELETING//DELETED]      |       +
-          ^                   |       v
-          |          R:rebuild|    (DEPLOYDONE//DEPLOYDONE)
-          |                   |       +
-          |                   |       v
-          |                   +---+ACTIVE//NONE
-          |R:deleted                  +
-          |                           |
-          +---------------------------+
+           NOSTATE//NONE +----------+------+\     [DEPLOYWAIT//DEPLOYDONE]
+                ^             R:active      +         ^
+                |                           |         |
+                +                           v         v
+         [DELETING//DELETED]        +--->[DEPLOYING//DEPLOYDONE]
+           +    ^                   |       +               +
+           |    |          R:rebuild|       |               |
+           v    |                   |       |               v
+    ERROR//NONE |                   |       |          DEPLOYFAIL//NONE
+                |                   |       v
+                |                   +---+ACTIVE//NONE
+                |    R:deleted              +
+                +---------------------------+
+
 
 Legend for the current state machine:
 
 * [STATE] indicates an active state. Ironic is doing something to the node.
-* (STATE) indicates a momentary state. Used internally, Ironic will
-  transition to the next state automatically.
 * STATE indicates a passive state. Ironic will not transition unless
   receiving a request via the API.
 * R:request indicates the request which must be passed to the API to
