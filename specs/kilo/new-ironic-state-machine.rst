@@ -82,14 +82,14 @@ Descriptions of the states for the current state machine can be found `here
 
 New state machine::
 
-  ENROLL -----------> [VALIDAT*/MANAGED]
+  ENROLL -----------> [VALIDAT*/MANAGEABLE]
           R:validate          |
                               v
-                  +------->MANAGED<-----------+
-                  |        +  + ^ |           |
-                  |   R:zap|  | | |R:inspect  |
-                  +        |  | | |           +
-         [ZAP*/MANAGED]<---+  | | +->[INSPECT*/MANAGED]
+                  +------>MANAGEABLE<--------+
+                  |        +  + ^ |          |
+                  |   R:zap|  | | |R:inspect |
+                  +        |  | | |          +
+     [ZAP*/MANAGEABLE]<----+  | | +---->[INSPECT*/MANAGEABLE]
                               | |
                      R:provide| +----------+
                       +-------+   R:manage |
@@ -159,14 +159,14 @@ VALIDATING
   confirming that the credentials work to access whatever node control
   mechanism they talk to.
 
-MANAGED
+MANAGEABLE
   Once Ironic has verified that it can manage the node using the
   driver and credentials passed in at node create time, the node will
-  be transitioned to MANAGED and (optionally) powered off.  From
-  MANAGED, nodes can transition to:
+  be transitioned to MANAGEABLE and (optionally) powered off.  From
+  MANAGEABLE, nodes can transition to:
 
-  * MANAGED (through ZAPPING) via the zap API call,
-  * MANAGED (through INSPECTING) via the inspect API call, and
+  * MANAGEABLE (through ZAPPING) via the zap API call,
+  * MANAGEABLE (through INSPECTING) via the inspect API call, and
   * AVAILABLE (through CLEANING) via the provide API call.
 
 ZAPPING
@@ -220,7 +220,7 @@ AVAILABLE
   to be provisioned. From AVAILABLE, nodes can transition to:
 
   * ACTIVE (through DEPLOYING) via the active API call.
-  * MANAGED via the manage API call
+  * MANAGEABLE via the manage API call
 
 DEPLOYING
   Nodes in DEPLOYING are being actively prepared to run a workload on them.
@@ -293,15 +293,15 @@ the state machine:
 +-----------+--------------+--------------------------+-----------+
 | Verb      | Initial State| Intermediate States      | End State |
 +===========+==============+==========================+===========+
-| validate  | ENROLL       | VALIDATING -> VALIDATED  | MANAGED   |
+| validate  | ENROLL       | VALIDATING -> VALIDATED  | MANAGEABLE|
 +-----------+--------------+--------------------------+-----------+
-| zap       | MANAGED      | ZAPPING -> ZAPPED        | MANAGED   |
+| zap       | MANAGEABLE   | ZAPPING -> ZAPPED        | MANAGEABLE|
 +-----------+--------------+--------------------------+-----------+
-| inspect   | MANAGED      | INSPECTING -> INSPECTED  | MANAGED   |
+| inspect   | MANAGEABLE   | INSPECTING -> INSPECTED  | MANAGEABLE|
 +-----------+--------------+--------------------------+-----------+
-| provide   | MANAGED      | CLEANING -> CLEANED      | AVAILABLE |
+| provide   | MANAGEABLE   | CLEANING -> CLEANED      | AVAILABLE |
 +-----------+--------------+--------------------------+-----------+
-| manage    | AVAILABLE    | (none)                   | MANAGED   |
+| manage    | AVAILABLE    | (none)                   | MANAGEABLE|
 +-----------+--------------+--------------------------+-----------+
 | active    | AVAILABLE    | DEPLOYING -> DEPLOYED    | ACTIVE    |
 +-----------+--------------+--------------------------+-----------+
@@ -372,11 +372,11 @@ Ditto.
 Other deployer impact
 ---------------------
 
-Nodes will not automatically transition from ENROLL to MANAGED.
+Nodes will not automatically transition from ENROLL to MANAGEABLE.
 Deployers must assign drivers and add credentials to the node and then
 call the validate API before Ironic can manage the node.
 
-Nodes will not automatically transition from MANAGED to AVAILABLE,
+Nodes will not automatically transition from MANAGEABLE to AVAILABLE,
 deployers will need to do that via the API before nodes can be scheduled.
 
 Developer impact
