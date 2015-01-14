@@ -40,6 +40,7 @@ difficult (if not impossible) due to following reasons:
 * Even after tweaking policies of VirtualBox application, the remote VBoxManage
   and VBoxSvc don't sync each other properly and often results in a crash.
 
+
 Proposed change
 ===============
 
@@ -48,16 +49,24 @@ Proposed change
   SOAP.
 
 * A new python library named ``pyremotevbox`` will be written and will be
-  available separately in Github and PyPI. Currently it is hosted in `Github`_.
+  available separately in GitHub and PyPI. Currently it is hosted in `GitHub`_.
 
 * Write a new implementation of ``PowerInterface`` and ``ManagementInterface``
-  named ``VirtualBoxPowerInterface`` and ``VirtualBoxManagementInterface``
+  named ``VirtualBoxPower`` and ``VirtualBoxManagement``
   which uses the new python library to manage VirtualBox VMs.
 
 * Create new drivers ``pxe_vbox``, ``agent_vbox`` for deploying on Virtualbox
   VMs. Also create a ``fake_vbox`` driver for testing purposes with fake
   deploy.
 
+* This can also be used by users running VirtualBox on other operating
+  systems where it is supported (other than Windows). They may also
+  use SSHPower and SSHManagement if VirtualBox is running on linux machines.
+  The advantage of this module over ssh ones is that, it will be faster
+  (because ssh modules first ssh to system and then run VBoxManage command
+  which does the same thing, so time for doing ssh is extra). The
+  disadvantage is that VirtualBox webservice should be running all the time
+  (which is not required for ssh ones).
 
 Alternatives
 ------------
@@ -147,7 +156,7 @@ Dependencies
 ============
 
 * Depends on pyremotevbox library which is being developed. This library
-  will be available in Github and PyPI for developers to install on their
+  will be available in GitHub and PyPI for developers to install on their
   laptop and will have Apache license.
 
 
@@ -175,4 +184,4 @@ References
 
 None
 
-.. _`Github`: https://github.com/rameshg87/pyremotevbox
+.. _`GitHub`: https://github.com/rameshg87/pyremotevbox
