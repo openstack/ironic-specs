@@ -108,7 +108,7 @@ Proposed change
   state. A node will be in CLEANED state after CLEANING completes and until the
   conductor gets a chance to move it to AVAILABLE.
 
-* Nodes may be be put into CLEANING via an API call (described below) only
+* Nodes may be put into CLEANING via an API call (described below) only
   from MANAGED or CLEANFAIL states. MANAGED allows an operator to clean a node
   before it is available for scheduling. This ensures new nodes are at the same
   baseline as other, already added nodes.
@@ -145,7 +145,7 @@ Alternatives
 Data model impact
 -----------------
 
-* node.cleaning_step will be added as a string or None field to track which
+* node.clean_step will be added as a string or None field to track which
   step is currently being performed on the node. This will give the operator
   more visibility into what a node is doing and allow conductor fail overs
   during CLEANING to be more simply implemented.
@@ -181,8 +181,8 @@ REST API impact
   by priority.
 
 * GET requests to the node's API
-  (/nodes/<uuid>) and node list API (/nodes) should return the current
-  node.clean_step as well.
+  (/nodes/<uuid>) and node detail API (/nodes/details) should return the
+  current node.clean_step as well.
 
 RPC API impact
 --------------
@@ -236,16 +236,10 @@ Nova driver impact
 * If Nova is upgraded first, nothing will change. The driver will continue
   to be in the tear_down state until the node goes to AVAILABLE.
 
-* If Ironic is updated first, nodes that are torn down may take additional
-  time and will likely time out in unprovision. This would only happen if
-  Ironic was updated before Nova, and a driver that implements clean
-  which takes a large amount of time was enabled and used. This will need
-  to be documented.
-
 Security impact
 ---------------
 
-* Security will be improved by adding erasing of disks.
+* Security will be improved by adding erasing of disks [3].
 
 * It should be noted in documentation that there are still attack vectors if
   baremetal nodes are given to untrusted users or if a baremetal node is
@@ -294,6 +288,12 @@ Other deployer impact
   adjust whether each step is performed and at what priority if the defaults
   don't work for their environment.
 
+* If Ironic is updated first, nodes that are torn down may take additional
+  time and will likely time out in unprovision. This would only happen if
+  Ironic was updated before Nova, and a driver that implements clean
+  which takes a large amount of time was enabled and used. This will need
+  to be documented.
+
 Developer impact
 ----------------
 
@@ -328,6 +328,10 @@ Work Items
   provision target state
 
 * Add API end point /nodes/<uuid>/cleaning/steps
+
+* Add support for erase_disks in PXE driver
+
+* Add cleaning support to IPA
 
 * Add Nova driver support
 
@@ -366,6 +370,12 @@ Upgrades and Backwards Compatibility
 Documentation Impact
 ====================
 
+* There should be very clear documentation about how cleaning works, how the
+  steps are ordered, what they do, and how operators can enable, disable, and
+  reprioritize them. This is essential for operators to understand if they
+  are going to use cleaning. The differences in between drivers for cleaning
+  will also need to be spelled out.
+
 * The Ironic driver interface changes, the Nova driver support and changes to
   Ironic API will need to be documented.
 
@@ -379,3 +389,5 @@ References
 1: https://github.com/openstack/ironic-specs/blob/master/specs/kilo/new-ironic-state-machine.rst
 
 2: https://review.openstack.org/#/c/102405/
+
+3: https://bugs.launchpad.net/ironic/+bug/1174153
