@@ -31,14 +31,8 @@ iRMC supports WS-MAN, CIM, SMASH CLP, IPMI, SNMP, and etc. ServerView
 Common Command Interface (SCCI), however, is chosen since it is the
 most capable among them.
 
-ServerView Common Command Interface (SCCI) uses HTTP/HTTPS POST
-protocol.
-
-iRMC doesn't use external vendor library such as `OpenWSMAN library <http://openwsman.github.io/>`_  of DRAC or
-`proliantutils library <https://github.com/hpproliant/proliantutils>`_
-of iLO. Instead, it makes HTTP/HTTPS POST requests to the SCCI
-server. The python `requests <https://pypi.python.org/pypi/requests>`_
-library will be used for sending these HTTP requests.
+ServerView Common Command Interface (SCCI) uses
+`python-scciclient package <https://pypi.python.org/pypi/python-scciclient>`_.
 
 
 Alternatives
@@ -133,11 +127,12 @@ Dependencies
 * This feature requires at least BX S4 or RX S8 generation of FUJITSU
   PRIMERGY servers.
 
-* This feature requires python `requests <https://pypi.python.org/pypi/requests>`_ library.
+* This feature requires `python-scciclient <https://pypi.python.org/pypi/python-scciclient>`_ library.
+  This dependency will be checked on calling __init__() of iRMC driver.
 
 Testing
 =======
-* Unit Tests
+* Unit Tests with mocking `python-scciclient <https://pypi.python.org/pypi/python-scciclient>`_ library.
 
 * Fujitsu plans Third-party CI Tests
 
@@ -159,7 +154,7 @@ References
 
 * `iRMC Management Driver for Ironic <https://github.com/openstack/ironic-specs/tree/master/specs/kilo/irmc-management-driver.rst>`_
 
-* python `requests <https://pypi.python.org/pypi/requests>`_ library.
+* `python-scciclient package <https://pypi.python.org/pypi/python-scciclient>`_
 
 * `DRAC Power Driver for Ironic <https://github.com/openstack/ironic-specs/blob/master/specs/juno/drac-power-driver.rst>`_
 
