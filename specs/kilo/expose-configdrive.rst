@@ -52,18 +52,23 @@ provides and expose it to an instance.
 Proposed change
 ===============
 
-Nova's Ironic virt driver will generate a configdrive image and pass a
-reference to it to Ironic via a "configdrive" field in node.instance_info.
-This should be a URI for the image. This is discussed in more detail in
-this nova spec.[0]
+Nova's Ironic virt driver will generate a config drive image, gzip
+and base64 enconde it and pass to the Ironic service as part of the
+setting provision state call. This is discussed in more detail in this
+nova spec.[0]
 
-The reference implementation for the storage service to hold the configdrive
-will be via Swift.
+For that, we have to extend our API to optionally accept a config drive
+as part of the request BODY.
 
-Drivers will be responsible for exposing the configdrive to the instance, as
-well as removing the configdrive from the instance upon deletion. This cannot
-be coordinated by code outside of the driver, as only the driver can know
-when and how to take these actions.
+If the config drive is present, Ironic will either upload the data to
+Swift and update the Node's instance_info to include the temporary URL
+from the upload or if swift if not configured, the config drive data
+will be stored directly into the Node's instance_info field.
+
+From there deploy drivers will will be responsible for exposing the
+configdrive to the instance, as well as removing the configdrive from the
+instance upon deletion. This cannot be coordinated by code outside of the
+driver, as only the driver can know when and how to take these actions.
 
 Some mechanisms a driver may use to expose a configdrive include:
 
@@ -86,12 +91,19 @@ A "configdrive" key will be added to node.instance_info.
 REST API impact
 ---------------
 
-None.
+Extend the /nodes/<uuid>/provision endpoint to accept an optional
+``configdrive`` parameter as part of the request BODY.
+
+Since the config drive is only valid when spawning an instance, in the
+Ironic API passing the ``configdrive`` parameter will be only valid when
+setting the Node's provision state to ``active``. Passing the parameter
+to any other provision state should return HTTP 400 (Bad Request).
 
 RPC API impact
 ---------------
 
-None.
+The config drive passed via the API should be passed down to the
+``do_node_deploy`` RPC method.
 
 Driver API impact
 -----------------
@@ -135,7 +147,7 @@ None.
 Other deployer impact
 ---------------------
 
-This feature will require deploying some object store service (Swift for
+This feature might require deploying some object store service (Swift for
 the reference implementation).
 
 Developer impact
@@ -152,7 +164,10 @@ Assignee(s)
 -----------
 
 Primary assignee:
-  jroll
+  lucasagomes <lucasagomes@gmail.com>
+
+Other contributors:
+  jroll <jim@jimrollenhagen.com>
 
 Work Items
 ----------
@@ -163,6 +178,9 @@ Work Items
 
 * Add support to IPA to fetch a configdrive by URL. It currently only supports
   being passed a blob in the prepare_image command.
+
+* Add support to PXE drivers to consume the config drive and expose it
+  to the tenants.
 
 * Add tempest tests (in conjuction with the Nova driver).
 
