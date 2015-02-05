@@ -52,7 +52,6 @@ This spec is proposing having a limited number of hints that could be
 passed as part of the initial work, but could be extended later on. The
 initial proposed hint list is:
 
-* uuid (STRING): device UUID
 * model (STRING): device identifier
 * vendor (STRING): device vendor
 * serial (STRING): disk serial number
