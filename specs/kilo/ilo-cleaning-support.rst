@@ -66,11 +66,20 @@ Proposed change
   Tools like hdparm, shred are being explored for disk erase and hpsum ,
   smart component executables are being explored for the firmware update.
 
-* New key 'ilo_config' will be added to driver_info, which will be used to
-  pass arguments to the cleaning operations if required.
+* Parameters required for cleaning operations need to be passed via driver_info
+  with appropriate keys.
 
-  eg: ilo_info = {'ilo_change_password' : 'default' ,
-                  'ilo_firmware_container': 'gen8_firmwares'}
+  eg: Following are the mandatory parameter keys required by the clean steps -
+      1. ``upgrade_firmware`` - ``ilo_firmware_location_url`` key,
+         which can accept the http location url or swift url for the tar/gz
+	 file of all the firmwares to be updated.
+
+      2. ``reset_ilo_credential`` - ``ilo_change_password``, which accepts the
+	 default iLO password to be changed during cleaning.
+
+* If the keys are missing and if the respective clean step is enabled, warning
+  message will be logged and the step will be no-op and continue with other
+  clean steps.
 
 Alternatives
 ------------
@@ -153,6 +162,7 @@ None
 Documentation Impact
 ====================
 * Supported firmware settings will be documented.
+* Parameter keys required for certain clean operations will be documented.
 * Creating deploy ramdisk with HP Specific tools will be documented.
 
 References
