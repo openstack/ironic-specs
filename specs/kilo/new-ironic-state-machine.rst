@@ -68,10 +68,10 @@ Current state machine::
 Legend for the current state machine:
 
 * [STATE] indicates an active state. Ironic is doing something to the node.
-* STATE indicates a passive state. Ironic will not transition unless
-  receiving a request via the API.
+* STATE indicates a stable (or passive) state. Ironic will not transition
+  unless receiving a request via the API.
 * R:request indicates the request which must be passed to the API to
-  initiate a transition out of a passive state.
+  initiate a transition out of a stable state.
 
 Ironic's API presents two fields for the provision_state of a node:
 current and target.  Thus, in this diagram, all states are represented as
@@ -131,12 +131,12 @@ Legend for the new state machine:
 
   TARGET indicates the target state that Ironic will try to
   transition the node to from the active state. TARGET must be a
-  passive state.
+  stable state.
 
 STATE
-  A passive state, usually the target of a particular set of state
-  transitions. Ironic will not transition away from this state without
-  an API request to do so.
+  A stable (or passive) state, usually the target of a particular set of state
+  transitions. Ironic will not transition away from this state without an API
+  request to do so.
 
 R:request
   Indicates that the transition so labeled happens as a result of
