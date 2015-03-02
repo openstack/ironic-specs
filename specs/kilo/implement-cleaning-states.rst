@@ -10,9 +10,9 @@ Implement Cleaning States
 
 https://blueprints.launchpad.net/ironic/+spec/implement-cleaning-states
 
-When a node has finished a workload, drivers should have the opportunity to
-run a set of tasks immediately after tear down and before the node is
-available for scheduling again.
+When a node has finished a workload, driver interfaces should have the
+opportunity to run a set of tasks immediately after tear down and before the
+node is available for scheduling again.
 
 
 Problem description
@@ -61,27 +61,27 @@ Proposed change
   step will be run. The function with the highest priority will run first,
   followed by the one with the second highest priority, etc. If priority is
   set to 0, the step will not be executed. The argument should be a config
-  option, e.g. `priority=CONF.$driver.$stepname_priority` to
+  option, e.g. `priority=CONF.$interface.$stepname_priority` to
   give the operator more control over the order steps run in (if at all).
 
 * Add a new function `get_clean_steps()` to the base Interface classes. The
   base implementation will get a list of functions decorated with
   `@clean_step`, determine which are enabled, and then return a list of
-  namedtuples representing each step, sorted by priority.
+  dictionaries representing each step, sorted by priority.
 
-* The return value of `get_clean_steps()` will be a list of namedtuples
-  with the 3 elements: step, priority and driver, described below:
+* The return value of `get_clean_steps()` will be a list of dicts
+  with the 3 keys: step, priority and interface, described below:
 
       * 'step': 'function_name',
 
       * 'priority': 'an int or float, used for sorting, described below',
 
-      * 'driver': 'driver_interface_name
+      * 'interface': 'interface_name
 
   Only steps with a priority greater than 0 (enabled steps) will be returned.
 
 * Add a new function `execute_clean_step(clean_step)` to the base Interfaces,
-  which takes one of the namedtuples returned by `get_clean_steps()` as an
+  which takes one of the dictionaries returned by `get_clean_steps()` as an
   arg, and execute the specified step.
 
 * Create a new function in the conductor: `clean(task)` to run all
@@ -90,15 +90,15 @@ Proposed change
   step in a new field on the node called clean_step.
 
 * In the event of a tie for priority,
-  the tie breaker will be the driver implementing the function, in the order
-  power, management, deploy drivers. So if the power and deploy driver both
-  implement a step with priority 10, power's step will be executed first,
-  then the deploy driver's step.
+  the tie breaker will be the interface implementing the function, in the order
+  power, management, deploy interfaces. So if the power and deploy interface
+  both implement a step with priority 10, power's step will be executed first,
+  then the deploy interface's step.
 
-* If there is a tie for priority within a single driver (an operator
+* If there is a tie for priority within a single interface (an operator
   inadvertently sets two to the same priority), the conductor will fail
-  to load that driver while starting up, and log errors about the overlapping
-  priorities.
+  to load that interface while starting up, and log errors about the
+  overlapping priorities.
 
 * Using CLEANING, CLEANED, and CLEANFAIL that will be added in the
   new state machine spec [1]. These states occur between DELETED and AVAILABLE.
@@ -135,7 +135,7 @@ Proposed change
 Alternatives
 ------------
 
-* The drivers could implement this in tear_down only. It would be slower
+* The interfaces could implement this in tear_down only. It would be slower
   from a user perspective.
 
 * Most of these actions could be taken during deploy. This would
@@ -145,14 +145,14 @@ Alternatives
 Data model impact
 -----------------
 
-* node.clean_step will be added as a string or None field to track which
+* node.clean_step will be added as a dict or None field to track which
   step is currently being performed on the node. This will give the operator
   more visibility into what a node is doing and allow conductor fail overs
   during CLEANING to be more simply implemented.
 
 * If a cleaning step needs to store additional information, it should use
-  node.driver_info. For example, the agent driver will store the IPA hardware
-  manager version in driver_info, so it can detect changes and restart
+  node.driver_info. For example, the agent interface will store the IPA
+  hardware manager version in driver_info, so it can detect changes and restart
   cleaning if a new hardware manager is deployed during a cleaning cycle.
 
 REST API impact
@@ -207,10 +207,10 @@ Driver API impact
   ..
 
   def get_clean_steps(task):
-    """Return the clean steps this driver can perform on a node"""
+    """Return the clean steps this interface can perform on a node"""
 
     :param task: a task from TaskManager.
-    :returns: a list of namedtuples as noted above
+    :returns: a list of dictionaries as noted above
 
   ..
 
@@ -221,11 +221,11 @@ Driver API impact
     :param step: a step from get_clean_steps()
     :raises CleanStepFailed: if the step fails
 
-* Testing will be similar to other driver interfaces and each driver will be
+* Testing will be similar to other driver interfaces and each interface will be
   expected to test their implementation thoroughly.
 
-* Existing drivers can choose to not implement the new API with no effect, as
-  they will be added in the base classes.
+* Existing interfaces can choose to not implement the new API with no effect,
+  as they will be added in the base classes.
 
 Nova driver impact
 ------------------
@@ -290,7 +290,7 @@ Other deployer impact
 
 * If Ironic is updated first, nodes that are torn down may take additional
   time and will likely time out in unprovision. This would only happen if
-  Ironic was updated before Nova, and a driver that implements clean
+  Ironic was updated before Nova, and a interface that implements clean
   which takes a large amount of time was enabled and used. This will need
   to be documented.
 
@@ -329,7 +329,7 @@ Work Items
 
 * Add API end point /nodes/<uuid>/cleaning/steps
 
-* Add support for erase_disks in PXE driver
+* Add support for erase_disks in PXE interface
 
 * Add cleaning support to IPA
 
@@ -344,8 +344,8 @@ Dependencies
   for potentially hours, eating up quota.
 
 * Not required, but would be helpful: External event callback API would be
-  helpful for the Agent driver (and  probably others') implementation of clean:
-  https://review.openstack.org/#/c/99770/.
+  helpful for the Agent deploy interface (and  probably others') implementation
+  of clean: https://review.openstack.org/#/c/99770/.
 
 
 Testing
@@ -373,7 +373,7 @@ Documentation Impact
 * There should be very clear documentation about how cleaning works, how the
   steps are ordered, what they do, and how operators can enable, disable, and
   reprioritize them. This is essential for operators to understand if they
-  are going to use cleaning. The differences in between drivers for cleaning
+  are going to use cleaning. The differences in between interfaces for cleaning
   will also need to be spelled out.
 
 * The Ironic driver interface changes, the Nova driver support and changes to
