@@ -97,9 +97,9 @@ Security impact
 ---------------
 
 Local boot is a double-edged problem. On one hand, in case of a
-eletricity outage the customer nodes that are configured to local boot
+electricity outage the customer nodes that are configured to local boot
 could potentially boot up before the control plane. On the other hand
-if eletriciy outage causes the control plane to not boot after is also
+if electricity outage causes the control plane to not boot after is also
 a problem. So, this spec makes local boot and net boot configurable per
 instance, deployers should be aware of that when deploying their clouds.
 
