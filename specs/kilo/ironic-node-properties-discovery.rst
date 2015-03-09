@@ -138,7 +138,7 @@ Hence, here node-create becomes partly synchronous and partly asynchronous.
 Given above reasons, this approach is not chosen.
 
 The auto-discovery can also be used for discovering node properties
-but it also doesnt provide the ability to discover properties at
+but it also doesn't provide the ability to discover properties at
 node-create and node-set-provision-state.
 
 Data model impact
