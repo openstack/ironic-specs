@@ -253,7 +253,7 @@ RESCUING
 
 RESCUE
   RESCUE exists to allow Ironic to be aware of a node that would be
-  otherwise running a workload, but that is is booted into a different
+  otherwise running a workload, but that is booted into a different
   operating environment for maintenance or troubleshooting reasons.
   From RESCUE, nodes can transition to:
 
