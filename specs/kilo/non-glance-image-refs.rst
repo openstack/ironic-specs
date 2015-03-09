@@ -98,7 +98,7 @@ Other deployer impact
 Since Ironic may be used without Glance, developers can't make the assumption
 that Glance image metadata is the only source for such information. Deployers
 must be capable of supplying Ironic with all required metadata
-programatically, and such requirements must be documented.
+programmatically, and such requirements must be documented.
 
 For example, because of kernel and ramdisk UUIDs are currently got from
 image_source image properties returned by Glance, links for those should be
