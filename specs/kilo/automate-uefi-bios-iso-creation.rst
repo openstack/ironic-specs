@@ -43,7 +43,7 @@ The steps would be as follows:
 
 6. The boot iso is created by the driver and uploaded at the swift container.
 
-when node is teared down, the boot iso is deleted by the driver.
+when node is torn down, the boot iso is deleted by the driver.
 
 Alternatives
 ------------
