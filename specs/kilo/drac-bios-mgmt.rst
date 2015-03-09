@@ -15,7 +15,7 @@ external services get, set, and commit changes to the BIOS
 settings. This spec will assume that the external service knows
 exactly what it is doing with the specific hardware it will manage,
 and it will not attempt to standardize, normalize, or simplify the
-exposed settings in any way beyond some minimal convienence measures
+exposed settings in any way beyond some minimal convenience measures
 and what is needed to map between XML and JSON.
 
 
@@ -92,7 +92,7 @@ Four new API calls:
     did not actually change the BIOS configuration.
 
   * 409 if the set of proposed new parameters contains a parameter
-    that cannot be set to the reqested value, either because the
+    that cannot be set to the requested value, either because the
     parameter is read-only or the proposed new parameter is not valid.
 
   * 403 if there are already proposed changes in the process of being
@@ -202,7 +202,7 @@ Testing
 * Unit tests
 
 * 3rd-party CI:  I will try to implement it in parallel with
-  implenenting this driver, provided I can source sufficent internal
+  implementing this driver, provided I can source sufficient internal
   resources and appropriate network connectivity.
 
 Upgrades and Backwards Compatibility
