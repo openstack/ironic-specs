@@ -73,7 +73,7 @@ Preparing flavor for secure boot
   capability as one of the node selection criteria if "secure_boot" is
   present in extra_spec. If "secure_boot" is not present in extra_spec then
   Nova scheduler will not consider "secure_boot" capability as a node
-  selection critera.
+  selection criteria.
 
 * Ironic virt Driver needs to pass the flavor capability information to the
   driver as part of instance info. Having capability information as part of
