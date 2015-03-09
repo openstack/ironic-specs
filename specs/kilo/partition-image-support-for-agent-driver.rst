@@ -31,7 +31,7 @@ Proposed change
 * Send partition information(root, swap, etc) to the agent ramdisk through
   image_info.
 
-* Upon recieving the partition information, agent ramdisk will work on the
+* Upon receiving the partition information, agent ramdisk will work on the
   given os_install disk and copy the partition image in the root partition.
 
 * Agent ramdisk sends back the root_uuid to the agent driver on the
