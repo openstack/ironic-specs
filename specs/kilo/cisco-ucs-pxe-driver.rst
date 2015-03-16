@@ -57,7 +57,7 @@ ManagedObject.
   servers. LsbootDef is the ManagedObject that represents the boot-order of
   service-profile. This interface reads and updates LsbootDef ManagedObject
   appropriately for get and set boot-device operations.
-  get_sensor_data() implementation is not in scope of this spec. A seperate
+  get_sensor_data() implementation is not in scope of this spec. A separate
   spec will be submitted.
 
 Alternatives
@@ -161,7 +161,7 @@ servers.
 
 Upgrades and Backwards Compatibility
 ====================================
-This driver will not break any compatability with either on REST API or RPC
+This driver will not break any compatibility with either on REST API or RPC
 APIs.
 
 Documentation Impact
