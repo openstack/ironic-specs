@@ -60,7 +60,7 @@ pxe to deliver the image to nodes. Following are details,
   - ``set_boot_device()`` - Set the boot device of the node.
 
     .. note::
-        As AMT/vPro doesnt support set boot device persistent in BM node
+        As AMT/vPro doesn't support set boot device persistent in BM node
         like BMC, it only set boot device for one time. So AMT driver call
         ensure_next_boot_device() between every power cycle if boot device
         is persistent.

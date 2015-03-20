@@ -129,7 +129,7 @@ In /opt/stack/ironic/ironic/common/images.py file,
   capable ISO.
 
 * To remove the check in /opt/stack/ironic/ironic/drivers/modules/ilo/deploy.py
-  for erroring out when the deploy image doesnt has the boot_iso uuid updated.
+  for erroring out when the deploy image doesn't has the boot_iso uuid updated.
 
 Dependencies
 ============
