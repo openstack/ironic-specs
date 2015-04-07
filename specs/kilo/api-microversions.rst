@@ -129,7 +129,7 @@ it supports.
   that it is talking to does not support microversions.  That is, it is using
   a version of the REST API that predates v1.0 (stable/juno).
 * The client should transparently proceed now that it knows that it is
-  commmunicating to an Ironic that can only support v1.0 of the REST API.
+  communicating to an Ironic that can only support v1.0 of the REST API.
 
 Use Case 3B:  New Client communicating with a Old Ironic (user-specified)
 -------------------------------------------------------------------------
@@ -191,7 +191,7 @@ the new Ironic can handle.  For example, the client supports microversions
     able to proceed since any change that would break basic compatibility
     would likely require a major version bump to v2)
 
-Note: This sceanrio should not occur in practice as the client should always
+Note: This scenario should not occur in practice as the client should always
 be able to talk to any version of Ironic.
 
 Use Case 7A: New Client/New Ironic: Negotiated version (not user-specified)
@@ -214,7 +214,7 @@ versions 1.1 to 1.10.
 
 Use Case 7B: New Client/New Ironic: Negotiated version (user-specified)
 -----------------------------------------------------------------------
-This is a slight variation on Use Case 7, where the user specifies a
+This is a slight variation on Use Case 7A, where the user specifies a
 specific version to use to communicate with Ironic.
 
   * The user specifies a particular microversion (e.g. 1.15) that the client
@@ -401,7 +401,7 @@ API change processes.
 References
 ==========
 
-* [0] https://github.com/openstack/nova-specs/blob/master/specs/kilo/approved/api-microversions.rst for details on Nova's microversioning.  Note that this document borrows heavily from that spec. (Thanks cyeoh!)
+* [0] http://specs.openstack.org/openstack/nova-specs/specs/kilo/implemented/api-microversions.html for details on Nova's microversioning.  Note that this document borrows heavily from that spec. (Thanks cyeoh!)
 
 * [1] https://review.openstack.org/#/c/150821/ and https://review.openstack.org/#/c/158601/
 
