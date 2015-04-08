@@ -4,67 +4,16 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-==================================================
-Title of the Spec - eg the title of your blueprint
-==================================================
+===========================================================
+Placeholder Spec - Remove once the first real spec is added
+===========================================================
 
-Include the URL of your launchpad blueprint:
+https://blueprints.launchpad.net/ironic/+spec/placeholder
 
-https://blueprints.launchpad.net/ironic/+spec/template
+This spec is a placeholder and should be removed from git after the first spec
+for liberty is approved.
 
-Introduction paragraph -- start here.
-
-Why are we doing anything? This should be a single paragraph of prose that
-operators can understand.
-
-Some notes about using this template:
-
-* Your spec should be in ReSTructured text, like this template.
-
-* Please wrap text at 79 columns.
-
-* The filename in the git repository must match the launchpad URL, for
-  example a URL of: https://blueprints.launchpad.net/ironic/+spec/awesome-thing
-  must be named awesome-thing.rst
-
-* Please do not delete any of the sections in this template.  If you have
-  nothing to say for a whole section, just write: None
-
-* For help with syntax, see http://sphinx-doc.org/rest.html
-
-* To test out your formatting, build the docs using tox, or see:
-  http://rst.ninjs.org
-
-* If you would like to provide a diagram with your spec, ascii diagrams are
-  required.  http://asciiflow.com/ is a very nice tool to assist with making
-  ascii diagrams.  The reason for this is that the tool used to review specs is
-  based purely on plain text.  Plain text will allow review to proceed without
-  having to look at additional files which can not be viewed in gerrit.  It
-  will also allow inline feedback on the diagram itself.
-
-* If your specification proposes any changes to the Ironic REST API such
-  as changing parameters which can be returned or accepted, or even
-  the semantics of what happens when a client calls into the API, then
-  you should add the APIImpact flag to the commit message. Specifications with
-  the APIImpact flag can be found with the following query:
-
-  https://review.openstack.org/#/q/status:open+project:openstack/ironic-specs+message:apiimpact,n,z
-
-* If you are unsure whether this proposal is aligned with the project's
-  mission and scope, you are encouraged to submit a minimal spec to get
-  feedback early, before investing the effort in a complete specification.
-  Do this by filling in the `Problem description` and `Proposed change`
-  sections and delete the rest of the template. This will fail unit tests,
-  but will still get attention from the review team.
-
-* If you do not wish to submit a complete spec (for example, you do not plan
-  to complete the spec during this cycle but would like to document the idea)
-  you can submit a short spec. It must contain at least the `Problem
-  description` and `Proposed change` sections, and may optionally contain any
-  other valid sections. Propose this to the `specs/backlog` directory. This
-  must follow all other rules of a regular spec (eg, it still requires a
-  blueprint, good RST formatting, etc).
-
+The remainder of this document is a copy of template.rst.
 
 Problem description
 ===================
@@ -126,7 +75,7 @@ documented here.
 
 Questions which need to be addressed by this section include:
 
-* Are you adding or removing any states or verbs?
+* Are you adding or removing any states?
 
 * Are you changing any state transitions?
 
@@ -167,7 +116,7 @@ Each API method which is either added or changed should have the following
 
   * JSON schema definition for the response data if any
 
-* Does the API microversion need to increment?
+* Does the API microversion needs to increment?
 
 * Example use case including typical API samples for both data supplied
   by the caller and the response
@@ -179,6 +128,8 @@ Each API method which is either added or changed should have the following
 
 * Is this change discoverable by clients? Not all clients will upgrade at the
   same time, so this change must work with older clients without breaking them.
+
+
 
 Note that the schema should be defined as restrictively as possible. Parameters
 which are required should be marked as such and only under exceptional

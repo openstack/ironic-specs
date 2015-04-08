@@ -18,7 +18,7 @@ import docutils.core
 import testtools
 
 
-RELEASE = 'kilo'
+RELEASE = 'liberty'
 
 FIRST_TITLE = 'Problem description'
 

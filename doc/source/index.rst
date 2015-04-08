@@ -12,18 +12,20 @@ should be proposed for the new cycle. Additionally, a "backlog" of ideas is
 maintained to indicate the agreed-upon goals for the project which have no
 specific work being done on them at this time.
 
-Current cycle: 'Kilo'
-=====================
+Current Cycle
+=============
 
-Approved specs:
+Liberty
+-------
 
 .. toctree::
    :glob:
    :maxdepth: 1
 
-   specs/kilo/*
+   specs/liberty/*
 
-Idea back-log:
+Idea back-log
+-------------
 
 .. toctree::
    :glob:
@@ -35,7 +37,27 @@ Idea back-log:
 Previous cycles
 ===============
 
-Specs completed during 'Juno':
+Kilo
+----
+
+Implemented specs:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/kilo/*
+
+Unimplemented, but approved, specs:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/kilo-archive/*
+
+Juno
+----
 
 .. toctree::
    :glob:
