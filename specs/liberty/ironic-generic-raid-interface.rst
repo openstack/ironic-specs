@@ -12,7 +12,16 @@ https://blueprints.launchpad.net/ironic/+spec/ironic-generic-raid-interface
 
 The proposal presents the work required to create a new driver interface for
 RAID configuration.  It also proposes a method to make RAID configuration
-available as part of zapping.
+available as part of zapping or cleaning.
+
+.. note::
+  Even though RAID configuration fits into zapping, it can be used as part of
+  cleaning as well.  Zapping and cleaning follow a similar mechanism (zap
+  step is a clean step with priority of 0). It makes sense to do RAID
+  configuration as part of cleaning for software RAID (where secure disk erase
+  will also erase the software RAID configuration on the disk).  It's operators
+  choice to decide whether RAID configuration should be part of zapping or
+  cleaning and it will be configurable in the drivers implementing it.
 
 Problem description
 ===================
@@ -29,11 +38,7 @@ Proposed change
 
 * After a node is enrolled and the basic hardware information is available,
   the operator can define a RAID configuration. This configuration will be
-  applied in two steps during zapping: creating the root device and creating
-  the rest of the RAID disks. This is required because certain drivers might
-  not be able to propagate any root device hint. With an optional step between
-  the zapping steps, the root device can be investigated with other methods
-  (eg. using discoverd).
+  applied during zapping or cleaning.
 
 * The operator can convey the RAID configuration information to the Ironic
   driver through REST APIs or CLI as JSON data. The RAID configuration
@@ -76,10 +81,10 @@ Proposed change
        of ``CONF.raid.share_physical_disks``. The default value of this config
        variable will be ``false``.
      - ``disk_type`` - ``hdd`` or ``ssd``. It has a default value of
-       ``CONF.raid.default_disk_type``. The default value of this config
+       ``CONF.raid.disk_type``. The default value of this config
        variable will be ``hdd``.
      - ``interface_type`` - ``sata`` or ``scsi`` or ``sas``. It has a default
-       value of ``CONF.raid.default_interface_type``. The default value of this
+       value of ``CONF.raid.interface_type``. The default value of this
        config variable will be ``sas``.
      - ``number_of_physical_disks`` - Integer, number of disks to use for the
        logical disk. Defaulted to minimum number of disks required for the
@@ -87,11 +92,11 @@ Proposed change
 
      The above mentioned backing physical disk hints are defined by
      Ironic and every driver has to implement them.  The supported values and
-     the default values for the above hints may be overridden the driver using
-     the ``get_logical_disk_properties`` method.
+     the default values for the above hints may be overridden by the driver
+     using the ``RAIDInterface.get_logical_disk_properties()`` method.
 
      In addition to the above hints, drivers may define their own hints in the
-     ``get_logical_disk_properties`` method.  For more details, refer the
+     ``get_logical_disk_properties`` method.  For more details, refer to the
      Driver API impact section. The possible use-cases for them might be:
 
      - Filter disks by particular vendors
@@ -111,14 +116,14 @@ Proposed change
        The values for these properties are hardware dependent.
 
   .. note::
-    Only one of "Backing physical disk hints" or "Backing physical disks"
-    need to be specified.  If both are specified, they need to be
-    consistent with each other.  If they are not consistent, then the raid
-    configuration will fail (because the appropriate backing physical disks
-    could not be found).
+    Only properties from "Backing physical disk hints" or
+    "Backing physical disks" should be specified.  If both are specified,
+    they should be consistent with each other.  If they are not consistent,
+    then the raid configuration will fail (because the appropriate backing
+    physical disks could not be found).
 
   Some examples:
-    Example 1::
+    Example 1 (using backing physical disk hints)::
 
       {
         'logical_disks':
@@ -142,7 +147,7 @@ Proposed change
           ]
       }
 
-    Example 2::
+    Example 2 (using backing physical disks)::
 
       {
         'logical_disks':
@@ -173,58 +178,40 @@ Proposed change
       }
 
 
-
-
+* The RAID configuration information is stored in
+  ``node.properties.target_raid_config``. Operator can either use
+  ``PATCH /v1/nodes/<>`` or ``ironic node-update`` to update the
+  ``target_raid_config``.
 
 * New driver interface called ``RAIDInterface`` will be provided for RAID
-  configuration for drivers. For more details, refer the Driver API impact
+  configuration for drivers. For more details, refer to the Driver API impact
   section.
 
-* New methods ``create_configuration`` and ``delete_configuration`` in
+* New methods ``create_config`` and ``delete_config`` in
   ``RAIDInterface`` will be available as part of zapping.  The operator can
   choose to call them as part of zap steps.  The corresponding zap steps will
-  be ``node.raid.create_configuration`` and ``node.raid.delete_configuration``.
+  be ``node.raid.create_config`` and ``node.raid.delete_config``.
 
 * A new method ``update_raid_info`` will be available in the base class
   ``RAIDInterface``.  This method may be used by the driver implementation of
-  ``create_configuration`` and ``delete_configuration`` to update
+  ``create_config`` and ``delete_config`` to update
   the RAID information in the Node database. This will facilitate drivers to do
   the RAID configuration asynchronously.  This method will do the following:
 
-  + Set ``node.driver_internal_info.current_raid_configuration`` to the value
-    returned by the driver.
-  + Set the respective part (root/non-root devices) of
-    ``node.driver_internal_info.target_raid_configuration`` to ``None``. Update
-    the ``last_updated_at`` timestamp in ``current_raid_configuration``.
+  + Set ``node.properties.raid_config`` to the value returned by the driver.
   + The root device hint for the root volume will be updated in
-    ``node.properties`` as per the root device hint `root device hint`_ and
+    ``node.properties`` (as per `root device hint`_) and
     the size of root volume will be updated in ``node.properties.local_gb``.
     It's up to the driver to choose which root device hint it wants to specify.
+    Furthermore, it isn't even necessary for the driver to choose any
+    root_device_hint.
   + The RAID level of the root volume will be updated as ``raid_level`` in
     ``node.properties.capabilities``.
 
-* New REST APIs will be created for RAID configuration. For more details, refer
-  to the REST API impact section.
+* A new REST API will be created for retrieving the properties which may be
+  specified as part of RAID configuration. For details, see the REST API Impact
+  section below.
 
-* Four new options will be available in Ironic CLI for doing the RAID
-  configuration.
-
-  To set a new RAID configuration::
-
-   $ ironic node-set-raid-configuration <node-uuid> --from-file raid_conf.json
-
-  To get the RAID configuration::
-
-   $ ironic node-get-raid-configuration <node-uuid>
-
-  To get the physical disks available in RAID controllers::
-
-   $ ironic node-get-raid-physical-disks <node-uuid>
-
-  To get the properties that can be defined for each logical disk and their
-  possible values::
-
-   $ ironic node-get-raid-logical-disk-properties <node-uuid>
 
 
 
@@ -234,22 +221,19 @@ Alternatives
 * Operator can change the RAID configuration manually whenever required after
   putting the node to MANAGEABLE state. But this has to be done for each node.
 
-* There needs to be only one API ``PUT /nodes/<uuid>/raid/configuration`` which
-  can be used for both creating and deleting the configuration. For deletion,
-  delete=True may be passed to the API.
-
 
 Data model impact
 -----------------
 
 The following fields in the Node object will be updated:
 
-* ``node.driver_internal_info.target_raid_configuration`` will store the
-  pending RAID configuration to be applied during zapping.
+* ``node.properties.target_raid_config`` will store the pending RAID
+  configuration to be applied during zapping or cleaning. This will be a JSON
+  dictionary.
 
-* ``node.driver_internal_info.current_raid_configuration`` will store the
-  last applied RAID configuration. This will also contain the timestamp of
-  when this configuration was applied.
+* ``node.properties.raid_config`` will store the last applied RAID
+  configuration. This will also contain the timestamp of when this
+  configuration was applied. This will be a JSON dictionary.
 
 * ``node.properties.local_gb`` will be updated after applying RAID
   configuration to the size of the root volume.
@@ -257,196 +241,19 @@ The following fields in the Node object will be updated:
 * ``node.properties.root_device`` will be updated with the root device hint
   returned by the driver as prescribed in the `root device hint`_ spec.
 
+* A new capability ``raid_level`` will be added in
+  ``node.properties.capabilities``. This will contain the RAID level of the
+  root volume.
+
+
+State Machine Impact
+--------------------
+None.
+
 REST API impact
 ---------------
 
-Four new REST APIs will be introduced as part of this change.
-
-- To create the RAID configuration for a node, run::
-
-    PUT /nodes/<uuid>/raid/configuration
-
-  This operation is idempotent. The operation will write the configuration
-  to the ``node.driver_internal_info.target_raid_configuration`` and will be
-  applied during the zapping step. The JSON data of the RAID configuration as
-  mentioned above needs to be passed as data to this request. Updating the
-  RAID configuration will be prevented if RAID configuration is in progress
-  from the driver. This will also validate the target RAID configuration by
-  calling ``validate_configuration`` method on the ``RAIDInterface``.
-
-  .. note::
-    This API doesn't actually do the RAID configuration.  It just stores the
-    input for RAID configuration in the Ironic database.  The RAID
-    configuration will be done as part of zapping.
-
-  If the operation is success, then the API will return HTTP 202 (Accepted).
-  If the operation failed, either because the driver doesn't support RAID
-  configuration or validation of input failed, then the API will return HTTP
-  400 (Bad Request).
-
-
-- To GET the current RAID configuration::
-
-    GET /nodes/<uuid>/raid/configuration
-
-  This operation will return the current and target RAID configuration.
-
-  Example 1: After putting a RAID configuration using ``PUT``::
-
-    {
-      'current': None
-      'target':
-        {
-          'logical_disks':
-            [
-              {
-                'size_gb': 50,
-                'raid_level': '1',
-                'volume_name': 'root_volume',
-                'is_root_volume': 'true'
-                'disk_type': 'hdd',
-                'interface_type': 'sas',
-              },
-              {
-                'size_gb': 100,
-                'number_of_physical_disks': 3,
-                'volume_name': 'data_volume'
-                'raid_level': '5',
-                'disk_type': 'hdd',
-                'interface_type': 'sas'
-              }
-            ]
-        }
-    }
-
-
-  Example 2: After the RAID configuration is applied as part of zapping::
-
-    {
-      'current':
-        {
-          'logical_disks':
-            [
-              {
-                'size_gb': 50,
-                'raid_level': '1',
-                'share_physical_disks': False,
-                'disk_type': 'hdd',
-                'interface_type': 'sas',
-                'number_of_physical_disks': 2,
-                'volume_name': 'root_volume',
-                'is_root_volume': 'true',
-                'controller': 'Smart Array P822 in Slot 2',
-                'physical_disks': [
-                                   '5I:1:2',
-                                   '5I:1:3'
-                                  ]
-                'root_device_hint': {
-                                     'wwn': 600508B1001CE4ACF473EE9C826230FF'
-                                    }
-              },
-              {
-                'size_gb': 100,
-                'number_of_physical_disks': 3,
-                'raid_level': '5',
-                'disk_type': 'hdd',
-                'interface_type': 'sas',
-                'number_of_physical_disks': 3,
-                'volume_name': 'data_volume',
-                'controller': 'Smart Array P822 in Slot 2',
-                'physical_disks': [
-                                   '5I:1:4',
-                                   '5I:1:5',
-                                   '5I:1:6'
-                                  ]
-              }
-            ],
-        }
-        'target': None
-    }
-
-  If driver doesn't support RAID configuration, then the API will return HTTP
-  400 (Bad Request). Otherwise the API will return HTTP 200 (OK).
-
-- To GET the physical disks in various RAID controllers::
-
-    GET /nodes/<uuid>/raid/physical_disks
-
-      {
-          'physical_disks':
-            [
-             {
-              'controller': 'Smart Array P822 in Slot 2',
-              'id': '5I:1:2',
-              'disk_type': 'hdd',
-              'interface_type': 'sas',
-              'size_gb': 600,
-              'vendor': 'HP',
-              'model': 'EF0600FARNA',
-              'firmware_version': 'HPD6',
-              'state': 'active',
-             },
-             {
-              'controller': 'Smart Array P822 in Slot 2',
-              'id': '5I:1:3',
-              'disk_type': 'hdd',
-              'interface_type': 'sas',
-              'size_gb': 600,
-              'vendor': 'HP',
-              'model': 'EF0600FARNA',
-              'firmware_version': 'HPD6',
-              'state': 'active',
-             },
-             {
-              'controller': 'Smart Array P822 in Slot 2',
-              'id': '5I:1:4',
-              'disk_type': 'hdd',
-              'interface_type': 'sas',
-              'size_gb': 600,
-              'vendor': 'HP',
-              'model': 'EF0600FARNA',
-              'firmware_version': 'HPD6',
-              'state': 'active',
-             },
-             {
-              'controller': 'Smart Array P822 in Slot 2',
-              'id': '5I:1:5',
-              'disk_type': 'hdd',
-              'interface_type': 'sas',
-              'size_gb': 600,
-              'vendor': 'HP',
-              'model': 'EF0600FARNA',
-              'firmware_version': 'HPD6',
-              'state': 'active',
-             },
-             {
-              'controller': 'Smart Array P822 in Slot 2',
-              'id': '5I:1:6',
-              'disk_type': 'hdd',
-              'interface_type': 'sas',
-              'size_gb': 600,
-              'vendor': 'HP',
-              'model': 'EF0600FARNA',
-              'firmware_version': 'HPD6',
-              'state': 'active',
-             },
-             {
-              'controller': 'Smart Array P822 in Slot 2',
-              'id': '5I:1:7',
-              'disk_type': 'hdd',
-              'interface_type': 'sas',
-              'size_gb': 600,
-              'vendor': 'HP',
-              'model': 'EF0600FARNA',
-              'firmware_version': 'HPD6',
-              'state': 'failed',
-             },
-            ]
-          'last_updated': '2013-06-14 23:30:59'
-      }
-
-  If the driver doesn't support RAID configuration, then the API will return
-  HTTP 400 (Bad Request). Otherwise the API will return HTTP 200 (OK).
+One new REST API will be introduced as part of this change.
 
 - To GET the RAID properties that can be defined and their possible values::
 
@@ -466,21 +273,21 @@ Four new REST APIs will be introduced as part of this change.
      .
     }
 
-  If the driver doesn't support RAID configuration, then the API will return
-  HTTP 400 (Bad Request). Otherwise the API will return HTTP 200 (OK).
+If the driver doesn't support RAID configuration, then the API will return
+HTTP 404 (Not Found). Otherwise the API will return HTTP 200 (OK).
+
+Client (CLI) impact
+-------------------
+
+A new option will be available in Ironic CLI for getting the properties which
+may be specified as part of the RAID configuration::
+
+   $ ironic node-raid-logical-disk-properties <node-uuid>
 
 RPC API impact
 --------------
 
-Three new RPC APIs will be created. They will have the corresponding methods
-defined in the conductor for handling their functionalities.
-
-- ``create_raid_configuration`` - This method will be called in
-  ``PUT /nodes/<uuid>/raid/configuration``.
-
-- ``get_raid_configuration`` - This method will be called in
-  ``GET /nodes/<uuid>/raid/configuration`` and
-  ``GET /nodes/<uuid>/raid/physical_disks``.
+One new RPC API will be created.
 
 - ``get_raid_logical_disk_properties`` - This method will be called in
   ``GET /drivers/<driver>/raid/logical_disk_properties``.
@@ -489,19 +296,20 @@ Driver API impact
 -----------------
 
 A new ``RAIDInterface`` will be available for the drivers to allow them to
-implement RAID configuration.  There will be two methods in the interface:
+implement RAID configuration.  It will have the following methods:
 
-  - ``create_configuration()`` - The driver implementation of the method
-    has to read the request RAID configuration from
-    ``node.driver_internal_info.target_raid_configuration`` and
-    create to RAID configuration on the bare metal. The driver must
-    ensure ``update_raid_info`` is called at the end of the process updating
-    the ``current_raid_configuration``. The implementation detail is up to the
-    driver depending on the synchronicity/asynchronicity of the operation.
+  - ``create_config()`` - The driver implementation of the method
+    has to read the request RAID configuration from ``node.target_raid_config``
+    and create the RAID configuration on the bare metal. The driver
+    implementations should throw error if ``node.target_raid_config``
+    is not set.  The driver must ensure ``update_raid_info`` is called at the
+    end of the process updating the ``raid_config``. The implementation detail
+    is up to the driver depending on the synchronicity/asynchronicity of the
+    operation.
 
-    The ``current_raid_configuration`` will include the following:
+    The ``raid_config`` will include the following:
 
-    + For each logical disk (on top of the input passed):
+    + For each logical disk (in addition to the input passed):
 
       * ``controller`` - The name of the controller used for the logical disk
         as read by the driver.
@@ -544,13 +352,12 @@ implement RAID configuration.  There will be two methods in the interface:
 
     The function definition will be as follows::
 
-      def create_configuration(task,
-                               create_only_root_volume=False,
-                               create_only_nonroot_volumes=False):
+      def create_config(task, create_only_root_volume=False,
+                        create_only_nonroot_volumes=False):
           """Create RAID configuration on the node.
 
           This method creates the RAID configuration as read from
-          node.driver_internal_info.target_raid_configuration.  This method
+          node.target_raid_config.  This method
           by default will create all logical disks.
 
           :param task: TaskManager object containing the node.
@@ -560,27 +367,27 @@ implement RAID configuration.  There will be two methods in the interface:
               non-root volumes.
           """
 
-  - ``delete_configuration`` - To delete the RAID configuration. This
+  - ``delete_config`` - To delete the RAID configuration. This
     method doesn't have an input and doesn't return anything.
 
     The function definition will be as follows::
 
-      def delete_configuration(task):
+      def delete_config(task):
           """Delete RAID configuration on the node.
 
           :param task: TaskManager object containing the node.
           """
 
-  - ``validate_configuration`` - To validate a RAID configuration. This is
-    called during the ``PUT`` operation in the API.
+  - ``validate`` - To validate a RAID configuration. This will be called
+    while validating the driver interfaces. This will read the target RAID
+    configuration from node.properties.target_raid_config.
 
     The function definition will be as follows::
 
-      def validate_configuration(task, raid_config):
+      def validate(task):
           """Validates the given RAID configuration.
 
           :param task: TaskManager object containing the node.
-          :param raid_config: The RAID configuration to be validated.
           :raises: InvalidParameterValue, if RAID configuration is invalid.
           :raises: MissingParameterValue, if RAID configuration has some
               missing parameters.
@@ -600,8 +407,25 @@ implement RAID configuration.  There will be two methods in the interface:
 
 
 After performing the RAID configuration (create or delete), the drivers
-may call ``update_raid_info`` with the ``current_raid_configuration``. The
-details about the method has been described above.
+may call ``update_raid_info`` with the ``raid_config``. The
+details about the method has been described above. The definition of the
+method will look like below::
+
+  def update_raid_info(task, raid_config):
+      "Updates the necessary fields of the node after RAID configuration.
+
+      This method updates the current RAID configuration in
+      node.properties.raid_config.  If root device hint was passed,
+      it will update node.properties.local_gb, node.properties.root_device_hint
+      and node.properties.capabilities['raid_level'].
+
+      :param task: TaskManager object containing the node.
+      :param raid_config: The current RAID configuration on the bare metal
+          node.
+      """
+
+
+
 
 
 Nova driver impact
@@ -630,14 +454,14 @@ None.
 Performance Impact
 ------------------
 
-RAID configuration may extend the time required for zapping on the nodes, but
-this is important for performance and reliability reasons.
+RAID configuration may extend the time required for zapping or cleaning on the
+nodes, but this is important for performance and reliability reasons.
 
 Other deployer impact
 ---------------------
 
-Operator can make use of ``node.raid.create_configuration`` and
-``node.raid.delete_configuration`` as zap tasks for doing RAID management.
+Operator can make use of ``node.raid.create_config`` and
+``node.raid.delete_config`` as zap or clean tasks for doing RAID management.
 
 Developer impact
 ----------------
