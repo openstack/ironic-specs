@@ -73,6 +73,10 @@ RPC API impact
 --------------
 None
 
+State Machine Impact
+--------------------
+None
+
 REST API impact
 ---------------
 None
@@ -109,7 +113,7 @@ None
 Other deployer impact
 ---------------------
 The following driver_info fields are required while enrolling node into ironic:
-    * ucs_hostname: UCS Manager hostname/ip-address
+    * ucs_address: UCS Manager hostname/ip-address
     * ucs_username: User account with admin/server-profile access privilege
     * ucs_password: User account password
     * ucs_service_profile: service_profile DN (DistinguishedName) being used
