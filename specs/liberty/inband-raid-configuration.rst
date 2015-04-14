@@ -37,31 +37,35 @@ Following are the changes required:
   + ``create_configuration`` - This will create the RAID configuration on
     the bare metal node. The following are the steps:
 
-    - Calls ``zap.create_raid_configuration`` on the agent ramdisk passing
-      the details of ``raid_info``.
-
-    .. note::
-      This is a zap step that requires the agent to be booted on the bare metal
-      node before this method is invoked.  This is a common problem for all
-      zap steps the use the agent and mechanism for this will be introduced as
-      part of Zapping spec [2]. We assume here that ramdisk is booted and
-      heartbeating before this method is invoked. Reference to the IRC chat
-      about this in [3].
+    - Calls ``clean.create_raid_configuration`` on the agent ramdisk passing
+      the details of ``raid_config``.
 
   + ``delete_configuration`` - This will delete the RAID configuration on
     the bare metal node. The following are the steps:
 
-    - Calls ``zap.delete_raid_configuration`` on the agent ramdisk.
+    - Calls ``clean.delete_raid_configuration`` on the agent ramdisk.
 
 * The results for both of the above commands will be polled on subsequent
   heartbeats from the ramdisk and then ``update_raid_info`` will be called once
   the RAID operation is done.
 
 * Agent ramdisk will be enhanced to add two new methods
-  ``zap.create_raid_configuration`` and ``zap.delete_raid_configuration``.
+  ``clean.create_raid_configuration`` and ``clean.delete_raid_configuration``.
   These methods will route the call to hardware manager, so that different
   hardware vendors can implement their own methods of managing RAID
-  on their hardware.
+  on their hardware.  ``clean.create_raid_configuration`` will accept
+  ``raid_config`` as argument (RAID configuration dictionary as mentioned in
+  `New driver interface for RAID configuration`_.
+  ``clean.delete_raid_configuration`` will not accept any arguments.
+
+.. _`New driver interface for RAID configuration`: http://specs.openstack.org/openstack/ironic-specs/specs/liberty/ironic-generic-raid-interface.html
+
+
+* It is possible to have a hardware manager that does software RAID
+  configuration.  When software RAID configuration is done, agent based
+  ``raid.create_config`` should be used as a clean step so that software RAID
+  is configured everytime after a secure disk erase (which wipes out the
+  previous software RAID configuration if it exists).
 
 Alternatives
 ------------
@@ -75,8 +79,18 @@ Data model impact
 
 None.
 
+State Machine Impact
+--------------------
+
+None.
+
 REST API impact
 ---------------
+
+None.
+
+Client (CLI) impact
+-------------------
 
 None.
 
@@ -142,7 +156,7 @@ Work Items
 
 * Implement ``AgentRAIDManagement``
 * Make changes in Ironic Python Agent to add methods
-  ``zap.create_raid_configuration`` and ``zap.delete_raid_configuration``
+  ``clean.create_raid_configuration`` and ``clean.delete_raid_configuration``
   which route calls to respective hardware manager.
 
 
@@ -173,6 +187,4 @@ use of ``AgentRAIDManagement`` will need to document it.
 References
 ==========
 
-[1] - New driver interface for RAID configuration https://review.openstack.org/135899
-[2] - Implement Zapping States - https://review.openstack.org/140826
-[3] - IRC Chat - http://eavesdrop.openstack.org/irclogs/%23openstack-ironic/%23openstack-ironic.2015-02-04.log (From 2015-02-04T17:41:09)
+None.
