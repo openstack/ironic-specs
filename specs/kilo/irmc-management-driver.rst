@@ -59,7 +59,7 @@ is standardized in Ironic Management Interface.
        ==========  =====  ====  ======  ==========  =======
        pxe_irmc    irmc   pxe   iscsi   irmc        ipmi
        iscsi_irmc  irmc   irmc  iscsi   irmc        ipmi
-       agent_irmc  irmc   irmc  agnet   irmc        ipmi
+       agent_irmc  irmc   irmc  agent   irmc        ipmi
        ==========  =====  ====  ======  ==========  =======
 
        Other combinations are considered in the next development cycle
@@ -120,16 +120,18 @@ Other deployer impact
 
 * The driver_info fields and the [irmc] section parameters in the
   ironic configuration file are necessary which are specified in
-  `iRMC Power Driver for Ironic <https://github.com/openstack/ironic-specs/tree/master/specs/kilo/irmc-power-driver.rst>`_.
+  `iRMC Power Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/kilo/irmc-power-driver.html>`_.
 
 * Boot mode maybe set to BIOS or UEFI following command described in
   `Bare Metal Service Installation Guide: Boot mode support <http://docs.openstack.org/developer/ironic/deploy/install-guide.html#boot-mode-support>`_
   or `iLO drivers: Boot mode support <http://docs.openstack.org/developer/ironic/drivers/ilo.html#boot-mode-support>`_.
 
-  * To configure a node in BIOS mode
+ * To configure a node in BIOS mode::
+
     ironic node-update <node-uuid> add properties/capabilities='boot_mode:bios'
 
-  * To configure a node in UEFI mode
+ * To configure a node in UEFI mode::
+
     ironic node-update <node-uuid> add properties/capabilities='boot_mode:uefi'
 
 Developer impact
@@ -164,8 +166,8 @@ Dependencies
 
 * This feature implemented based on the iRMC Drivers (pxe_irmc,
   iscsi_irmc, agent_irmc) which are defined in
-  `iRMC Power Driver for Ironic <https://github.com/openstack/ironic-specs/tree/master/specs/kilo/irmc-power-driver.rst>`_
-  and `iRMC Virtual Media Deploy Driver for Ironic <https://github.com/openstack/ironic-specs/tree/master/specs/kilo/irmc-virtualmedia-deploy-driver.rst>`_.
+  `iRMC Power Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/kilo/irmc-power-driver.html>`_
+  and `iRMC Virtual Media Deploy Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/liberty/irmc-virtualmedia-deploy-driver.html>`_.
 
 Testing
 =======
@@ -188,17 +190,17 @@ References
 ==========
 * `FUJITSU Software ServerView Suite, Remote Management, iRMC S4 -   integrated Remote Management Controller <http://manuals.ts.fujitsu.com/file/11470/irmc-s4-ug-en.pdf>`_
 
-* `iRMC Power Driver for Ironic <https://github.com/openstack/ironic-specs/tree/master/specs/kilo/irmc-power-driver.rst>`_
+* `iRMC Power Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/kilo/irmc-power-driver.html>`_
 
-* `iRMC Virtual Media Deploy Driver for Ironic <https://github.com/openstack/ironic-specs/tree/master/specs/kilo/irmc-virtualmedia-deploy-driver.rst>`_
+* `iRMC Virtual Media Deploy Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/liberty/irmc-virtualmedia-deploy-driver.html>`_
 
 * `python-scciclient package <https://pypi.python.org/pypi/python-scciclient>`_
 
-* `New driver ManagementInterface <https://github.com/openstack/ironic-specs/blob/master/specs/juno/new-management-interface.rst>`_
+* `New driver ManagementInterface <http://specs.openstack.org/openstack/ironic-specs/specs/juno/new-management-interface.html>`_
 
-* `DRAC Management driver for Ironic <https://github.com/openstack/ironic-specs/blob/master/specs/juno/drac-management-driver.rst>`_
+* `DRAC Management driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/juno/drac-management-driver.html>`_
 
-* `iLO Management Interface <https://github.com/openstack/ironic-specs/blob/master/specs/kilo/ilo-management-interface.rst>`_
+* `iLO Management Interface <http://specs.openstack.org/openstack/ironic-specs/specs/kilo/ilo-management-interface.html>`_
 
 * `iLO drivers: Boot mode support <http://docs.openstack.org/developer/ironic/drivers/ilo.html#boot-mode-support>`_
 

@@ -69,7 +69,7 @@ DB and node details.
 
 Other end user impact
 ---------------------
-The following driver_info fields are required:
+The following driver_info fields can be provided:
 
 * irmc_address: hostname or IP of iRMC
 * irmc_username: username for iRMC with administrator privileges
@@ -150,12 +150,12 @@ References
 ==========
 * `FUJITSU Software ServerView Suite, Remote Management, iRMC S4 -   integrated Remote Management Controller <http://manuals.ts.fujitsu.com/file/11470/irmc-s4-ug-en.pdf>`_
 
-* `iRMC Virtual Media Deploy Driver for Ironic <https://github.com/openstack/ironic-specs/tree/master/specs/kilo/irmc-deploy-driver.rst>`_
+* `iRMC Virtual Media Deploy Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/liberty/irmc-virtualmedia-deploy-driver.html>`_
 
-* `iRMC Management Driver for Ironic <https://github.com/openstack/ironic-specs/tree/master/specs/kilo/irmc-management-driver.rst>`_
+* `iRMC Management Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/kilo/irmc-management-driver.html>`_
 
 * `python-scciclient package <https://pypi.python.org/pypi/python-scciclient>`_
 
-* `DRAC Power Driver for Ironic <https://github.com/openstack/ironic-specs/blob/master/specs/juno/drac-power-driver.rst>`_
+* `DRAC Power Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/juno/drac-power-driver.html>`_
 
-* `iLO Power Driver for Ironic <https://github.com/openstack/ironic-specs/blob/master/specs/juno/ironic-ilo-power-driver.rst>`_
+* `iLO Power Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/juno/ironic-ilo-power-driver.html>`_
