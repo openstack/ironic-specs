@@ -669,8 +669,8 @@ Work Items
 Dependencies
 ============
 
-* Root device hints - https://github.com/openstack/ironic-specs/blob/master/specs/kilo/root-device-hints.rst
-* Zapping of nodes - https://github.com/openstack/ironic-specs/blob/master/specs/kilo/implement-zapping-states.rst
+* Root device hints - http://specs.openstack.org/openstack/ironic-specs/specs/kilo/root-device-hints.html
+* Zapping of nodes - https://review.openstack.org/#/c/140826/
 
 Testing
 =======
@@ -697,10 +697,10 @@ Documentation will be provided on how to configure a node for RAID.
 References
 ==========
 
-.. _`root device hint`: https://github.com/openstack/ironic-specs/blob/master/specs/kilo/root-device-hints.rst
+.. _`root device hint`: http://specs.openstack.org/openstack/ironic-specs/specs/kilo/root-device-hints.html
 
 Other references:
 
-* New Ironic provisioner state machine: https://github.com/openstack/ironic-specs/blob/master/specs/kilo/new-ironic-state-machine.rst
+* New Ironic provisioner state machine: http://specs.openstack.org/openstack/ironic-specs/specs/kilo/new-ironic-state-machine.html
 
-* Support Zapping of Nodes: https://github.com/openstack/ironic-specs/blob/master/specs/kilo/implement-zapping-states.rst
+* Support Zapping of Nodes: https://review.openstack.org/#/c/140826/
