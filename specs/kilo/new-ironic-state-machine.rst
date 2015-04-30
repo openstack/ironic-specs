@@ -82,8 +82,8 @@ Descriptions of the states for the current state machine can be found `here
 
 New state machine::
 
-  ENROLL -----------> [VALIDAT*/MANAGEABLE]
-          R:validate          |
+  ENROLL -----------> [VERIFY*/MANAGEABLE]
+          R:manage            |
                               v
                   +------>MANAGEABLE<--------+
                   |        +  + ^ |          |
@@ -149,10 +149,10 @@ ENROLL
   ENROLL, the only thing Ironic knows about it is that it exists, and
   Ironic cannot take any further action by itself.  Once a node has
   its drivers and the required information for each driver in
-  node.properties, the node can be transitioned to VALIDATING via the
-  validate API call
+  node.properties, the node can be transitioned to VERIFYING via the
+  manage API call
 
-VALIDATING
+VERIFYING
   Ironic will validate that it can manage the node with the drivers
   and the credentials it has been assigned.  For drivers that manage
   power state of the node, this must involve actually going out and
@@ -293,7 +293,7 @@ the state machine:
 +-----------+--------------+--------------------------+-----------+
 | Verb      | Initial State| Intermediate States      | End State |
 +===========+==============+==========================+===========+
-| validate  | ENROLL       | VALIDATING -> VALIDATED  | MANAGEABLE|
+| manage    | ENROLL       | VERIFYING -> VERIFIED    | MANAGEABLE|
 +-----------+--------------+--------------------------+-----------+
 | zap       | MANAGEABLE   | ZAPPING -> ZAPPED        | MANAGEABLE|
 +-----------+--------------+--------------------------+-----------+
@@ -374,7 +374,7 @@ Other deployer impact
 
 Nodes will not automatically transition from ENROLL to MANAGEABLE.
 Deployers must assign drivers and add credentials to the node and then
-call the validate API before Ironic can manage the node.
+call the manage API before Ironic can manage the node.
 
 Nodes will not automatically transition from MANAGEABLE to AVAILABLE,
 deployers will need to do that via the API before nodes can be scheduled.
