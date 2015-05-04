@@ -24,13 +24,13 @@ IPMI. The REST API service itself is open source (Apache 2 license).
 In order to be able to execute power and management actions on OCS blades, the
 corresponding interfaces need to be implemented.
 
-Furthermore, the OCS REST API supports also a serial console interface for
+Furthermore, the OCS REST API also supports a serial console interface for
 individual blades that can be supported in Ironic.
 
 Proposed change
 ===============
 
-The proposed implementation consists in a driver implementation. A client will
+The proposed implementation consists of a driver implementation. A client will
 be provided to abstract the OCS service REST API calls, which in turn can be
 referenced by the power, management and console interfaces.
 
