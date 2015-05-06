@@ -191,6 +191,13 @@ content of the JSON dict and an ability to validate it.
 
 Reuse of existing predefined parameter types is highly encouraged.
 
+Client (CLI) impact
+-------------------
+Typically, but not always, if there are any REST API changes, there are
+corresponding changes to python-ironicclient. If so, what does the user
+interface look like. If not, describe why there are REST API changes but
+no changes to the client.
+
 RPC API impact
 --------------
 
@@ -287,11 +294,8 @@ to the OpenStack Security Group at openstack-security@lists.openstack.org.
 Other end user impact
 ---------------------
 
-Aside from the API, are there other ways a user will interact with this
-feature?
-
-* Does this change have an impact on python-ironicclient? What does the user
-  interface there look like?
+Aside from the API and client, are there other ways a user will interact with
+this feature?
 
 * Will this require changes in the Horizon panel, or any other OpenStack
   project?
