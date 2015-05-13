@@ -78,6 +78,10 @@ REST API impact
 
 None
 
+Client (CLI) impact
+-------------------
+None
+
 RPC API impact
 --------------
 

@@ -81,6 +81,10 @@ REST API impact
 ---------------
 None
 
+Client (CLI) impact
+-------------------
+None
+
 Driver API impact
 -----------------
 None
