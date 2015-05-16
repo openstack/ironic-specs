@@ -356,7 +356,7 @@ that have not already been mentioned, such as:
 * Is this a change that takes immediate effect after it's merged, or is it
   something that has to be explicitly enabled?
 
-* If this change adds a new service that deployers will be requried to run,
+* If this change adds a new service that deployers will be required to run,
   how would it be deployed? Describe the expected topology, for example,
   what network connectivity the new service would need, what service(s) it
   would interact with, how many should run relative to the size of the
