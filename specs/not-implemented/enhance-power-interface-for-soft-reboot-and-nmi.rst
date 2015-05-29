@@ -1,0 +1,1 @@
+../approved/enhance-power-interface-for-soft-reboot-and-nmi.rst
