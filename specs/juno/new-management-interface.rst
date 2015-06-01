@@ -216,6 +216,6 @@ Management Interface.
 References
 ==========
 
-[1] https://github.com/openstack/ironic-specs/blob/master/specs/juno/send-data-to-ceilometer.rst
+[1] http://specs.openstack.org/openstack/ironic-specs/specs/juno/send-data-to-ceilometer.html
 [2] https://github.com/seamicro/python-seamicroclient/blob/master/seamicroclient/v2/servers.py#L24
 [3] https://github.com/stackforge/pyghmi/blob/master/pyghmi/ipmi/command.py#L123

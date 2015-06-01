@@ -386,7 +386,7 @@ Documentation Impact
 References
 ==========
 
-1: https://github.com/openstack/ironic-specs/blob/master/specs/kilo/new-ironic-state-machine.rst
+1: http://specs.openstack.org/openstack/ironic-specs/specs/kilo/new-ironic-state-machine.html
 
 2: https://review.openstack.org/#/c/102405/
 

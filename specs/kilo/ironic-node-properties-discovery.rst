@@ -311,7 +311,7 @@ Dependencies
 ============
 
 Requires implementation of
-https://github.com/openstack/ironic-specs/blob/master/specs/kilo/new-ironic-state-machine.rst
+http://specs.openstack.org/openstack/ironic-specs/specs/kilo/new-ironic-state-machine.html
 for the states MANAGED, INSPECTED, INSPECTING and INSPECTFAIL.
 
 Testing
@@ -333,4 +333,4 @@ References
 ==========
 
 [1] All possible states for a ironic node spec:
-https://github.com/openstack/ironic-specs/blob/master/specs/kilo/new-ironic-state-machine.rst
+http://specs.openstack.org/openstack/ironic-specs/specs/kilo/new-ironic-state-machine.html

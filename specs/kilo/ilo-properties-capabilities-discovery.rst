@@ -25,7 +25,7 @@ Proposed change
 ===============
 Following mandatory properties will be discovered and updated to
 node.properties as discussed in
-https://github.com/openstack/ironic-specs/blob/master/specs/kilo/ironic-node-properties-discovery.rst
+http://specs.openstack.org/openstack/ironic-specs/specs/kilo/ironic-node-properties-discovery.html
 
 * memory size
 
@@ -193,7 +193,7 @@ Dependencies
 * Depends on proliantutils library.
 
 * Depends on following also:
-  https://github.com/openstack/ironic-specs/blob/master/specs/kilo/ironic-node-properties-discovery.rst
+  http://specs.openstack.org/openstack/ironic-specs/specs/kilo/ironic-node-properties-discovery.html
 
 Testing
 =======
@@ -216,8 +216,8 @@ References
 ==========
 
 1. proliantUtils library.
-(https://github.com/hpproliant/proliantutils)
+(https://github.com/stackforge/proliantutils)
 (https://pypi.python.org/pypi/proliantutils)
 
 2. Introspect spec.
-https://github.com/openstack/ironic-specs/blob/master/specs/kilo/ironic-node-properties-discovery.rst
+http://specs.openstack.org/openstack/ironic-specs/specs/kilo/ironic-node-properties-discovery.html
