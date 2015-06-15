@@ -10,7 +10,7 @@ Add "enroll" state to the state machine
 
 https://blueprints.launchpad.net/ironic/+spec/enroll-node-state
 
-This blueprint describes introduction of ``enroll`` state, which we previously
+This blueprint introduces a new state called ``enroll``, which we previously
 agreed to introduce in the `new state machine`_ spec.
 
 Problem description
@@ -20,57 +20,58 @@ Currently nodes on creation are put into ``available`` state, which is designed
 as a replacement for ``NOSTATE``. Such nodes will instantly be available
 to Nova for deployment, provided they have all the required properties.
 
-However, `new state machine`_ accounts for at least inspection and ready state
-features like zapping, which should be done before node even gets
-into ``available`` state.
+However, the new state machine lets the operator perform inspection on a node
+and zapping of a node. The state machine allows for them to be done before a
+node reaches the ``available`` state.
 
-Even worse, cleaning feature introduced in Kilo cycle should also
-happen before node becomes ``available``.
+Even worse, the cleaning feature introduced in Kilo cycle should also
+happen before a node becomes ``available``.
 
 Proposed change
 ===============
 
-* Add new state ``enroll``, from which node can transition into
-  ``manageable`` state by action called ``manage``.
+* Add a new state ``enroll``, from which a node can transition into the
+  ``manageable`` state by an action called ``manage``.
 
 * ``manage`` transition will cause power and management interfaces to be
-  validated on node. Also an attempt will be made to get power state on a node
-  to actually verify the supplied power credentials.
+  validated on the node. Also an attempt will be made to get the power state on
+  a node to actually verify the supplied power credentials.
 
-  On success, node will get to ``manageable`` state. On
-  failure, it will get back to ``enroll`` and ``last_error`` will be set.
+  On success, the node will go to the ``manageable`` state. On failure, it will
+  go back to the ``enroll`` state and ``last_error`` will be set.
 
-* Disable sync_power_state for nodes in ``enroll`` state, as nodes in this
-  state are not expected to have valid power credentials.
+* Disable the sync_power_state for nodes in the ``enroll`` state, as nodes in
+  this state are not expected to have valid power credentials.
 
-* Introduce new API microversion, making newly created nodes appear in
-  ``enroll`` state instead of ``available``.
+* Introduce a new API microversion, making newly created nodes appear in the
+  ``enroll`` state instead of the ``available`` state.
 
-  After that client-server interaction will be the following:
+  After that the client-server interaction will be the following:
 
   - new client (with new API version) + new server: nodes appear
-    in ``enroll`` state.
+    in the ``enroll`` state.
 
-  - new client + old server: client gets response from the server stating that
-    node is in ``available`` (or ``none``) state. Client issues a warning to a
-    user.
+  - new client + old server: client gets a response from the server stating
+    that node is in ``available`` (or ``none``) state. Client issues a warning
+    to the user.
 
   - old client (or new client with old API version) + new server:
-    due to versioning node will appear in ``available`` (or ``none``) state.
+    due to versioning the node will appear in ``available`` (or ``none``)
+    state.
 
-* Document that we are going to make a breaking move to ``enroll`` state by
+* Document that we are going to make a breaking move to the ``enroll`` state by
   default.
 
 * Update DevStack gate to explicitly request the new microversion and fix the
   tests.
 
-* Release new version of ``ironicclient`` defaulting to this new
+* Release a new version of ``ironicclient`` defaulting to this new
   microversion. Clearly document this breaking change in upgrade notes.
 
 Alternatives
 ------------
 
-We can ask people to manually move nodes to ``manageable`` state before
+We can ask people to manually move nodes to the ``manageable`` state before
 inspection or zapping. We also won't validate power and management interfaces.
 
 Data model impact
@@ -89,13 +90,13 @@ State Machine Impact
 
   * ``manageable`` on ``done``
 
-  * ``enroll`` on ``fail``.
+  * ``enroll`` on ``fail`` and ``last_error`` will be set.
 
 REST API impact
 ---------------
 
 * Add new API microversion. When it is declared by client, node creation API
-  should default to creating nodes in ``enroll`` state.
+  should default to creating nodes in the ``enroll`` state.
 
 Client (CLI) impact
 -------------------
@@ -130,8 +131,8 @@ None expected
 Other end user impact
 ---------------------
 
-With new microversion nodes will appear in ``enroll`` state. 2 more steps
-should be taken to make them available for deploy: ``manage`` and
+With the new microversion, nodes will appear in the ``enroll`` state. Two more
+steps should be taken to make them available for deploy: ``manage`` and
 ``provide``. Cleaning will happen, if enabled.
 
 Scalability impact
@@ -198,7 +199,7 @@ Upgrades and Backwards Compatibility
 Documentation Impact
 ====================
 
-* Working with new state and transition should be documented
+* Working with the new state and the transition should be documented
 
 * Upgrade notes should be updated
 
