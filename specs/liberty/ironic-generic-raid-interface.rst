@@ -178,10 +178,11 @@ Proposed change
       }
 
 
-* The RAID configuration information is stored in
-  ``node.properties.target_raid_config``. Operator can either use
-  ``PATCH /v1/nodes/<>`` or ``ironic node-update`` to update the
-  ``target_raid_config``.
+* The RAID configuration information is stored as JSON in
+  ``node.target_raid_config`` field. Operator can use the REST API (or CLI)
+  to put a new value here at any time, which is compared to
+  ``node.raid_config`` during zapping and cleaning, and driver may apply
+  changes only in those stages. Refer REST API Impact section for more details.
 
 * New driver interface called ``RAIDInterface`` will be provided for RAID
   configuration for drivers. For more details, refer to the Driver API impact
@@ -198,7 +199,7 @@ Proposed change
   the RAID information in the Node database. This will facilitate drivers to do
   the RAID configuration asynchronously.  This method will do the following:
 
-  + Set ``node.properties.raid_config`` to the value returned by the driver.
+  + Set ``node.raid_config`` to the value returned by the driver.
   + The root device hint for the root volume will be updated in
     ``node.properties`` (as per `root device hint`_) and
     the size of root volume will be updated in ``node.properties.local_gb``.
@@ -212,7 +213,8 @@ Proposed change
   specified as part of RAID configuration. For details, see the REST API Impact
   section below.
 
-
+* REST API will be created to PUT RAID config, and a new REST resource added
+  to retrieve the requested and actual RAID config.
 
 
 Alternatives
@@ -227,13 +229,14 @@ Data model impact
 
 The following fields in the Node object will be updated:
 
-* ``node.properties.target_raid_config`` will store the pending RAID
-  configuration to be applied during zapping or cleaning. This will be a JSON
-  dictionary.
+* A new database field, ``node.target_raid_config``, will store the pending
+  RAID configuration to be applied during zapping or cleaning. This will be a
+  JSON dictionary. This field will be read-only.
 
-* ``node.properties.raid_config`` will store the last applied RAID
+* A new database field, ``node.raid_config``, will store the last applied RAID
   configuration. This will also contain the timestamp of when this
-  configuration was applied. This will be a JSON dictionary.
+  configuration was applied. This will be a JSON dictionary. This field will be
+  read-only.
 
 * ``node.properties.local_gb`` will be updated after applying RAID
   configuration to the size of the root volume.
@@ -253,7 +256,7 @@ None.
 REST API impact
 ---------------
 
-One new REST API will be introduced as part of this change.
+Two new REST API endpoints will be introduced as part of this change.
 
 - To GET the RAID properties that can be defined and their possible values::
 
@@ -273,8 +276,28 @@ One new REST API will be introduced as part of this change.
      .
     }
 
-If the driver doesn't support RAID configuration, then the API will return
-HTTP 404 (Not Found). Otherwise the API will return HTTP 200 (OK).
+- To set the target RAID configuration, a user will::
+
+    PUT /v1/nodes/NNNN/states/raid
+
+  with a BODY containing the JSON description of the RAID config.
+
+  If accepted by the driver, this information will be stored in the
+  ``node.target_raid_config`` field and exposed in the same manner as the power
+  and provision states. In other words, it may be retrieved either within the
+  detailed view of a ``node``, or by either of the following::
+
+    GET /v1/nodes/NNNN
+    GET /v1/nodes/NNNN/states
+
+  .. note::
+    It might also make sense to have GET /v1/nodes/NNNN/states/raid, but for
+    maintaining consistency with power and provision, we allow only
+    GET /v1/nodes/NNNN and GET /v1/nodes/NNNN/states.
+
+If the driver doesn't support RAID configuration, then both API calls will
+return HTTP 404 (Not Found). Otherwise the API will return HTTP 200 (OK).
+
 
 Client (CLI) impact
 -------------------
@@ -283,6 +306,9 @@ A new option will be available in Ironic CLI for getting the properties which
 may be specified as part of the RAID configuration::
 
    $ ironic node-raid-logical-disk-properties <node-uuid>
+
+
+A new method will be added to set the target RAID properties
 
 RPC API impact
 --------------
@@ -502,6 +528,8 @@ Testing
 * Unit tests will be added for the code.  A fake implementation of the
   ``RAIDInterface`` will be provided for testing purpose and this can be run
   as part of zapping.
+
+* Tempest API coverage will be added, using the fake driver above.
 
 * Each driver is responsible for providing the third party CI for testing the
   RAID configuration.
