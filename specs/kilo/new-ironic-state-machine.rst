@@ -215,6 +215,17 @@ CLEANING
   tear down a set of RAID volumes to securely erase each physical disk
   separately, you must rebuild the RAID volumes you tore down.
 
+  When a node is in CLEANING state it means that the conductor is
+  executing the clean step (out-of-band) or preparing the environment
+  (building PXE configuration files, configuring the DHCP,  etc..) to
+  boot the ramdisk.
+
+CLEANWAIT
+  Just like the CLEANING state, the nodes in CLEANWAIT are being prepared
+  to become AVAILABLE. The difference is that in CLEANWAIT the conductor
+  is waiting for the ramdisk to boot or the clean step which is running
+  in-band to finish.
+
 AVAILABLE
   Nodes in the AVAILABLE state are cleaned, preconfigured,  and ready
   to be provisioned. From AVAILABLE, nodes can transition to:
