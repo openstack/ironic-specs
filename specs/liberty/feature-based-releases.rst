@@ -92,7 +92,7 @@ There are a few things of note here.
       the work is completed.
 
     * Create a placeholder in the old location which indicates which release
-      of Ironic the work was completed in, with a link to the old location.
+      of Ironic the work was completed in, with a link to the new location.
       This will keep older links from breaking.
 
 * Leading up to all releases, reviewers should honor a "soft freeze" period of
