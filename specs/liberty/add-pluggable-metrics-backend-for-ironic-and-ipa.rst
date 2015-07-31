@@ -18,11 +18,16 @@ creation of alternative backends.
 Problem description
 ===================
 
-Metric data are extremely useful for recognizing and diagnosing problems in
-software, and can be used to monitor the health and performance of Ironic/IPA
-in a production environment.
+Software metrics are extremely useful to operators for recognizing and
+diagnosing problems in running software, and can be used to monitor the
+real time and historical performance of Ironic and IPA in a production
+environment.
 
-Currently, neither Ironic nor IPA report any metric data.
+Metrics can be used to determine how quickly (or slowly) parts of the system
+are running, how often errors (such as API error responses or BMC failures)
+occur, or the performance impact of a given change.
+
+Currently, neither Ironic nor IPA report any application metrics.
 
 Proposed change
 ===============
@@ -216,24 +221,24 @@ Default config options:
 
   # Backend options are "statsd" and "noop"
   backend="noop"
-  statsd-host="localhost"
-  statsd-port=8125
+  statsd_host="localhost"
+  statsd_port=8125
 
   # See proposed changes section for detailed description of how these are used
-  prepend-host=false
-  prepend-host-reverse=false
-  global-prefix=""
+  prepend_host=false
+  prepend_host_reverse=false
+  global_prefix=""
 
   # Backend options are "statsd" and "noop"
-  agent-backend="noop"
-  agent-statsd-host="localhost"
-  agent-statsd-port=8125
+  agent_backend="noop"
+  agent_statsd_host="localhost"
+  agent_statsd_port=8125
 
   # See proposed changes section for detailed description of how these are used
-  agent-prepend-host=false
-  agent-prepend-host-reverse=false
-  agent-prepend-uuid=false
-  agent-global-prefix=""
+  agent_prepend_host=false
+  agent_prepend_host_reverse=false
+  agent_prepend_uuid=false
+  agent_global_prefix=""
 
 
 If the statsd metrics backend is enabled, then deployers must install and
@@ -293,6 +298,9 @@ Appropriate documentation must be written.
 
 References
 ==========
+
+For more on why metrics are useful to operators, and why the statsd project
+began: https://codeascraft.com/2011/02/15/measure-anything-measure-everything/
 
 [1] https://github.com/etsy/statsd/blob/master/docs/metric_types.md
 
