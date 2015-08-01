@@ -18,7 +18,7 @@ import docutils.core
 import testtools
 
 
-RELEASE = 'liberty'
+CURRENT_DIR = 'approved'
 
 FIRST_TITLE = 'Problem description'
 
@@ -162,7 +162,7 @@ class TestTitles(testtools.TestCase):
 
     def test_current_cycle_template(self):
         template_titles = self._get_template_titles()
-        files = glob.glob('specs/%s/*' % RELEASE)
+        files = glob.glob('specs/%s/*' % CURRENT_DIR)
 
         for filename in files:
             self._check_file_ext(filename)

@@ -9,19 +9,19 @@ how we review and merge changes to the code itself.
 
 The layout of this repository is::
 
-  specs/<release>/
+  specs/approved/
+  specs/backlog`/
+  specs/<cycle>-implemented/
+
+There are also placeholder directories for old links that have been moved.
 
 Specifications must follow the template which can be found at
 `doc/source/specs/template.rst`.
 
-Specifications are proposed for a given release by adding them to the
-`specs/<release>` directory and posting it for review.  The implementation
-status of a blueprint for a given release can be found by looking at the
-blueprint in launchpad.  Not all approved blueprints will get fully implemented.
-
-Specifications have to be re-proposed for every release.  The review may be
-quick, but even if something was previously approved, it should be re-reviewed
-to make sure it still makes sense as written.
+Specifications are proposed by adding them to the `specs/approved` directory
+and posting it for review. When a spec is fully implemented, it should be
+moved to specs/<cycle>-implemented. Not all approved blueprints will get
+fully implemented.
 
 Prior to the Juno development cycle, this repository was not used for spec
 reviews.  Reviews prior to Juno were completed entirely through Launchpad
