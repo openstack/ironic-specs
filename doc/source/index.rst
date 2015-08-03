@@ -68,6 +68,16 @@ Juno
    specs/juno-implemented/*
 
 
+Placeholders
+============
+
+During Liberty, we restructured the spec folders. Links were left in the
+locations of previous specs so as not to break any external references to them.
+
+.. toctree::
+
+   placeholders
+
 ==================
 Indices and tables
 ==================
