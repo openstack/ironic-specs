@@ -77,15 +77,13 @@ Proposed change
      node.
 
      - ``share_physical_disks`` - Set to ``true`` if this logical disk can
-       share physical disks with other logical disks.  It has default value
-       of ``CONF.raid.share_physical_disks``. The default value of this config
-       variable will be ``false``.
-     - ``disk_type`` - ``hdd`` or ``ssd``. It has a default value of
-       ``CONF.raid.disk_type``. The default value of this config
-       variable will be ``hdd``.
-     - ``interface_type`` - ``sata`` or ``scsi`` or ``sas``. It has a default
-       value of ``CONF.raid.interface_type``. The default value of this
-       config variable will be ``sas``.
+       share physical disks with other logical disks.  If this is not provided,
+       drivers will assume it as ``false``.
+     - ``disk_type`` - ``hdd`` or ``ssd``. If this is not specified, disk type
+       will not be considered as a criteria to find backing physical disks.
+     - ``interface_type`` - ``sata`` or ``scsi`` or ``sas``. If this is not
+       specified, interface type will not be considered as a criteria to
+       find backing physical disks.
      - ``number_of_physical_disks`` - Integer, number of disks to use for the
        logical disk. Defaulted to minimum number of disks required for the
        particular RAID level.
