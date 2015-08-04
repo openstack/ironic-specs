@@ -81,6 +81,14 @@ limitation could be addressed if routing was set up from every tenant network
 to the TFTP server or if Ironic would work with a TFTP server per tenant
 network, but these options are out of scope in this spec.
 
+.. note::
+  It may be possible for virtual media drivers to support both netboot and
+  localboot when provisioning/tenant networks are isolated.  This is because
+  virtual media drivers boot the bare metal using out of band means using BMC
+  and hence bare metal server's NICs don't require to access Ironic conductor
+  when booting the instance.
+
+
 A supportive ML2 driver can then use the information supplied to provision the
 port.
 
