@@ -74,21 +74,26 @@ on calls that boot to the instance image. This may have implications for
 "boot from volume" workloads. As Ironic does not yet support these workloads,
 these are out of scope for the purposes of this spec.
 
-In the case where the Ironic driver is used, Nova should send a flag, called
-"bind_requested" in the binding:profile data for each port that designates that
-the port should not be connected yet. This should keep the port from going into
-a failure state; allowing operators to differentiate between a failed port
-binding and a port that is not fully configured yet. Ironic will send the same
-flag when it is ready for the port to be connected, designating that the port
-should be connected. Ironic will also delete the Neutron port connecting the
+In the case where the Ironic driver is used, Nova should send a null
+``host_id`` in the binding profile. This will prevent Neutron from binding
+the port immediately, so we can defer this and allow Ironic to tell Neutron
+to bind the port when it is ready to do so. Ironic should send the node UUID
+as the ``host_id``. Ironic will also delete the Neutron port connecting the
 node to the provisioning network at this time. The reverse will happen at tear
 down time.
 
-If an older client (e.g. Nova) is in use and does not send the `bind_requested`
-flag, Ironic needs to handle this. Ironic should fetch the ports first, and if
-the ports are already bound with the correct info, do nothing. If binding
-failed due to missing switchport information, Ironic should update the port
-appropriately.
+If an older client (e.g. Nova) is in use and does initially send the
+``host_id``, Ironic needs to handle this. There are two cases here:
+
+* The node is using the Neutron network provider. In this case, Ironic should
+  fetch the ports first, and if the ports are already bound with the correct
+  info, do nothing. If binding failed due to missing switchport information,
+  Ironic should update the port appropriately and allow it to be bound.
+
+* The node is using the 'none' network provider. In this case, the node
+  is expected to be on the provisioning network after deployment (today's
+  current model). In this case, the ports should be treated as they are today,
+  putting DHCP configs on those ports, etc.
 
 Nova and Ironic should both use the binding:profile dictionary to send data
 such as physical switchport information.
