@@ -151,9 +151,6 @@ The following port binding related information needs to be passed to Neutron:
 |                        | portgroup or from a single Ironic port not       |
 |                        | belonging to any portgroup.                      |
 +------------------------+--------------------------------------------------+
-| bind_requested         | A way to specify whether to bind the port or     |
-|                        | defer binding.                                   |
-+------------------------+--------------------------------------------------+
 | host_id                | This should be set to the Ironic node uuid.      |
 +------------------------+--------------------------------------------------+
 
@@ -191,8 +188,6 @@ A JSON example to describe the structure is:
                   <optional more information>
 
                } ]
-
-        "bind_requested": true/false,
 
         <some more profile fields>
 
