@@ -178,7 +178,7 @@ ironic.conf:
   certificate signed by a trusted CA. Its default value is False.
 - tls_cacert_file: The path to the certificate of a trusted CA to be used to
   verify the OneView certificate when insecure connections are not allowed
-- max_retries: Max connection retries to check changes on OneView
+- max_polling_attempts: Max connection attempts to check changes on OneView
 
 Developer impact
 ----------------
@@ -233,5 +233,5 @@ OneView Page
     http://www8.hp.com/ie/en/business-solutions/converged-systems/oneview.html
 OneView REST API Reference
     http://h17007.www1.hp.com/docs/enterprise/servers/oneviewhelp/oneviewRESTAPI/content/images/api/index.html
-pyton-oneviewclient
+python-oneviewclient
     https://pypi.python.org/pypi/python-oneviewclient
