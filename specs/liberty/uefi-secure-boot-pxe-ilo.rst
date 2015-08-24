@@ -10,4 +10,4 @@ UEFI Secure Boot support for pxe_iLO driver
 
 This spec was proposed in the Liberty cycle.
 
-See :doc:`../approved/uefi-secure-boot-pxe-ilo`.
+See :doc:`../liberty-implemented/uefi-secure-boot-pxe-ilo`.

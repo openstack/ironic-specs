@@ -10,4 +10,4 @@ Add "enroll" state to the state machine
 
 This spec was proposed in the Liberty cycle.
 
-See :doc:`../approved/enroll-node-state`.
+See :doc:`../liberty-implemented/enroll-node-state`.

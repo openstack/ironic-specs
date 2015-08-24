@@ -10,4 +10,4 @@ iRMC Virtual Media Deploy Driver for Ironic
 
 This spec was proposed in the Liberty cycle.
 
-See :doc:`../approved/irmc-virtualmedia-deploy-driver`.
+See :doc:`../liberty-implemented/irmc-virtualmedia-deploy-driver`.

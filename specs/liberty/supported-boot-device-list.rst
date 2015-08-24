@@ -10,4 +10,4 @@ Determinable supported boot device list
 
 This spec was proposed in the Liberty cycle.
 
-See :doc:`../approved/supported-boot-device-list`.
+See :doc:`../liberty-implemented/supported-boot-device-list`.
