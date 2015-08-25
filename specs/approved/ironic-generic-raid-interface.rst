@@ -407,17 +407,32 @@ implement RAID configuration.  It will have the following methods:
 
   - ``validate`` - To validate a RAID configuration. This will be called
     while validating the driver interfaces. This will read the target RAID
-    configuration from node.properties.target_raid_config.
+    configuration from node.properties.target_raid_config and call
+    ``validate_raid_config`` to validate target RAID configuration.
 
     The function definition will be as follows::
 
       def validate(task):
-          """Validates the given RAID configuration.
+          """Validates the RAID interface.
 
           :param task: TaskManager object containing the node.
           :raises: InvalidParameterValue, if RAID configuration is invalid.
           :raises: MissingParameterValue, if RAID configuration has some
               missing parameters.
+          """
+
+  - ``validate_raid_config`` - To validate target RAID configuration.  This
+    will be called during the RPC call ``set_target_raid_config`` to validate
+    target RAID configuration. It will also be called during ``validate``.
+
+    The function definition will be as follows::
+
+      def validate_raid_config(task, raid_config):
+          """Validates the given RAID configuration.
+
+          :param task: TaskManager object containing the node.
+          :param raid_config: The target RAID config to validate.
+          :raises: InvalidParameterValue, if RAID configuration is invalid.
           """
 
   - ``get_logical_disk_properties`` - To get the RAID properties that are
