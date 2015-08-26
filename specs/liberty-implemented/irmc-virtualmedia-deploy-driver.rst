@@ -170,13 +170,15 @@ Other deployer impact
   `iRMC Power Driver for Ironic <http://specs.openstack.org/openstack/ironic-specs/specs/kilo/irmc-power-driver.html>`_.
 
   * irmc_deploy_iso: deploy ISO image which is either a file name
-    relative to remote_image_share_root, Glance UUID, or Glance URL.
+    relative to remote_image_share_root, Glance UUID, Glance URL or
+    Image Service URL.
 
-* The following driver_info field is optional.
+* The following instance_info field is optional.
 
   * irmc_boot_iso: boot ISO image file name relative to
-    remote_image_share_root. If it is not specified, the boot ISO is
-    created automatically from registered images in Glance.
+    remote_image_share_root, Glance UUID, Glance URL or Image Service
+    URL. If it is not specified, the boot ISO is created automatically
+    from registered images in Glance.
 
 * In order to use iRMC virtual media deploy driver, iRMC S4 and beyond
   with iRMC a valid license is required. Deployer is notified by error
