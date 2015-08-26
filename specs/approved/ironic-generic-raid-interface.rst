@@ -311,10 +311,13 @@ A new method will be added to set the target RAID properties
 RPC API impact
 --------------
 
-One new RPC API will be created.
+Two new RPC APIs will be created.
 
 - ``get_raid_logical_disk_properties`` - This method will be called in
   ``GET /drivers/<driver>/raid/logical_disk_properties``.
+
+- ``set_target_raid_config`` - This method will be called in
+  ``PUT /v1/nodes/NNNN/states/raid``.
 
 Driver API impact
 -----------------
