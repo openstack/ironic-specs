@@ -11,8 +11,9 @@ In-band RAID configuration using agent ramdisk
 https://blueprints.launchpad.net/ironic/+spec/inband-raid-configuration
 
 This spec proposes to implement a RAID configuration interface using
-Ironic Python Agent (IPA). The first driver to make use of this interface
-will be the ``agent_ilo`` driver.
+Ironic Python Agent (IPA). The drivers ``agent_ipmitool``,
+``agent_ipminative``, ``agent_ssh``, ``agent_vbox`` and ``agent_ilo``
+drivers will make use of this new implementation of ``RAIDInterface``.
 
 Problem description
 ===================
@@ -25,54 +26,72 @@ Proposed change
 
 This spec proposes to implement in-band RAID configuration using IPA.
 It proposes to implement the ``RAIDInterface`` as mentioned in the parent
-spec [1]. The implementation will be named ``AgentRAIDManagement``. The main
+spec [1]. The implementation will be named ``AgentRAID``. The main
 job of the implementation will be to invoke the corresponding RAID operation
 methods on agent ramdisk.  Interested vendors will implement these methods in
 Ironic Python Agent using hardware managers.
 
 Following are the changes required:
 
-* The following methods will be implemented as part of ``AgentRAIDManagement``:
+* The following methods will be implemented as part of ``AgentRAID``:
 
   + ``create_configuration`` - This will create the RAID configuration on
     the bare metal node. The following are the steps:
 
-    - Calls ``clean.create_raid_configuration`` on the agent ramdisk passing
-      the details of ``raid_config``.
+    - Uses ``clean.execute_clean_step`` command in Ironic Python Agent ramdisk
+      to invoke the ``create_configuration`` step of ``raid`` interface.
 
   + ``delete_configuration`` - This will delete the RAID configuration on
     the bare metal node. The following are the steps:
 
-    - Calls ``clean.delete_raid_configuration`` on the agent ramdisk.
+    - Uses ``clean.execute_clean_step`` command in Ironic Python Agent ramdisk
+      to invoke the ``delete_configuration`` step of ``raid`` interface.
 
-* The results for both of the above commands will be polled on subsequent
-  heartbeats from the ramdisk and then ``update_raid_info`` will be called once
-  the RAID operation is done.
+* RAID configuration will be limited to zapping only at first by hardcoding its
+  clean step priority to be 0. We'll consider interaction with cleaning
+  mechanism later. This allows us to make ``target_raid_config`` mandatory
+  for the new clean steps.
 
-* Agent ramdisk will be enhanced to add two new methods
-  ``clean.create_raid_configuration`` and ``clean.delete_raid_configuration``.
-  These methods will route the call to hardware manager, so that different
-  hardware vendors can implement their own methods of managing RAID
-  on their hardware.  ``clean.create_raid_configuration`` will accept
-  ``raid_config`` as argument (RAID configuration dictionary as mentioned in
-  `New driver interface for RAID configuration`_.
-  ``clean.delete_raid_configuration`` will not accept any arguments.
+* When the agent ramdisk is running an in-band clean step, the conductor gets
+  the status of the last in-band clean step on every heartbeat. When an in-band
+  clean step completes, the conductor resumes the cleaning and goes on to the
+  next clean step if any. A new mechanism - the
+  ``agent_base_vendor.post_clean_step_hook`` decorator, will be added. This
+  allows a driver implementor to specify a function to be invoked after
+  successful completion of an in-band clean step (and before the next clean
+  step is started). The decorated function would take two arguments: the task
+  and the command status (of the clean step) returned by the agent ramdisk.
 
-.. _`New driver interface for RAID configuration`: http://specs.openstack.org/openstack/ironic-specs/specs/liberty/ironic-generic-raid-interface.html
+  For example::
 
+    @agent_base_vendor.post_clean_step_hook(
+        interface='raid', step='create_configuration')
+    def _create_configuration_final(task, command):
+
+* A method ``agent._create_configuration_final`` will be added as a post clean
+  step hook for ``raid.create_configuration``. This method will call
+  ``update_raid_info`` with the actual RAID configuration returned from the
+  agent ramdisk.
+
+* A method ``agent._delete_configuration_final`` will be added as a post clean
+  step hook for ``raid.delete_configuration``. This will set
+  ``node.raid_config`` to ``None``. Note that ``target_raid_config`` will be
+  left intact, and will be reused by future zapping calls.
 
 * It is possible to have a hardware manager that does software RAID
-  configuration.  When software RAID configuration is done, agent based
-  ``raid.create_config`` should be used as a clean step so that software RAID
-  is configured everytime after a secure disk erase (which wipes out the
-  previous software RAID configuration if it exists).
+  configuration, but it goes beyond the scope of this spec, as it requires
+  RAID configuration to be run as a clean step after disk erasure.
 
 Alternatives
 ------------
 
-Some bare metal servers do not support out-of-band RAID configuration.  They
-support only in-band raid configuration.  I don't see any other alternative
+Some bare metal servers do not support out-of-band RAID configuration. They
+support only in-band raid configuration. I don't see any other alternatives
 other than making use of a ramdisk to do this.
+
+We could provide an option to enable RAID as part of cleaning. However, this
+will make ``target_raid_config`` mandatory for all nodes managed by a given
+conductor. We'll have to reconsider it later.
 
 Data model impact
 -----------------
@@ -154,11 +173,8 @@ rameshg87
 Work Items
 ----------
 
-* Implement ``AgentRAIDManagement``
-* Make changes in Ironic Python Agent to add methods
-  ``clean.create_raid_configuration`` and ``clean.delete_raid_configuration``
-  which route calls to respective hardware manager.
-
+* Implement the mechanism for post clean step hook.
+* Implement ``AgentRAID``
 
 Dependencies
 ============
@@ -182,9 +198,8 @@ Documentation Impact
 
 None.  Most of the RAID configuration details in Ironic are covered in the
 parent spec.  If anything is required in addition, respective vendors making
-use of ``AgentRAIDManagement`` will need to document it.
+use of ``AgentRAID`` will need to document it.
 
 References
 ==========
-
-None.
+[1] http://specs.openstack.org/openstack/ironic-specs/specs/approved/ironic-generic-raid-interface.html
