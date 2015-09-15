@@ -12,7 +12,7 @@ https://blueprints.launchpad.net/ironic/+spec/inband-raid-configuration
 
 This spec proposes to implement a RAID configuration interface using
 Ironic Python Agent (IPA). The drivers ``agent_ipmitool``,
-``agent_ipminative``, ``agent_ssh``, ``agent_vbox`` and ``agent_ilo``
+``agent_pyghmi``, ``agent_ssh``, ``agent_vbox`` and ``agent_ilo``
 drivers will make use of this new implementation of ``RAIDInterface``.
 
 Problem description
