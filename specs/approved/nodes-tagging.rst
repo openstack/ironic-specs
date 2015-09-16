@@ -36,78 +36,41 @@ Data model impact
 -----------------
 
 A new `ironic.objects.tags.TagList` object would be added to the
-object model, and will add a `tags` field to the `node` table of
-type `ironic.objects.tags.TagList` that would be populated on-demand
-(i.e. not eager-loaded).
+object model.
 
-A tag should be defined as a Unicode string no longer than 255 bytes
-in length.
+The `ironic.objects.tags.TagList` field in the python object model will be
+populated on-demand (i.e. not eager-loaded).
+
+A tag should be defined as a Unicode string no longer than 64 characters
+in length, with an index on this field.
+
+Tags are strings attached to an entity with the purpose of classification
+into groups. To simplify requests that specify lists of tags, the comma
+character is not allowed to be in a tag name.
 
 For the database schema, the following table constructs would suffice ::
 
-    CREATE TABLE tags (
-        resource_id INT(11) NOT NULL PRIMARY KEY,
-        tag VARCHAR(255) NOT NULL CHARACTER SET utf8
-        COLLATION utf8_ci PRIMARY KEY
-    );
+    CREATE TABLE node_tags (
+        node_id INT(11) NOT NULL,
+        tag VARCHAR(64) NOT NULL CHARACTER SET utf8,
+        PRIMARY KEY (node_id, tag),
+        KEY (tag),
+        FOREIGN KEY (node_id)
+          REFERENCES nodes(id)
+          ON DELETE CASCADE,
+    )
+
 
 REST API impact
 ---------------
 
-The tag CRUD operations API extension would look like the following:
+We will follow the `API Working Group's specification for tagging`_, rather
+than invent our own.
 
-Return list of tags for a node ::
+.. _API Working Group's specification for tagging: http://specs.openstack.org/openstack/api-wg/guidelines/tags.html
 
-    GET /v1/nodes/{node_id}/tags
+Will support addressing individual tags.
 
-returns ::
-
-    [
-        'tag1',
-        'tag2'
-    ]
-
-Add set of tags on a node ::
-
-    POST /v1/nodes/{node_id}/tags
-
-with request body ::
-
-    [
-        'tag1',
-        'tag2'
-    ]
-
-Add a single tag on a node ::
-
-    PUT /v1/nodes/{node_id}/tags/{tag}
-
-Remove a single tag on a node ::
-
-    DELETE /v1/nodes/{node_id}/tags/{tag}
-
-Get all nodes tags::
-
-    GET /v1/nodes/tags
-
-returns ::
-
-    [
-        'tag1',
-        'tag2',
-        'tag3'
-    ]
-
-The API that would allow searching/filtering of the `GET /v1/nodes`
-REST API call would add a `tag` query parameter:
-
-Get all nodes having a single tag ::
-
-    GET /v1/nodes?tag={tag}
-
-Get all nodes having *both* tag A and tag B::
-
-    GET /v1/nodes?tag={tag_a}&tag={tag_b}
 
 RPC API impact
 --------------
@@ -124,17 +87,24 @@ Client (CLI) impact
 
 Add tags CRUD operations commands:
 
-* ironic node-list-tags <node uuid>
-* ironic node-update-tags <node uuid> <op> <tag>
+* ironic node-tag-list <node uuid>
+* ironic node-tag-update <node uuid> <op> <tags>
 
 <op> Operation: 'add' or 'remove'
+
+For individual tag:
+* ironic node-tag-add <node uuid> <tag>
+* ironic node-tag-remove <node uuid> <tag>
 
 Add tag-list filtering support to node-list command:
 
 * ironic node-list --tag tag1 --tag tag2
+* ironic node-list --tag-any tag1 --tag-any tag2
+* ironic node-list --not-tag tag3
 
-multiple --tag will be used to filter results in an
-AND expression.
+Multiple --tag will be used to filter results in an AND expression, and
+--tag-any for OR expression, allowing for exclusionary tags via the
+--not-tag option.
 
 Driver API impact
 -----------------
@@ -190,7 +160,7 @@ Primary assignee:
 Work Items
 ----------
 
-* Add `tags` table with a migration.
+* Add `node_tags` table with a migration.
 * Add DB API layer for CRUD operations on node tags.
 * Added DB API layer for node tag-list filtering support.
 * Add Tag, TagList objects and a new tags field to Node object.
@@ -209,6 +179,7 @@ Testing
 =======
 
 Add unit tests.
+Add tempest API tests.
 
 
 Upgrades and Backwards Compatibility
@@ -227,4 +198,4 @@ this change.
 References
 ==========
 
-https://blueprints.launchpad.net/nova/+spec/tag-instances
+1. http://specs.openstack.org/openstack/api-wg/guidelines/tags.html
