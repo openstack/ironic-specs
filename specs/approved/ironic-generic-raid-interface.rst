@@ -186,14 +186,13 @@ Proposed change
   configuration for drivers. For more details, refer to the Driver API impact
   section.
 
-* New methods ``create_config`` and ``delete_config`` in
+* New methods ``create_configuration`` and ``delete_configuration`` in
   ``RAIDInterface`` will be available as part of zapping.  The operator can
   choose to call them as part of zap steps.  The corresponding zap steps will
-  be ``node.raid.create_config`` and ``node.raid.delete_config``.
+  be ``node.raid.create_configuration`` and ``node.raid.delete_configuration``.
 
-* A new method ``update_raid_info`` will be available in the base class
-  ``RAIDInterface``.  This method may be used by the driver implementation of
-  ``create_config`` and ``delete_config`` to update
+* A new method ``update_raid_info`` will be available in ironic.common.raid.
+  This method may be used by the drivers implementing RAID support to update
   the RAID information in the Node database. This will facilitate drivers to do
   the RAID configuration asynchronously.  This method will do the following:
 
@@ -294,7 +293,7 @@ Two new REST API endpoints will be introduced as part of this change.
     GET /v1/nodes/NNNN and GET /v1/nodes/NNNN/states.
 
 If the driver doesn't support RAID configuration, then both API calls will
-return HTTP 404 (Not Found). Otherwise the API will return HTTP 200 (OK).
+return HTTP 400 (Bad Request). Otherwise the API will return HTTP 200 (OK).
 
 
 Client (CLI) impact
@@ -325,14 +324,14 @@ Driver API impact
 A new ``RAIDInterface`` will be available for the drivers to allow them to
 implement RAID configuration.  It will have the following methods:
 
-  - ``create_config()`` - The driver implementation of the method
+  - ``create_configuration()`` - The driver implementation of the method
     has to read the request RAID configuration from ``node.target_raid_config``
     and create the RAID configuration on the bare metal. The driver
-    implementations should throw error if ``node.target_raid_config``
-    is not set.  The driver must ensure ``update_raid_info`` is called at the
-    end of the process updating the ``raid_config``. The implementation detail
-    is up to the driver depending on the synchronicity/asynchronicity of the
-    operation.
+    implementations should throw error if ``node.target_raid_config`` is not
+    set. The driver must ensure that ``ironic.common.raid.update_raid_info()``
+    is called at the end of the process, in order to update the node's
+    ``raid_config``. The implementation detail is up to the driver depending
+    on the synchronicity/asynchronicity of the operation.
 
     The ``raid_config`` will include the following:
 
@@ -379,8 +378,8 @@ implement RAID configuration.  It will have the following methods:
 
     The function definition will be as follows::
 
-      def create_config(task, create_only_root_volume=False,
-                        create_only_nonroot_volumes=False):
+      def create_configuration(task, create_root_volume=False,
+                        create_nonroot_volumes=False):
           """Create RAID configuration on the node.
 
           This method creates the RAID configuration as read from
@@ -388,24 +387,29 @@ implement RAID configuration.  It will have the following methods:
           by default will create all logical disks.
 
           :param task: TaskManager object containing the node.
-          :param create_only_root_volume: This specifies whether to create
-              only the root volume.
-          :param create_only_nonroot_volumes: This specifies to create only
-              non-root volumes.
+          :param create_root_volume: Setting this to False indicates
+              not to create root volume that is specified in the node's
+              target_raid_config. Default value is True.
+          :param create_nonroot_volumes: Setting this to False indicates
+              not to create non-root volumes (all except the root volume) in
+              the node's target_raid_config.  Default value is True.
+          :returns: states.CLEANWAIT if RAID configuration is in progress
+              asynchronously or None if it is complete.
           """
 
-  - ``delete_config`` - To delete the RAID configuration. This
-    method doesn't have an input and doesn't return anything.
+  - ``delete_configuration()`` - To delete the RAID configuration.
 
     The function definition will be as follows::
 
-      def delete_config(task):
+      def delete_configuration(task):
           """Delete RAID configuration on the node.
 
           :param task: TaskManager object containing the node.
+          :returns: states.CLEANWAIT if deletion is in progress
+              asynchronously or None if it is complete.
           """
 
-  - ``validate`` - To validate a RAID configuration. This will be called
+  - ``validate()`` - To validate a RAID configuration. This will be called
     while validating the driver interfaces. This will read the target RAID
     configuration from node.properties.target_raid_config and call
     ``validate_raid_config`` to validate target RAID configuration.
@@ -421,9 +425,9 @@ implement RAID configuration.  It will have the following methods:
               missing parameters.
           """
 
-  - ``validate_raid_config`` - To validate target RAID configuration.  This
-    will be called during the RPC call ``set_target_raid_config`` to validate
-    target RAID configuration. It will also be called during ``validate``.
+  - ``validate_raid_config()`` - To validate target RAID configuration.  This
+    will be called during the RPC call ``set_target_raid_config()`` to validate
+    target RAID configuration. It will also be called during ``validate()``.
 
     The function definition will be as follows::
 
@@ -435,25 +439,24 @@ implement RAID configuration.  It will have the following methods:
           :raises: InvalidParameterValue, if RAID configuration is invalid.
           """
 
-  - ``get_logical_disk_properties`` - To get the RAID properties that are
+  - ``get_logical_disk_properties()`` - To get the RAID properties that are
     defined by the driver.
 
     The function definition will be as follows::
 
-      def get_logical_disk_properties(task):
+      def get_logical_disk_properties():
           """Gets the RAID properties defined by the driver.
 
-          :param task: TaskManager object containing the node.
           :returns: A dictionary of properties and a textual description.
           """
 
 
 After performing the RAID configuration (create or delete), the drivers
-may call ``update_raid_info`` with the ``raid_config``. The
-details about the method has been described above. The definition of the
+may call ``ironic.common.raid.update_raid_info()`` with the ``raid_config``.
+The details about the method has been described above. The definition of the
 method will look like below::
 
-  def update_raid_info(task, raid_config):
+  def update_raid_info(node, raid_config):
       "Updates the necessary fields of the node after RAID configuration.
 
       This method updates the current RAID configuration in
@@ -461,7 +464,7 @@ method will look like below::
       it will update node.properties.local_gb, node.properties.root_device_hint
       and node.properties.capabilities['raid_level'].
 
-      :param task: TaskManager object containing the node.
+      :param node: a node object
       :param raid_config: The current RAID configuration on the bare metal
           node.
       """
@@ -502,8 +505,9 @@ nodes, but this is important for performance and reliability reasons.
 Other deployer impact
 ---------------------
 
-Operator can make use of ``node.raid.create_config`` and
-``node.raid.delete_config`` as zap or clean tasks for doing RAID management.
+Operator can make use of ``node.raid.create_configuration`` and
+``node.raid.delete_configuration`` as zap or clean tasks for doing RAID
+management.
 
 Developer impact
 ----------------
@@ -528,7 +532,7 @@ Work Items
 + Create REST API endpoints for RAID configuration.
 + Create ``RAIDInterface`` and create a fake implementation of
   ``RAIDInterface``.
-+ Implement ``update_raid_info`` in ``RAIDInterface``.
++ Implement ``update_raid_info`` in ironic.common.raid.
 + Implement Ironic CLI changes.
 + Write unit tests.
 
@@ -569,6 +573,6 @@ References
 
 Other references:
 
-* New Ironic provisioner state machine: http://specs.openstack.org/openstack/ironic-specs/specs/kilo/new-ironic-state-machine.html
+* New Ironic provisioning state machine: http://specs.openstack.org/openstack/ironic-specs/specs/kilo/new-ironic-state-machine.html
 
 * Support Zapping of Nodes: https://review.openstack.org/#/c/140826/
