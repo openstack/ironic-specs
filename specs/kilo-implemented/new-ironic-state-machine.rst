@@ -226,6 +226,9 @@ CLEANWAIT
   is waiting for the ramdisk to boot or the clean step which is running
   in-band to finish.
 
+  The cleaning process of a node in CLEANWAIT can be interrupted via the
+  ``abort`` API call.
+
 AVAILABLE
   Nodes in the AVAILABLE state are cleaned, preconfigured,  and ready
   to be provisioned. From AVAILABLE, nodes can transition to:
@@ -246,6 +249,16 @@ DEPLOYING
   Tasks for DEPLOYING should be handled in a manner similar to how
   they are handled for ZAPPING (details to be addressed in a different
   spec).
+
+DEPLOYWAIT
+  Just like the DEPLOYING state, the nodes in DEPLOYWAIT are being
+  deployed. The difference is that in DEPLOYWAIT the conductor is waiting
+  for the ramdisk to boot or execute parts of the deployment which needs
+  to run in-band on the node (for example, installing the bootloader,
+  writing the image to the disk when iSCSI is not used, etc...).
+
+  The deployment of a node in DEPLOYWAIT provision state can be
+  interrupted via the ``deleted`` API call.
 
 ACTIVE
   Nodes in ACTIVE have a workload running on them.  Ironic may
@@ -322,11 +335,16 @@ the state machine:
 +-----------+--------------+--------------------------+-----------+
 | unrescue  | RESCUE       | UNRESCUING -> UNRESCUED  | ACTIVE    |
 +-----------+--------------+--------------------------+-----------+
-| delete    | ACTIVE       | DELETING -> DELETED ->   | AVAILABLE |
+| deleted   | ACTIVE       | DELETING -> DELETED ->   | AVAILABLE |
 |           |              | CLEANING -> CLEANED      |           |
 +-----------+--------------+--------------------------+-----------+
-| delete    | RESCUE       | DELETING -> DELETED ->   | AVAILABLE |
+| deleted   | RESCUE       | DELETING -> DELETED ->   | AVAILABLE |
 |           |              | CLEANING -> CLEANED      |           |
++-----------+--------------+--------------------------+-----------+
+| deleted   | DEPLOYWAIT   | DELETING -> DELETED ->   | AVAILABLE |
+|           |              | CLEANING -> CLEANED      |           |
++-----------+--------------+--------------------------+-----------+
+| abort     | CLEANWAIT    | (none)                   | CLEANFAIL |
 +-----------+--------------+--------------------------+-----------+
 
 The API will remain backwards compatible with the active, rebuild, and
