@@ -224,4 +224,4 @@ References
 3. http://en.wikipedia.org/wiki/Trusted_Platform_Module
 4. http://en.wikipedia.org/wiki/Trusted_Execution_Technology
 5. https://review.openstack.org/#/c/135228/
-6. http://docs.openstack.org/admin-guide-cloud/content/trusted-compute-pools.html
+6. http://docs.openstack.org/admin-guide-cloud/compute-security.html#trusted-compute-pools

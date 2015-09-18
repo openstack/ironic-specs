@@ -352,4 +352,4 @@ source tree.  The contents of this file can be put in ironic wiki as well.
 
 References
 ==========
-1. http://docs.openstack.org/admin-guide-cloud/content/configuring-tenant-specific-storage-for-images.html
+1. http://docs.openstack.org/admin-guide-cloud/objectstorage_tenant_specific_image_storage.html
