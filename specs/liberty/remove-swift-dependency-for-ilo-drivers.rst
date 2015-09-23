@@ -10,4 +10,4 @@ Make ilo drivers standalone in ironic by removing swift dependency
 
 This spec was proposed in the Liberty cycle.
 
-See :doc:`../approved/remove-swift-dependency-for-ilo-drivers`.
+See :doc:`../liberty-implemented/remove-swift-dependency-for-ilo-drivers`.

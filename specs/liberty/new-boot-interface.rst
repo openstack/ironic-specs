@@ -10,4 +10,4 @@ Boot Interface in Ironic
 
 This spec was proposed in the Liberty cycle.
 
-See :doc:`../approved/new-boot-interface`.
+See :doc:`../liberty-implemented/new-boot-interface`.
