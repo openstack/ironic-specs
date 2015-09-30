@@ -245,3 +245,4 @@ References
 * Proposed patch in python-swiftclient: https://review.openstack.org/#/c/102632/
 
 * Glance direct_url configuration: https://github.com/openstack/glance/blob/master/etc/glance-api.conf#L89
+

@@ -41,15 +41,15 @@ Proposed change
         To reset the secure boot keys to manufacturer's defaults.
         (Applicable if secure boot feature is supported for ironic drivers)
   - clear_secure_boot_keys()
-	To clear secure boot keys
+        To clear secure boot keys
         (Applicable if secure boot feature is supported for ironic drivers)
 
 
 * The suggested default ordering would be -
-	reset_ilo_credential()          9
-	reset_secure_boot_keys()        8
-	apply_base_firmware_settings()  7
-	ilo_reset()                     6
+        reset_ilo_credential()          9
+        reset_secure_boot_keys()        8
+        apply_base_firmware_settings()  7
+        ilo_reset()                     6
 
 * The priority of clear_secure_boot_keys() by default would be zero, operator
   would have option to choose either reset_secure_boot_keys or
@@ -72,10 +72,10 @@ Proposed change
   eg: Following are the mandatory parameter keys required by the clean steps -
       1. ``upgrade_firmware`` - ``ilo_firmware_location_url`` key,
          which can accept the http location url or swift url for the tar/gz
-	 file of all the firmwares to be updated.
+         file of all the firmwares to be updated.
 
       2. ``reset_ilo_credential`` - ``ilo_change_password``, which accepts the
-	 default iLO password to be changed during cleaning.
+         default iLO password to be changed during cleaning.
 
 * If the keys are missing and if the respective clean step is enabled, warning
   message will be logged and the step will be no-op and continue with other
