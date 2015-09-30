@@ -79,28 +79,6 @@ class TestTitles(testtools.TestCase):
             self.fail("While checking '%s':\n  %s"
                       % (filename, "\n  ".join(msgs)))
 
-    def _check_lines_wrapping(self, tpl, raw):
-        for i, line in enumerate(raw.split("\n")):
-            if "http://" in line or "https://" in line:
-                continue
-            self.assertTrue(
-                len(line) < 80,
-                msg="%s:%d: Line limited to a maximum of 79 characters." %
-                (tpl, i+1))
-
-    def _check_no_cr(self, tpl, raw):
-        matches = re.findall('\r', raw)
-        self.assertEqual(
-            len(matches), 0,
-            "Found %s literal carriage returns in file %s" %
-            (len(matches), tpl))
-
-    def _check_trailing_spaces(self, tpl, raw):
-        for i, line in enumerate(raw.split("\n")):
-            trailing_spaces = re.findall(" +$", line)
-            self.assertEqual(len(trailing_spaces),0,
-                    "Found trailing spaces on line %s of %s" % (i+1, tpl))
-
     def _check_file_ext(self, filename):
         self.assertTrue(filename.endswith(".rst"),
                         "spec's file must uses 'rst' extension.")
@@ -169,9 +147,6 @@ class TestTitles(testtools.TestCase):
 
             (data, titles) = self._get_spec_titles(filename)
             self._check_titles(filename, template_titles, {}, titles)
-            self._check_lines_wrapping(filename, data)
-            self._check_no_cr(filename, data)
-            self._check_trailing_spaces(filename, data)
             self._check_license(data)
             self._check_filename(filename, data)
 
@@ -184,7 +159,4 @@ class TestTitles(testtools.TestCase):
             (data, titles) = self._get_spec_titles(filename)
             self._check_titles(filename, DRAFT_REQUIRED_TITLES,
                                 template_titles, titles)
-            self._check_lines_wrapping(filename, data)
-            self._check_no_cr(filename, data)
-            self._check_trailing_spaces(filename, data)
             self._check_filename(filename, data)

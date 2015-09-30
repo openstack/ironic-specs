@@ -143,3 +143,4 @@ http://h20628.www2.hp.com/km-ext/kmcsdirect/emr_na-c03334051-10.pdf
 
 HP Power Capping and HP Dynamic Power Capping
 http://bit.ly/1m8sbEi
+
