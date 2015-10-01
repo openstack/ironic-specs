@@ -4,20 +4,19 @@
 Ironic Project Specifications
 =============================
 
-This serves as a reference for approved specs within the current, and each
-prior, development cycle. Specs begin life in the "approved" tree, and once
-implemented, are moved to the "implemented" tree for that development cycle.
-At the end of a cycle, specs which were partially implemented should remain
-in the "approved" tree, only moving to "implemented" when the work is
-completely done. Additionally, a "backlog" of ideas is maintained to indicate
+Specifications for the ironic project are available here. Specifications
+begin life in the "approved" tree. They stay there (possibly beyond the
+development cycle in which they had been approved), and once implemented,
+are moved to the "implemented" tree for that development cycle.
+Additionally, a "backlog" of ideas is maintained to indicate
 the agreed-upon goals for the project which have no specific work being done
 on them at this time.
 
-Current Cycle
-=============
+Approved specifications
+=======================
 
-Approved
---------
+These specifications have been approved but have not been completely
+implemented:
 
 .. toctree::
    :glob:
@@ -25,17 +24,11 @@ Approved
 
    specs/approved/*
 
-Implemented in Liberty
-----------------------
 
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/liberty-implemented/*
-
-Idea back-log
--------------
+Back-log of ideas
+=================
+These specifications are ideas and features that are desirable but do not
+have anyone working on them:
 
 .. toctree::
    :glob:
@@ -44,13 +37,26 @@ Idea back-log
    specs/backlog/*
 
 
-Previous cycles
-===============
+Implemented specifications
+==========================
+
+These specifications have been implemented and are grouped in the
+development cycles in which they were completed.
+
+Mitaka
+------
+
+Liberty
+-------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/liberty-implemented/*
 
 Kilo
 ----
-
-Implemented specs:
 
 .. toctree::
    :glob:
@@ -71,8 +77,9 @@ Juno
 Placeholders
 ============
 
-During Liberty, we restructured the spec folders. Links were left in the
-locations of previous specs so as not to break any external references to them.
+During the Liberty development cycle, we restructured the spec folders. Links
+were left in the locations of previous specs so as not to break any external
+references to them.
 
 .. toctree::
 
