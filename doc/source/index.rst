@@ -49,11 +49,23 @@ Mitaka
 Liberty
 -------
 
+4.2
+~~~
+
 .. toctree::
    :glob:
    :maxdepth: 1
 
-   specs/liberty-implemented/*
+   specs/4.2/*
+
+4.0
+~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/4.0/*
 
 Kilo
 ----
@@ -85,6 +97,7 @@ Juno
    :hidden:
 
    specs/liberty/*
+   specs/liberty-implemented/*
    specs/kilo/*
    specs/juno/*
 
