@@ -73,17 +73,21 @@ Juno
 
    specs/juno-implemented/*
 
-
-Placeholders
-============
-
-During the Liberty development cycle, we restructured the spec folders. Links
-were left in the locations of previous specs so as not to break any external
-references to them.
+..
+   ----------------
+   The locations of specs were changed during the Liberty development
+   cycle.  These are placeholders and specs in the old locations.
+   They need to be available because there may be external references
+   to them, but we don't want to explicitly provide links to them.
 
 .. toctree::
+   :glob:
+   :hidden:
 
-   placeholders
+   specs/liberty/*
+   specs/kilo/*
+   specs/juno/*
+
 
 ==================
 Indices and tables
