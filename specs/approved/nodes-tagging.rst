@@ -41,7 +41,7 @@ object model.
 The `ironic.objects.tags.TagList` field in the python object model will be
 populated on-demand (i.e. not eager-loaded).
 
-A tag should be defined as a Unicode string no longer than 64 characters
+A tag should be defined as a Unicode string no longer than 255 characters
 in length, with an index on this field.
 
 Tags are strings attached to an entity with the purpose of classification
@@ -52,7 +52,7 @@ For the database schema, the following table constructs would suffice ::
 
     CREATE TABLE node_tags (
         node_id INT(11) NOT NULL,
-        tag VARCHAR(64) NOT NULL CHARACTER SET utf8,
+        tag VARCHAR(255) CHARACTER SET utf8 NOT NULL,
         PRIMARY KEY (node_id, tag),
         KEY (tag),
         FOREIGN KEY (node_id)
