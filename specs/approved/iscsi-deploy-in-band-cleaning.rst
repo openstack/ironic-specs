@@ -82,23 +82,38 @@ Proposed change
   + ``get_clean_steps`` - This method will call
     ``deploy_utils.agent_get_clean_steps`` to get the cleaning steps from the
     agent ramdisk.  It will also reassign the cleaning priority to disk erase.
+
+    This will return an empty list if bash ramdisk is used.  It will be
+    detected by checking if ``agent_url`` is present in node's
+    driver_internal_info.
+
     The method definition will be as follows::
 
         def get_clean_steps(self, task):
             """Get the list of clean steps from the agent.
 
             :param task: a TaskManager object containing the node
-            :returns: A list of clean step dictionaries
+            :returns: A list of clean step dictionaries. Returns an
+                empty list if bash ramdisk is used.
         """
 
-* For deployers who have been using DIB ramdisk, when they try to do in-band
-  cleaning with DIB ramdisk, the node will be stuck in ``states.CLEANWAIT`` for
-  ever as DIB ramdisk will not do heartbeat.  Hence, such deployers might face
-  the issue with nodes stuck in ``states.CLEANWAIT`` for ever as soon as node
-  enters cleaning.  A new CONF option ``CONF.iscsi_deploy.enable_cleaning``
-  will be added to enable in-band cleaning in ``iscsi_deploy.ISCSIDeploy``
-  driver and this option will be deprecated in the next release. The value of
-  this will be ``False`` by default.
+* For deployers who have been using DIB ramdisk, the node will be stuck i
+  n ``states.CLEANWAIT`` when they try to do cleaning.  This is because
+  DIB ramdisk doesn't heartbeat like agent ramdisk.  Hence, such deployers
+  might face the issue with nodes moving to ``states.CLEANFAIL``
+  as node enters cleaning.  To overcome this problem, the following
+  will be done:
+
+  + Send the bash ramdisk parameters (deploy_key, iscsi_target_iqn, etc) while
+    booting the deploy ramdisk for cleaning. It will enable bash ramdisk to
+    invoke pass_deploy_info vendor passthru.
+
+  + If node is in CLEANWAIT in pass_deploy_info vendor passthru, then we set
+    the clean steps for the node and ask conductor to resume cleaning.
+
+  + We also skip validation for pass_deploy_info vendor passthru if node is
+    in CLEANWAIT state.
+
 
 Alternatives
 ------------
@@ -164,9 +179,7 @@ None.
 Other deployer impact
 ---------------------
 
-Deployers will need to start using agent ramdisk (which has already been
-deprecated as per [1]) for in-band cleaning.  They will need to set
-``CONF.deploy.enable_inband_cleaning_iscsi_deploy`` to True.
+None.
 
 Developer impact
 ----------------
@@ -187,6 +200,8 @@ Work Items
 ----------
 
 * Add new methods the ``iscsi_deploy.ISCSIDeploy`` for in-band cleaning.
+* Modify pass_deploy_info to make it ready when it is invoked during
+  cleaning.
 
 
 Dependencies
@@ -204,10 +219,7 @@ Unit tests will be added.
 Upgrades and Backwards Compatibility
 ====================================
 
-The new CONF option ``CONF.deploy.enable_inband_cleaning_iscsi_deploy`` makes
-sure that deployers don't face nodes stuck in ``states.CLEANWAIT`` when they
-upgrade the code and have enough time to replace the deploy ramdisk being
-used.
+None.
 
 Documentation Impact
 ====================
