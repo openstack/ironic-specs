@@ -1,8 +1,23 @@
 .. ironic-specs documentation master file
 
-=============================
-Ironic Project Specifications
-=============================
+==============================
+OpenStack Ironic Project Plans
+==============================
+
+Priorities
+==========
+
+During each design summit, we agree what the whole community wants to focus
+on for the upcoming release. This is the output of those discussions:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   priorities/*
+
+Specifications
+==============
 
 Specifications for the ironic project are available here. Specifications
 begin life in the "approved" tree. They stay there (possibly beyond the
