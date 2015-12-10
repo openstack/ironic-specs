@@ -4,13 +4,13 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-==================================================
-Title of the Spec - eg the title of your blueprint
-==================================================
+=================
+Title of the Spec
+=================
 
-Include the URL of your launchpad blueprint:
+Include the URL of your launchpad bug with ``rfe`` tag:
 
-https://blueprints.launchpad.net/ironic/+spec/template
+https://bugs.launchpad.net/ironic/+bug/XXXXXX
 
 Introduction paragraph -- start here.
 
@@ -22,10 +22,6 @@ Some notes about using this template:
 * Your spec should be in ReSTructured text, like this template.
 
 * Please wrap text at 79 columns.
-
-* The filename in the git repository must match the launchpad URL, for
-  example a URL of: https://blueprints.launchpad.net/ironic/+spec/awesome-thing
-  must be named awesome-thing.rst
 
 * Please do not delete any of the sections in this template.  If you have
   nothing to say for a whole section, just write: None

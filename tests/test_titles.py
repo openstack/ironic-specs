@@ -28,6 +28,7 @@ DRAFT_REQUIRED_TITLES = {
         'Proposed change': [],
         }
 
+BUG_URL = 'https://bugs.launchpad.net/ironic/+bug/'
 BLUEPRINT_URL = 'https://blueprints.launchpad.net/ironic/+spec/'
 
 
@@ -83,13 +84,14 @@ class TestTitles(testtools.TestCase):
         self.assertTrue(filename.endswith(".rst"),
                         "spec's file must uses 'rst' extension.")
 
-    def _check_filename(self, filename, raw):
-        """Check that the filename matches the blueprint name.
+    def _check_lp_link(self, filename, raw):
+        """Check that the a link to Launchpad is present.
 
-        Checks that the URL for the blueprint is mentioned, and that the
-        filename matches the name of the blueprint. This assumes that the
-        blueprint URL occurs on a line without any other text and the URL
-        occurs before the first section (title) of the specification.
+        Checks that the URL for the bug or the blueprint is mentioned,
+        and that the filename matches the name of the blueprint.
+        This assumes that the bug or the blueprint URL occurs on a line
+        without any other text and the URL occurs before the first section
+        (title) of the specification.
 
         param filename: path/name of the file
         param raw: the data in the file
@@ -97,6 +99,10 @@ class TestTitles(testtools.TestCase):
 
         (root, _) = os.path.splitext(os.path.basename(filename))
         for i, line in enumerate(raw.split("\n")):
+            if BUG_URL in line:
+                return
+
+            # Backward compatibility
             if BLUEPRINT_URL in line:
                self.assertTrue(line.endswith(root),
                        "Filename '%s' must match blueprint name '%s'" %
@@ -105,7 +111,7 @@ class TestTitles(testtools.TestCase):
 
             if line.startswith(FIRST_TITLE):
                 break
-        self.fail("URL of launchpad blueprint is missing")
+        self.fail("URL of launchpad bug is missing")
 
     def _check_license(self, raw):
         # Check for the presence of this license string somewhere within the
@@ -148,7 +154,7 @@ class TestTitles(testtools.TestCase):
             (data, titles) = self._get_spec_titles(filename)
             self._check_titles(filename, template_titles, {}, titles)
             self._check_license(data)
-            self._check_filename(filename, data)
+            self._check_lp_link(filename, data)
 
     def test_backlog(self):
         template_titles = self._get_template_titles()
@@ -159,4 +165,4 @@ class TestTitles(testtools.TestCase):
             (data, titles) = self._get_spec_titles(filename)
             self._check_titles(filename, DRAFT_REQUIRED_TITLES,
                                 template_titles, titles)
-            self._check_filename(filename, data)
+            self._check_lp_link(filename, data)
