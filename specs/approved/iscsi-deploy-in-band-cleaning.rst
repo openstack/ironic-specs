@@ -8,7 +8,7 @@
 In-band cleaning support in iSCSI deploy drivers
 ================================================
 
-https://blueprints.launchpad.net/ironic/+spec/iscsi-deploy-in-band-cleaning
+https://bugs.launchpad.net/ironic/+bug/1526405
 
 Current deploy drivers that make use of iSCSI don't support in-band
 cleaning.  We need to make these drivers support in-band cleaning operations

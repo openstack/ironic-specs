@@ -8,7 +8,7 @@
 Ironic Neutron Integration
 ==================================================
 
-https://blueprints.launchpad.net/ironic/+spec/ironic-ml2-integration
+https://bugs.launchpad.net/ironic/+bug/1526403
 
 The current Ironic implementation only supports flat networks. For isolation
 of tenant networks Ironic should be able to pass information to Neutron to

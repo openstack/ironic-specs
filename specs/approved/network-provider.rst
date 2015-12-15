@@ -8,7 +8,7 @@
 Pluggable network providers
 ===========================
 
-https://blueprints.launchpad.net/ironic/+spec/network-provider
+https://bugs.launchpad.net/ironic/+bug/1526401
 
 Today, Ironic provisions servers on the same (flat) network that tenants run
 on. Ironic should have the ability to logically separate provisioning and

@@ -8,7 +8,7 @@
 Third Party Driver Continuous Integration Testing
 =================================================
 
-https://blueprints.launchpad.net/ironic/+spec/third-party-ci
+https://bugs.launchpad.net/ironic/+bug/1526410
 
 This spec is to define the deadlines, requirements and process of bringing
 third party continuous integration testing to ironic.

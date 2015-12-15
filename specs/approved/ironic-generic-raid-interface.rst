@@ -8,7 +8,7 @@
 New driver interface for RAID configuration
 ===========================================
 
-https://blueprints.launchpad.net/ironic/+spec/ironic-generic-raid-interface
+https://bugs.launchpad.net/ironic/+bug/1526400
 
 The proposal presents the work required to create a new driver interface for
 RAID configuration.  It also proposes a method to make RAID configuration

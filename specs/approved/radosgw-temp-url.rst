@@ -8,9 +8,9 @@
 Ceph Object Gateway Temp URL support
 =====================================
 
-https://blueprints.launchpad.net/ironic/+spec/radosgw-temp-url
+https://bugs.launchpad.net/ironic/+bug/1526395
 
-This blueprint adds support of Ceph Object Gateway (RADOS Gateway) temporary
+This adds support of Ceph Object Gateway (RADOS Gateway) temporary
 URL format.
 
 Problem description

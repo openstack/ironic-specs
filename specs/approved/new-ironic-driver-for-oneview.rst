@@ -8,13 +8,13 @@
 New driver in Ironic for OneView
 ==================================================
 
-https://blueprints.launchpad.net/ironic/+spec/new-ironic-driver-for-oneview
+https://bugs.launchpad.net/ironic/+bug/1526406
 
-This blueprint proposes adding a new driver that supports deployment of servers
+This spec proposes adding a new driver that supports deployment of servers
 managed by OneView. OneView is an Integrated Infrastructure Systems Management
 Software developed by HP.
 
-In this blueprint, *Server Hardware* is the label used on OneView to denote a
+In this spec, *Server Hardware* is the label used on OneView to denote a
 physical server.
 
 

@@ -8,7 +8,7 @@
 In-band RAID configuration using agent ramdisk
 ==============================================
 
-https://blueprints.launchpad.net/ironic/+spec/inband-raid-configuration
+https://bugs.launchpad.net/ironic/+bug/1526398
 
 This spec proposes to implement a RAID configuration interface using
 Ironic Python Agent (IPA). The drivers ``agent_ipmitool``,

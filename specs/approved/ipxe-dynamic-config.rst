@@ -8,9 +8,9 @@
 iPXE Dynamic Configuration
 ==========================
 
-https://blueprints.launchpad.net/ironic/+spec/ipxe-dynamic-config
+https://bugs.launchpad.net/ironic/+bug/1526275
 
-This blueprint adds support for dynamically generating iPXE configuration
+This adds support for dynamically generating iPXE configuration
 files when booting a node.
 
 Problem description

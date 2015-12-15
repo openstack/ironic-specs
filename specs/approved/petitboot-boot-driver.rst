@@ -8,9 +8,9 @@
 Petitboot boot driver
 ======================
 
-https://blueprints.launchpad.net/ironic/+spec/petitboot-boot-driver
+https://bugs.launchpad.net/ironic/+bug/1526265
 
-This blueprint adds petitboot boot driver for OpenPOWER servers. The OpenPOWER
+This adds petitboot boot driver for OpenPOWER servers. The OpenPOWER
 Foundation is a collaboration around Power Architecture products initiated by
 IBM.
 

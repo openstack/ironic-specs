@@ -7,9 +7,10 @@
 ==========================================
 Bare Metal Trust Using Intel TXT
 ==========================================
-https://blueprints.launchpad.net/ironic/+spec/bare-metal-trust-using-intel-txt
 
-This blueprint uses Intel TXT[4], which builds a chain of trust rooted in
+https://bugs.launchpad.net/ironic/+bug/1526280
+
+This uses Intel TXT[4], which builds a chain of trust rooted in
 special purpose hardware called Trusted Platform Module (TPM)[3] and measures
 the BIOS, boot loader, Option ROM and the Kernel/Ramdisk, to determine
 whether a bare metal node deployed by Ironic may be trusted.

@@ -8,9 +8,9 @@
 SSH Console
 ===========
 
-https://blueprints.launchpad.net/ironic/+spec/ssh-console-support
+https://bugs.launchpad.net/ironic/+bug/1526305
 
-This blueprint implements console driver -- "ShellinaboxConsole" which
+This implements console driver -- "ShellinaboxConsole" which
 supports console access for SSH driver (only for virsh virt_type).
 
 Problem description

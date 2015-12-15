@@ -8,7 +8,7 @@
 Add notification support to ironic
 ==================================
 
-https://blueprints.launchpad.net/ironic/+spec/notifications
+https://bugs.launchpad.net/ironic/+bug/1526408
 
 Near real-time inter-service notifications in OpenStack have a variety of use
 cases. At the Mitaka design summit, some of the use cases discussed for ironic

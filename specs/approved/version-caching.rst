@@ -8,9 +8,9 @@
 Client Caching Of Negotiated Version
 ==================================================
 
-https://blueprints.launchpad.net/ironic/+spec/version-caching
+https://bugs.launchpad.net/ironic/+bug/1526411
 
-This blueprint adds support for caching the version negotiated by the
+This adds support for caching the version negotiated by the
 ironicclient, between itself and the ironic server.  This is supplementary
 to the 'api microversion' spec approved in the Kilo release[0].
 

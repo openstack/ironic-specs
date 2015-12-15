@@ -8,9 +8,9 @@
 iPXE to use Swift Temporary URLs
 ================================
 
-https://blueprints.launchpad.net/ironic/+spec/ipxe-swift-tempurls
+https://bugs.launchpad.net/ironic/+bug/1526404
 
-This blueprint adds support for generating Swift temporary URLs for the
+This adds support for generating Swift temporary URLs for the
 deploy and image's ramdisk(s) and kernel(s) when booting with iPXE.
 
 Problem description
@@ -34,7 +34,7 @@ The proposed implementation consists in having the iPXE driver to create
 a Swift tempurl for the ramdisk and kernel (deploy or image) that the
 node will boot as part of the config generation.
 
-This blueprint also proposes adding a boolean configuration option under
+This also proposes adding a boolean configuration option under
 the ``ipxe`` group called ``use_swift``. If True this will tell iPXE to
 not cache the images in the disk and generate the Swift tempurl for the
 ramdisk and kernel, if False, iPXE will continue to cache the images
@@ -139,7 +139,7 @@ Work Items
 Dependencies
 ============
 
-* This patch depends on the blueprint `ipxe-dymic-config
+* This patch depends on the specification `ipxe-dymic-config
   <https://review.openstack.org/#/c/177726/>`_ that makes the iPXE
   configuration files to be dynamically generated.
 

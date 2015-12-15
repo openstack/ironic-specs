@@ -8,7 +8,7 @@
 Override PXE options via Glance property
 ========================================
 
-https://blueprints.launchpad.net/ironic/+spec/override-pxe-options-via-glance-property
+https://bugs.launchpad.net/ironic/+bug/1526409
 
 The proposal presents the work required to allow PXE boot an image using
 a specific kernel command line for that image.

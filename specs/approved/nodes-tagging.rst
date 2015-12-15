@@ -8,9 +8,9 @@
 Nodes tagging
 =============
 
-https://blueprints.launchpad.net/ironic/+spec/nodes-tagging
+https://bugs.launchpad.net/ironic/+bug/1526266
 
-This blueprint aims to add support for tagging nodes.
+This aims to add support for tagging nodes.
 
 Problem description
 ===================

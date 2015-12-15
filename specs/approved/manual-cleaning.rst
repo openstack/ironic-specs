@@ -8,7 +8,7 @@
 Manual cleaning
 ===============
 
-https://blueprints.launchpad.net/ironic/+spec/manual-cleaning
+https://bugs.launchpad.net/ironic/+bug/1526290
 
 Manual cleaning (as opposed to automated cleaning) encompasses all long
 running, manual, destructive tasks an operator may want to perform either

@@ -8,7 +8,7 @@
 Switch periodic tasks to the Futurist library
 ==================================================
 
-https://blueprints.launchpad.net/ironic/+spec/futurist
+https://bugs.launchpad.net/ironic/+bug/1526277
 
 Futurist_ is a new Oslo library providing tools for writing asynchronous code.
 This spec suggests switching our periodic task implementation to Futurist_ to

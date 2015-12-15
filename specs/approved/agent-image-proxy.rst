@@ -8,9 +8,9 @@
 HTTP(S) proxy support for agent images downloading
 ===================================================
 
-https://blueprints.launchpad.net/ironic/+spec/agent-image-proxy
+https://bugs.launchpad.net/ironic/+bug/1526222
 
-This blueprint adds support of proxy configuration for images downloading by
+This adds support of proxy configuration for images downloading by
 agent.
 
 Problem description

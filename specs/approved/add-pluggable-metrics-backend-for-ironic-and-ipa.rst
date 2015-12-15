@@ -8,9 +8,9 @@
 Add pluggable metrics backend for Ironic and IPA
 ================================================
 
-https://blueprints.launchpad.net/ironic/+spec/add-pluggable-metrics-backend-for-ironic-and-ipa
+https://bugs.launchpad.net/ironic/+bug/1526219
 
-This blueprint proposes the addition of metric data reporting features to
+This proposes the addition of metric data reporting features to
 Ironic, and Ironic Python Agent (IPA). Initially, this will include a statsd
 reference implementation, but will be sufficiently generic to permit the
 creation of alternative backends.

@@ -8,8 +8,7 @@
 Discover node properties and capabilities for ucs drivers
 =========================================================
 
-Blueprint URL:
-https://blueprints.launchpad.net/ironic/+spec/cisco-ucs-hw-inspection
+https://bugs.launchpad.net/ironic/+bug/1526359
 
 This proposal adds the ability to inspect/update hardware properties and
 auto-create ports for Cisco UCS B/C/M-servers managed by Cisco UCS Manager.
