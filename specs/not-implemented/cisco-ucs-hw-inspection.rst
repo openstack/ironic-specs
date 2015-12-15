@@ -1,0 +1,1 @@
+../approved/cisco-ucs-hw-inspection.rst

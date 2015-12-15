@@ -1,0 +1,1 @@
+../approved/ipxe-dynamic-config.rst

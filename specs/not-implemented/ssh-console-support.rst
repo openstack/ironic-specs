@@ -1,0 +1,1 @@
+../approved/ssh-console-support.rst

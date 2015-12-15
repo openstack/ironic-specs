@@ -1,0 +1,1 @@
+../approved/manual-cleaning.rst
