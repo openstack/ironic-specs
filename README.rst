@@ -31,16 +31,19 @@ Starting with the Mitaka development cycle, all approved specifications
 (implemented and not-implemented) will reside in the `specs/approved`
 directory.
 
+Also starting with the Mitaka development cycle, our Launchpad bug tracking
+system is used for tracking the work related to a specification. (This replaces
+the use of Launchpad blueprints). The bug should be tagged with 'rfe', its
+title should be prefixed with '[RFE]' and the Importance should be set to
+'Wishlist'. For existing RFE bugs, see::
+
+  https://bugs.launchpad.net/ironic/+bugs?field.tag=rfe
+
 Prior to the Juno development cycle, this repository was not used for spec
 reviews.  Reviews prior to Juno were completed entirely through Launchpad
 blueprints::
 
   http://blueprints.launchpad.net/ironic
-
-Please note, Launchpad blueprints are still used for tracking the
-current status of blueprints. For more information, see::
-
-  https://wiki.openstack.org/wiki/Blueprints
 
 For more information about working with gerrit, see::
 
