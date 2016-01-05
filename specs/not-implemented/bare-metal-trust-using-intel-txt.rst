@@ -1,0 +1,1 @@
+../approved/bare-metal-trust-using-intel-txt.rst

@@ -37,7 +37,7 @@ implemented:
    :glob:
    :maxdepth: 1
 
-   specs/approved/*
+   specs/not-implemented/*
 
 
 Back-log of ideas
@@ -60,6 +60,15 @@ development cycles in which they were completed.
 
 Mitaka
 ------
+
+4.3
+~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/4.3/*
 
 Liberty
 -------
@@ -116,6 +125,19 @@ Juno
    specs/kilo/*
    specs/juno/*
 
+..
+   ----------------
+   As of the start of the Mitaka development cycle, all approved specs
+   will reside in specs/approved (not-yet-implemented as well as implemented
+   specs). The files will not be moved (we hope). Instead, we will create
+   directories with links to these files. The specs/approved directory
+   will be hidden.
+
+.. toctree::
+   :glob:
+   :hidden:
+
+   specs/approved/*
 
 ==================
 Indices and tables

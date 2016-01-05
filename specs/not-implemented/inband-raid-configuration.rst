@@ -1,0 +1,1 @@
+../approved/inband-raid-configuration.rst

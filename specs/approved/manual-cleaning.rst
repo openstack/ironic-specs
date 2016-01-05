@@ -52,7 +52,8 @@ The main differences will be:
 
 * operators will be able to initiate a manual clean via the modified API
   to set the nodes's provision state. Details are described in the
-  :ref:`ProvisionCleanAPI` section.
+  `PUT .../states/provision <#put-v1-nodes-node-ident-states-provision>`_
+  section below.
 
 * A manual clean step might need some arguments to be specified. (This might
   be useful for future automated steps too.) To support this, the
@@ -72,7 +73,8 @@ The main differences will be:
   include any arguments that can be passed to the clean step.
 
 * operators will be able to get a list of possible steps via an API. The
-  :ref:`CleanStepsAPI` section provides more information.
+  `GET .../cleaning/steps <#get-nodes-node-ident-cleaning-steps>`_ section
+  below provides more information.
 
 * similar to executing automated clean steps, when the conductor attempts to
   execute a manual clean step, it will call execute_clean_step() on the driver
@@ -120,8 +122,6 @@ This:
 
 REST API impact
 ---------------
-
-.. _ProvisionCleanAPI:
 
 PUT /v1/nodes/<node_ident>/states/provision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -173,7 +173,6 @@ be put in CLEANFAIL provision state with an appropriate error message.
 
 A new API version is needed to support this.
 
-.. _CleanStepsAPI:
 
 GET /nodes/<node_ident>/cleaning/steps
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
