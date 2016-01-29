@@ -105,6 +105,12 @@ Driver test systems will be expected to follow the Infrastructure Third Party
 test requirements[3], unless overridden here or in the ironic third party
 driver testing documentation produced as a result of this spec.
 
+Driver test systems must test patches to master, and patches to branches that
+were created since the third party CI began testing. For example, if a CI began
+testing during the Mitaka cycle, then during the N cycle that CI will be
+expected to test changes to the master and stable/mitaka branches, but not the
+stable/liberty branch.
+
 Community-maintained drivers that do not have CI testing will also be removed
 from the ironic source tree.
 
