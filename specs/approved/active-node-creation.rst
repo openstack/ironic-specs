@@ -41,7 +41,7 @@ state to the ``ACTIVE`` state, bypassing actual deployment of the node.
   invokes the state transition of ``ADOPTING``.
 
 * Creation of a new machine state transition of ``ADOPTING`` which is
-  valid only in the ``MANAGEABLE`` state and allows an opertor to directly
+  valid only in the ``MANAGEABLE`` state and allows an operator to directly
   move a node to ``active`` state. This transition would be dependent upon
   a successful interface validation. Failure of this transition shall move
   nodes to an ``ADOPTION_FAILED`` which will allow users to be able to
@@ -75,8 +75,8 @@ Alternatives
 The logical alternative is to remove restrictions in what an API client posts
 to allow the caller to explicitly state or invoke a node to be created in
 ``ACTIVE`` state. As the community desires full functionality of the node to
-exist upon being imported along with driver intrface validation, the
-implementation appears to lend it's self to be implemented as a state
+exist upon being imported along with driver interface validation, the
+implementation appears to lend itself to be implemented as a state
 transition instead of pure API logic.
 
 Alternatively, we could craft operator documentation to help assist operators
@@ -92,7 +92,7 @@ None
 State Machine Impact
 --------------------
 
-Implementation of a new state transition from ``MANAGABLE`` state to
+Implementation of a new state transition from ``MANAGEABLE`` state to
 ``ACTIVE`` state utilizing an intermediate state of ``ADOPTING`` which
 takes the following actions.
 
@@ -112,7 +112,7 @@ Addition of a new state verb of ``adopt`` that triggers a transition to
 ``ADOPTING`` state. This verb will be unavailable for clients invoking
 an insufficent API version.
 
-The API micro-version will need to be incremeneted as a result of this change.
+The API micro-version will need to be incremented as a result of this change.
 
 Client (CLI) impact
 -------------------
@@ -163,7 +163,7 @@ Users performing bulk loads of hosts may find the multiple API calls
 somewhat problematic from the standpoint of multiple API calls to create,
 validate, and adopt a node, on top of API calls to poll the current state
 of the node before proceeding to the next step.  Bulk loaders should also
-be congnizent of their configurations as they potentially could result in
+be congnizant of their configurations as they potentially could result in
 the conductors consuming disk space and network bandwidth if items need
 to be staged on the conductor to support the node's normal operation.
 
@@ -173,11 +173,11 @@ Other deployer impact
 Allows for an easier adoption by managers of pre-existing hardware fleets.
 
 There is the potential that a operator could define a hardware fleet with
-bare minimal configuraiton to initially add the node to ironic. The result
+bare minimal configuration to initially add the node to ironic. The result
 of which means that an operator could conceivably and inadvertently act upon
 a node when insufficent information is defined. This risk will be documented
 as part of the resulting documentation in order to help highlight the risk
-and help provide guidence on preventinng such a possibility should a user
+and help provide guidance on preventing such a possibility should a user
 be attempting to adopt an inventory that is already "cloudy".
 
 Developer impact
