@@ -1,0 +1,1 @@
+../approved/ironicclient-osc-plugin.rst
