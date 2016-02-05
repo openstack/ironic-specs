@@ -126,7 +126,8 @@ Work Items
 Implement ``ShellinaboxConsole`` class inherited from
 ``base.ManagementInterface``.
 Implement ``validate`` , ``start_console``, ``stop_console``, ``get_console``.
-Enable tty console in devstack scripts.
+Add ability to enable pty console in devstack scripts, and leave
+the log console by default in order not to affect the gate logs.
 
 
 Dependencies
