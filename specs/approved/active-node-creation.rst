@@ -44,14 +44,14 @@ state to the ``ACTIVE`` state, bypassing actual deployment of the node.
   valid only in the ``MANAGEABLE`` state and allows an operator to directly
   move a node to ``active`` state. This transition would be dependent upon
   a successful interface validation. Failure of this transition shall move
-  nodes to an ``ADOPTION_FAILED`` which will allow users to be able to
+  nodes to an ``ADOPTFAIL`` which will allow users to be able to
   identify nodes that failed adoption.
 
-* Creation of a new machine state of ``ADOPTION_FAILED`` which a machine is
+* Creation of a new machine state of ``ADOPTFAIL`` which a machine is
   set to upon the ``ADOPTING`` transition failing.  This state will allow a
   user to re-attempt ``ADOPTING`` via ``adopt``, or attempt to
   transition the node to the ``MANAGEABLE`` state via ``manage``.
-  Additionally, the ``ADOPTION_FAILED`` state will be listed in the list
+  Additionally, the ``ADOPTFAIL`` state will be listed in the list
   of states that permit node deletion from the ironic database.
 
 * API client update to provide CLI interface to invoke this feature.
@@ -100,10 +100,10 @@ takes the following actions.
 2. Upon completion the node state is set to ``ACTIVE``.
 
 Should a failure of take_over logic occur in the ``ADOPTING`` state,
-the node will be returned to ``ADOPTION_FAILED`` state from which a user
+the node will be returned to ``ADOPTFAIL`` state from which a user
 will be able to retry the adoption operation or delete the node.
 
-Addition of ``ADOPTION_FAILED`` into the ``DELETE_ALLOWED_STATES`` list.
+Addition of ``ADOPTFAIL`` into the ``DELETE_ALLOWED_STATES`` list.
 
 REST API impact
 ---------------
@@ -229,7 +229,7 @@ prevent the nova API from considering the node as an available node for
 deployment on to.
 
 An older API client will receive the ``ERROR`` state for any node in
-``ADOPTION_FAILED`` to allow for easy identification and deliniation of
+``ADOPTFAIL`` to allow for easy identification and deliniation of
 a node that failed verification.
 
 Documentation Impact
