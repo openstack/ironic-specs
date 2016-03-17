@@ -57,7 +57,7 @@ Alternatives
   While generating the partition images using disk-image-builder, we can
   use "localboot" element, which is available in tripleo-image-elements
   project.  The downside of using this is that the local boot will be
-  enabled during the firt boot after node deploy. So it requires two
+  enabled during the first boot after node deploy. So it requires two
   resets of the server to enable localboot. Also the Ironic-conductor
   is not aware of this change and continue to provide the pxe or vmedia
   boot for the reboot operation done from conductor.
