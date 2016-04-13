@@ -61,6 +61,24 @@ development cycles in which they were completed.
 Mitaka
 ------
 
+5.1
+~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/5.1/*
+
+5.0
+~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/5.0/*
+
 4.3
 ~~~
 

@@ -56,8 +56,18 @@ Data model impact
 
 None.
 
+State Machine Impact
+--------------------
+
+None.
+
 REST API impact
 ---------------
+
+None.
+
+Client (CLI) impact
+-------------------
 
 None.
 
