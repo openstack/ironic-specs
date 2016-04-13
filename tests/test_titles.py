@@ -82,7 +82,7 @@ class TestTitles(testtools.TestCase):
 
     def _check_file_ext(self, filename):
         self.assertTrue(filename.endswith(".rst"),
-                        "spec's file must uses 'rst' extension.")
+                        "%s spec's file must uses 'rst' extension." % filename)
 
     def _check_lp_link(self, filename, raw):
         """Check that the a link to Launchpad is present.
