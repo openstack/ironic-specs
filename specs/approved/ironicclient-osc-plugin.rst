@@ -8,7 +8,7 @@
 Implementation of ironic commands as an OSC plugin
 ==================================================
 
-https://blueprints.launchpad.net/ironic/+spec/ironicclient-osc-plugin
+https://bugs.launchpad.net/ironic/+bug/1526479
 
 The OpenStackClient is becoming the defacto cli client for OpenStack. This spec
 will spell out what the command structure should look like, including
