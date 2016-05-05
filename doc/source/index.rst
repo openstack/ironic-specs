@@ -14,7 +14,9 @@ on for the upcoming release. This is the output of those discussions:
    :glob:
    :maxdepth: 1
 
-   priorities/*
+   priorities/newton-priorities
+   priorities/mitaka-priorities
+
 
 Specifications
 ==============
