@@ -37,6 +37,18 @@ cycle; they are not starting from scratch.
 | `Improving docs`_                       | jroll, liliars                   |
 +-----------------------------------------+----------------------------------+
 
+*May 2016. These were completed in the Mitaka cycle*:
+
+* `ironic-lib refactor`_
+
+* `Manual cleaning`_
+
+* `RAID`_
+
+* `Boot interface refactor`_
+
+* `Parallel tasks with futurist`_
+
 ironic-lib refactor
 -------------------
 
