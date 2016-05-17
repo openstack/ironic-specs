@@ -1,0 +1,1 @@
+../approved/interface-attach-detach-api.rst
