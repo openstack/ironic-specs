@@ -54,6 +54,12 @@ Proposed change
 We should release Ironic (roughly) following the independent release model
 defined by the OpenStack governance.[2]
 
+.. note::
+    As of July 15, 2015 [10], ironic follows the cycle-with-intermediary
+    release model [11]. This model, which better matches this specification,
+    was created by the OpenStack governance after this specification had been
+    approved.
+
 There are a few things of note here.
 
 * We should release Ironic when major features or bug fixes are complete on
@@ -249,12 +255,25 @@ References
 ==========
 
 [0] https://etherpad.openstack.org/p/liberty-ironic-scaling-the-dev-team
+
 [1] http://governance.openstack.org/reference/tags/release_at-6mo-cycle-end.html
+
 [2] http://governance.openstack.org/reference/tags/release_independent.html
+
 [3] http://governance.openstack.org/reference/tags/integrated-release.html
+
 [4] https://wiki.openstack.org/wiki/Liberty_Release_Schedule
+
 [5] http://semver.org/
+
 [6] http://lists.openstack.org/pipermail/openstack-dev/2015-May/065211.html
+
 [7] https://wiki.openstack.org/wiki/DepFreeze
+
 [8] http://docs.openstack.org/developer/ironic/
+
 [9] https://en.wikipedia.org/wiki/Feature_toggle
+
+[10] https://review.openstack.org/#/c/202208/
+
+[11] http://governance.openstack.org/reference/tags/release_cycle-with-intermediary.html
