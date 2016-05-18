@@ -114,6 +114,13 @@ stable/liberty branch.
 Community-maintained drivers that do not have CI testing will also be removed
 from the ironic source tree.
 
+From Newton feature freeze forward, all new ironic drivers must show that they
+have a system performing CI testing and meet all infra [3] and ironic
+requirements in order to land code into the ironic tree. Drivers in progress
+before Newton feature freeze have until Newton feature freeze to meet these
+requirements. CI testing does not need to be shown in order to propose a
+driver spec, but must be in place before landing code.
+
 Alternatives
 ------------
 
