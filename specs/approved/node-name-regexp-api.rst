@@ -102,6 +102,13 @@ Nova driver impact
 
 None.
 
+Ramdisk impact
+--------------
+
+N/A
+
+.. NOTE: This section was not present at the time this spec was approved.
+
 Security impact
 ---------------
 

@@ -88,6 +88,13 @@ Nova driver impact
 ------------------
 Will pass the extra_spec "capabilities:trusted_boot=True" to Ironic
 
+Ramdisk impact
+--------------
+
+N/A
+
+.. NOTE: This section was not present at the time this spec was approved.
+
 Security impact
 ---------------
 Increased confidence in bare metal nodes being free of rootkits and other

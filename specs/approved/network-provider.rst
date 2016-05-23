@@ -188,6 +188,13 @@ Nova driver impact
 The Nova driver should not be directly impacted here; however, this does depend
 on changes to the Neutron network driver in Nova as described above.
 
+Ramdisk impact
+--------------
+
+N/A
+
+.. NOTE: This section was not present at the time this spec was approved.
+
 Security impact
 ---------------
 

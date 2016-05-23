@@ -107,6 +107,13 @@ Existing deployments can continue to use a full-admin user as required prior
 to this feature. Once upgraded, a deployer could use a less-privileged user
 for nova-ironic interactions.
 
+Ramdisk impact
+--------------
+
+N/A
+
+.. NOTE: This section was not present at the time this spec was approved.
+
 Security impact
 ---------------
 

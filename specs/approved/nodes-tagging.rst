@@ -118,6 +118,13 @@ The tags information can be used for nova but it's not being
 considered as part of this spec, and may be addressed at a
 later time.
 
+Ramdisk impact
+--------------
+
+N/A
+
+.. NOTE: This section was not present at the time this spec was approved.
+
 Security impact
 ---------------
 

@@ -157,6 +157,18 @@ Nova driver impact
 ------------------
 None
 
+Ramdisk impact
+--------------
+
+A ramdisk capable of running on PPC64 hardware will need to be built, however,
+this may be done downstream.
+
+Support should be added to ramdisk build tooling, such as
+``disk-image-builder`` and ``coreos-image-builder``, to build such ramdisks.
+
+.. NOTE: This section was not present at the time this spec was approved.
+
+
 Security impact
 ---------------
 None

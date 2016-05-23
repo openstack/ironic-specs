@@ -967,6 +967,12 @@ There will be changes necessary to the Nova driver. Proposed changes are:
   Nova to allow toggling between the old and the new methods. The flag could
   help de-couple the upgrading of Nova and of Ironic.
 
+Ramdisk impact
+--------------
+
+N/A
+
+.. NOTE: This section was not present at the time this spec was approved.
 
 Security impact
 ---------------

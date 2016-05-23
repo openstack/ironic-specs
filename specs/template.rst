@@ -264,6 +264,57 @@ Questions which need to be addressed in this section include:
   affects existing functionality of the nova.virt.ironic driver, how will an
   upgrade be performed? How will it be tested?
 
+Ramdisk impact
+--------------
+
+The ``ironic-python-agent`` project has become an integral component in nearly
+every Ironic deployment, and is used throughout the life cycle of each Node
+from inspection to deployment and cleaning. There are multiple ways to build a
+ramdisk containing this agent which cater to different environments, and
+operators are encouraged to build their own ramdisks as well.
+
+In this section, please describe any changes you expect to make to the
+``ironic-python-agent`` or its member classes, to the ramdisk build process, or
+that otherwise affect the resulting ramdisk and its contents. Be mindful of
+the downstream impact this may have, and to the impact on compatibility.
+
+If your change to the ramdisk will also require a change in Ironic, and you
+think they should be upgraded together, then you should approach the problem
+differently. Forward and backward compatibility, within at least one release,
+must be maintained between Ironic and the IPA ramdisk.
+
+This could include changes in any of the following:
+
+* Are you proposing a change to the ironic-python-agent API, or adding an
+  extension to it?
+
+* Are you adding a new ironic-python-agent HardwareManager? This is like adding
+  a new driver and should be documented, but will probably be easy to accept.
+
+* Are you changing the HardwareManager base class or interface definitions?
+  This is considered an API change and needs to be considered closely for
+  potential impact on downstream users.
+
+* Are you adding a new extension to IPA? This will require support in Ironic,
+  and care will need to be taken to retain compatibility with ramdisks that
+  lack this extension.
+
+* Are you adding or changing a method on an existing IPA extension? This is
+  likely to break compatibility.
+
+* Are you changing the build process, or proposing a new one?
+
+* If you are adding any new dependencies, explicitly call them out, and
+  indicate any expected change in the size of the resulting ramdisk. This may
+  affect performance in some environments.
+
+* Are you proposing a change to the hardware inventory returned by
+  list_hardware_info? This is part of the interface, and a change here will
+  affect out of tree drivers.
+
+* Are you proposing changes to ironic-inspector, or changes that will affect
+  it? This is now packaged with the default ramdisk capabilities.
+
 Security impact
 ---------------
 

@@ -134,6 +134,11 @@ nova.virt.libvirt.driver.LibvirtDriver.get_serial_console(). No other
 impact for nova, and nova-serialproxy works well with the new one.
 And also, nova has agreed to the nova side of the work [#]_.
 
+Ramdisk impact
+--------------
+
+None
+
 Security impact
 ---------------
 

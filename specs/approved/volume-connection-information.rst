@@ -729,6 +729,11 @@ volume connector information to Cinder which returns the target information.
 This is then passed down to Ironic. Detailed information about Nova Ironic
 driver can be found in the spec [5].
 
+Ramdisk impact
+--------------
+
+None
+
 Security impact
 ---------------
 
