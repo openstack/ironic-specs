@@ -66,35 +66,35 @@ Example code follows (based on Python logging module naming conventions):
   class Foo(object):
     def func1(self):
       # Emit gauge metric with value 1
-      METRICS.gauge("one.fish", 1)
+      METRICS.send_gauge("one.fish", 1)
 
       # Increment counter metric by two
-      METRICS.counter("two.fish", 2)
+      METRICS.send_counter("two.fish", 2)
 
       # Decrement counter metric by one
-      METRICS.counter("red.fish", -1)
+      METRICS.send_counter("red.fish", -1)
 
       # Randomly sample the data (emit metric 10% of the time)
-      METRICS.counter("blue.fish", 42, sample_rate=0.1)
+      METRICS.send_counter("blue.fish", 42, sample_rate=0.1)
 
       # Emit a timer metric with value of 125 (milliseconds)
-      METRICS.timer("black.fish", 125)
+      METRICS.send_timer("black.fish", 125)
 
       # Randomly sample the data (emit metric 1% of the time)
-      METRICS.timer("blue.fish", 125, sample_rate=0.01)
+      METRICS.send_timer("blue.fish", 125, sample_rate=0.01)
 
-    @METRICS.counter_d("func2.count")
-    @METRICS.timer_d("func2.time", sample_rate=0.1)
+    @METRICS.counter("func2.count")
+    @METRICS.timer("func2.time", sample_rate=0.1)
     def func2(self):
       pass
 
     # Context managers for counting and timing code blocks
     def func3(self):
 
-      with METRICS.counter_c("func3.thing_one.count", sample_rate=0.25):
+      with METRICS.counter("func3.thing_one.count", sample_rate=0.25):
         thing_one()
 
-      with METRICS.timer_c("func3.thing_two.time"):
+      with METRICS.timer("func3.thing_two.time"):
         thing_two()
 
 
@@ -107,8 +107,8 @@ becomes ``com.example.host`` to assist with hierarchical data
 representation.
 
 For example, using the Statsd backend, and relevant config options,
-``METRICS.timer("blue.fish", 125, sample_rate=0.25)`` is emitted to statsd as
-``globalprefix.com.example.host.moduleprefix.blue.fish:1|ms@0.25``.
+``METRICS.send_timer("blue.fish", 125, sample_rate=0.25)`` is emitted to
+statsd as ``globalprefix.com.example.host.moduleprefix.blue.fish:1|ms@0.25``.
 
 Alternatives
 ------------
@@ -213,7 +213,10 @@ periodically flushed to one of statsd's configured backends, usually Graphite
 Other deployer impact
 ---------------------
 
-Default config options:
+There are two different sets of configuration options to be added:
+
+These options will be set in the ironic-lib metrics library, and will be used
+by any ironic service implementing metrics:
 
 .. code::
 
@@ -229,6 +232,12 @@ Default config options:
   prepend_host_reverse=false
   global_prefix=""
 
+
+Additionally, the following options will be added to the ironic-conductor and
+used to configure the ironic-python-agent for metrics on lookup:
+
+.. code::
+
   # Backend options are "statsd" and "noop"
   agent_backend="noop"
   agent_statsd_host="localhost"
@@ -243,7 +252,9 @@ Default config options:
 
 If the statsd metrics backend is enabled, then deployers must install and
 configure statsd, as well as any other metrics software that they wish to use
-(such as Graphite [3]).
+(such as Graphite [3]). Additionally, if deployers wish to emit metrics from
+ironic-python-agent as well, the statsd backend must be accessible from
+networks that agents run on.
 
 Developer impact
 ----------------
@@ -258,15 +269,15 @@ Assignee(s)
 -----------
 
 Primary assignee:
-  aweeks
+  alineb
 
 Other contributors:
-  None
+  JayF
 
 Work Items
 ----------
 
-* Design/implement shared metric reporting library. (In progress [5])
+* Design/implement metric reporting into ironic-lib.
 
 * Implement statsd backend.
 
@@ -277,9 +288,7 @@ Work Items
 Dependencies
 ============
 
-This change will introduce a dependency on a shared metrics reporting library
-in ironic-lib.  The statsd protocol is simple enough to justify implementing
-it ourselves in order to avoid introducing external dependencies.
+None.
 
 Testing
 =======
@@ -309,6 +318,4 @@ began: https://codeascraft.com/2011/02/15/measure-anything-measure-everything/
 [3] https://github.com/etsy/statsd/
 
 [4] https://graphite.readthedocs.org/en/latest/faq.html
-
-[5] https://github.com/rackerlabs/metricslogger
 
