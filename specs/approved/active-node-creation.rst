@@ -219,18 +219,8 @@ the interface.
 Upgrades and Backwards Compatibility
 ====================================
 
-This feature will not be visible to older API clients via a the API
+This feature will not be usable by older API clients via the API
 micro-version interface.
-
-An older API client will receive the ``DEPLOYING`` as opposed to
-``ADOPTING`` as this is the closest existing state representing the
-current state of the node. Additionally the state of ``DEPLOYING`` will
-prevent the nova API from considering the node as an available node for
-deployment on to.
-
-An older API client will receive the ``ERROR`` state for any node in
-``ADOPTFAIL`` to allow for easy identification and deliniation of
-a node that failed verification.
 
 Documentation Impact
 ====================
