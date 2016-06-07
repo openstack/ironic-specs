@@ -124,23 +124,23 @@ Proposed change
     Example 1 (using backing physical disk hints)::
 
       {
-        'logical_disks':
+        "logical_disks":
           [
             {
-              'size_gb': 50,
-              'raid_level': '1+0',
-              'disk_type': 'hdd',
-              'interface_type': 'sas',
-              'volume_name': 'root_volume',
-              'is_root_volume': 'true'
+              "size_gb": 50,
+              "raid_level": "1+0",
+              "disk_type": "hdd",
+              "interface_type": "sas",
+              "volume_name": "root_volume",
+              "is_root_volume": "true"
             },
             {
-              'size_gb': 100,
-              'number_of_physical_disks': 3,
-              'raid_level': '5',
-              'disk_type': 'hdd',
-              'interface_type': 'sas'
-              'volume_name': 'data_volume'
+              "size_gb": 100,
+              "number_of_physical_disks": 3,
+              "raid_level": "5",
+              "disk_type": "hdd",
+              "interface_type": "sas"
+              "volume_name": "data_volume"
             }
           ]
       }
@@ -148,28 +148,28 @@ Proposed change
     Example 2 (using backing physical disks)::
 
       {
-        'logical_disks':
+        "logical_disks":
           [
             {
-              'size_gb': 50,
-              'raid_level': '1+0',
-              'controller': 'RAID.Integrated.1-1',
-              'volume_name': 'root_volume',
-              'is_root_volume': 'true'
-              'physical_disks': [
-                                 'Disk.Bay.0:Encl.Int.0-1:RAID.Integrated.1-1',
-                                 'Disk.Bay.1:Encl.Int.0-1:RAID.Integrated.1-1'
+              "size_gb": 50,
+              "raid_level": "1+0",
+              "controller": "RAID.Integrated.1-1",
+              "volume_name": "root_volume",
+              "is_root_volume": "true"
+              "physical_disks": [
+                                 "Disk.Bay.0:Encl.Int.0-1:RAID.Integrated.1-1",
+                                 "Disk.Bay.1:Encl.Int.0-1:RAID.Integrated.1-1"
                                 ]
             },
             {
-              'size_gb': 100,
-              'raid_level': '5',
-              'controller': 'RAID.Integrated.1-1',
-              'volume_name': 'data_volume'
-              'physical_disks': [
-                                 'Disk.Bay.2:Encl.Int.0-1:RAID.Integrated.1-1',
-                                 'Disk.Bay.3:Encl.Int.0-1:RAID.Integrated.1-1',
-                                 'Disk.Bay.4:Encl.Int.0-1:RAID.Integrated.1-1'
+              "size_gb": 100,
+              "raid_level": "5",
+              "controller": "RAID.Integrated.1-1",
+              "volume_name": "data_volume"
+              "physical_disks": [
+                                 "Disk.Bay.2:Encl.Int.0-1:RAID.Integrated.1-1",
+                                 "Disk.Bay.3:Encl.Int.0-1:RAID.Integrated.1-1",
+                                 "Disk.Bay.4:Encl.Int.0-1:RAID.Integrated.1-1"
                                 ]
             }
           ]
