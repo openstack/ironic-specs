@@ -1,0 +1,1 @@
+../approved/collect-system-logs-from-ipa.rst
