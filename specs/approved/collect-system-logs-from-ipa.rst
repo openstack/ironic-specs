@@ -72,7 +72,7 @@ the distros today:
 
 The logs from all distributions independent of the init system, will
 also contain the output of the following commands files: ``ps``, ``df``,
-``iptables`` and ``/proc/cmdline``.
+and ``iptables``.
 
 Changes in Ironic
 -----------------
@@ -80,9 +80,9 @@ Changes in Ironic
 New configuration options will be added to Ironic under the ``[agent]``
 group:
 
-#. ``retrieve_deploy_logs`` (string): Whether Ironic should retrieve
-   the deployment logs or not. Valid options are: "always", "on_failure"
-   or "never". Defaults to "on_failure".
+#. ``deploy_logs_collect`` (string): Whether Ironic should collect the
+   deployment logs or not. Valid options are: "always", "on_failure" or
+   "never". Defaults to "on_failure".
 
 #. ``deploy_logs_storage_backend`` (string): The name of the storage
    backend where the response file will be stored. One of the two:
@@ -111,10 +111,10 @@ group:
    the operator to configure an external job to do it, if wanted.
 
 
-Depending on the value of the ``retrieve_deploy_logs`` Ironic will
+Depending on the value of the ``deploy_logs_collect`` Ironic will
 invoke ``log.collect_system_logs`` as part of the deployment of the
 node (right before powering it off or rebooting). For example, if
-``retrieve_deploy_logs`` is set to **always** Ironic will collect the logs
+``deploy_logs_collect`` is set to **always** Ironic will collect the logs
 independently of the deployment being a success or a failure; if it is set
 to **on_failure** Ironic will collect the logs upon a deployment failure;
 if it is set to **never**, Ironic never collect the deployment logs.
@@ -122,10 +122,10 @@ if it is set to **never**, Ironic never collect the deployment logs.
 When the logs are collected, Ironic should decode the base64 encoded
 tar.gz file and store it according to the ``deploy_logs_storage_backend``
 configuration. All log objects will be named with the following pattern:
-*<node-uuid>[_<instance-uuid>]_<timestamp>*. Note that, ``instance_uuid``
-is not a required field for deploying a node when Ironic is configured
-to be used in **standalone** mode so, if present it will be appended to
-the name.
+*<node-uuid>[_<instance-uuid>]_<timestamp yyyy/mm/dd-hh:mm:ss>.tar.gz*. Note
+that, ``instance_uuid`` is not a required field for deploying a node when
+Ironic is configured to be used in **standalone** mode so, if present
+it will be appended to the name.
 
 When using Swift, operators can associate the objects in the container
 with the nodes in Ironic and search for the logs of a specific node
@@ -148,7 +148,7 @@ using the ``prefix`` parameter, for example:
 .. note::
 
   Neither Ironic or IPA will be responsible for sanitizing any logs
-  before storing them. First because this spec is limited to collectint
+  before storing them. First because this spec is limited to collecting
   logs from the deployment only and at this point the tenant won't have
   used the node yet. Second, the services generating the logs should be
   responsible for masking secrets in their logs (like we do in Ironic),
@@ -228,8 +228,8 @@ None
 Performance Impact
 ------------------
 
-The node will stay a little longer on the ``deploy fail`` or ``deploying``
-provision state while IPA is collecting the logs, if enabled.
+The node will stay a little longer in the ``deploying`` provision state
+while IPA is collecting the logs, if enabled.
 
 Other deployer impact
 ---------------------
@@ -261,9 +261,9 @@ Work Items
 * Add the new configuration options described in the `Changes in Ironic`_
   section.
 
-* Invoke the new ``log.collect_system_logs`` method in IPA when a
-  deployment fails and store the response file according to the
-  ``deploy_logs_storage_backend`` configuration option.
+* Invoke the new ``log.collect_system_logs`` method in IPA as part
+  of the deployment and store the response file according to the
+  ``deploy_logs_storage_backend`` configuration option (if enabled).
 
 
 Dependencies
@@ -283,7 +283,7 @@ None.
 
 As a note, when using an old IPA ramdisk which does not support the new
 ``log.collect_system_logs`` command Ironic should handle such exception
-and log a warning message to the operator if ``retrieve_deploy_logs``
+and log a warning message to the operator if ``deploy_logs_collect``
 is set to **always** or **on_failure**.
 
 Documentation Impact
