@@ -1,0 +1,1 @@
+../approved/nova-compatible-serial-console.rst
