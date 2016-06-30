@@ -122,7 +122,7 @@ if it is set to **never**, Ironic never collect the deployment logs.
 When the logs are collected, Ironic should decode the base64 encoded
 tar.gz file and store it according to the ``deploy_logs_storage_backend``
 configuration. All log objects will be named with the following pattern:
-*<node-uuid>[_<instance-uuid>]_<timestamp yyyy/mm/dd-hh:mm:ss>.tar.gz*. Note
+*<node-uuid>[_<instance-uuid>]_<timestamp yyyy-mm-dd-hh:mm:ss>.tar.gz*. Note
 that, ``instance_uuid`` is not a required field for deploying a node when
 Ironic is configured to be used in **standalone** mode so, if present
 it will be appended to the name.
