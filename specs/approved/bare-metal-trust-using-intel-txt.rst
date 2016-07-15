@@ -44,36 +44,6 @@ Add a new boot mode, trusted boot:
     {{ pxe_options.pxe_append_params|default("", true) }} intel_iommu=on
     --- {{pxe_options.ari_path}}
 
-* Modify iPXE configuration. As iPXE doesn't support multiple loading and
-  pxelinux supports HTTP/FTP/TFTP, we choose to load pxelinux.0 and use
-  above pxe_config.template again. By default, pxelinux will look for its
-  configuration file using TFTP. We need to specify DHCP options 209/210
-  in trusted_boot.ipxe::
-
-    #209 = pxelinux config path
-    #210 = pxelinux root
-    set 210:string http://$myip:port/
-    set 209:string http://$myip:port/pxelinux.cfg/${mac:hexraw}
-    chain http://$myip:port/pxelinux.0
-
-* iPXE config example::
-
-    label trusted_boot
-    kernel mboot
-    append tboot.gz
-    --- http://10.239.48.36:8081/ff2b0eb9-7fa8-4745-8caa-ee757d72410f/kernel
-    root=UUID=2d2d2d75-48ce-4530-9bd1-790f2b357b1e ro text nofb nomodeset
-    vga=normal intel_iommu=on
-    --- http://10.239.48.36:8081/ff2b0eb9-7fa8-4745-8caa-ee757d72410f/ramdisk
-
-Add a clean task to ironic.drivers.modules.pxe.PXEDeploy() to validate the
-integrity of firmware, which is not enabled by default:
-
-* Boot a customized image on release nodes/manage nodes with trusted boot.
-* Send http requests (httplib) to poll the result from an additional service
-  like OAT[2].
-* If it is trusted, go to the available state. Otherwise, mark it as clean
-  failed state.
 
 Alternatives
 ------------
@@ -96,7 +66,7 @@ None
 
 State Machine Impact
 --------------------
-Add a clean task to run trusted_boot once nodes are released.
+None
 
 REST API impact
 ---------------
@@ -139,7 +109,6 @@ There is an extra attestation step during trusted boot which spends several
 seconds. But for bare metal trust no dynamic attestation requests are
 entertained. So this is a non-issue.
 
-
 Other deployer impact
 ---------------------
 * Create a special flavor with 'capabilities:trusted_boot=True'
@@ -160,13 +129,8 @@ Other deployer impact
 
 * Create customized images with OAT-Client.
 
-* The following parameter is added into newly created [trusted_boot] section
-  in ironic.conf.
-
-    - clean_priority_bare_metal_attestation: default value of the clean task.
-      The default value is 0, which means disable.
-
-* Change the priority of above clean task to enable it.
+* Run a customized script to verify the trust state of nodes when creating
+  instances.
 
 Developer impact
 ----------------
@@ -184,9 +148,7 @@ Primary assignee:
 Work Items
 ----------
   * Add trusted_boot section to pxe_config.template
-  * Add trusted_boot.ipxe
   * Support trusted_boot flag and switch to trusted_boot.
-  * Add a new clean task.
   * A dib element to create customized images.
 
 Dependencies
