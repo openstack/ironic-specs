@@ -349,7 +349,7 @@ Client (CLI) impact
 
 * Enhance OSC plugin "openstack baremetal node" so that the parameter
   can accept 'reboot [--soft] [--timeout <timeout>]', 'power [on|off
-  [--soft] [--timeout <timeout>]' and 'inject_nmi'.
+  [--soft] [--timeout <timeout>]' and 'inject nmi'.
   This CLI is async. In order to get the latest status,
   call "openstack baremetal node show" and check the returned value.::
 
@@ -357,7 +357,7 @@ Client (CLI) impact
 
    usage: openstack baremetal node power off [--soft] [--timeout <timeout>] <uuid>
 
-   usage: openstack baremetal node inject_nmi <uuid>
+   usage: openstack baremetal node inject nmi <uuid>
 
 RPC API impact
 --------------
