@@ -1,0 +1,1 @@
+../approved/node-resource-class.rst
