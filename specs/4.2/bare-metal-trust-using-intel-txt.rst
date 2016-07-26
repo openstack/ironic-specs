@@ -1,0 +1,1 @@
+../liberty-implemented/bare-metal-trust-using-intel-txt.rst
