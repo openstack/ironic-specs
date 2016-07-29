@@ -12,8 +12,8 @@ https://bugs.launchpad.net/ironic/+bug/1526752
 
 Keystone and oslo.policy have support for restricting access based on
 information about the user authenticating, allowing partial access to be
-granted as configured by operators. This spec lays out how this support will
-be implemented in ironic.
+granted as configured by operators. This spec lays out how this support will be
+implemented in ironic.
 
 
 Problem description
@@ -33,19 +33,23 @@ Proposed change
   authenticating by properly implementing KeystoneMiddleware.auth_token
   support.
 
-* Configure each API endpoint to verify a user is permitted by policy to
-  access it.
+* Define policy rules for each RESTful action on each API endpoint, scoped to
+  the 'baremetal' namespace.
+
+* Configure each API endpoint to verify a user is permitted by policy to access
+  it.
 
 * Implement specific restrictions for sensitive information, including
-  configdrives and passwords.
+  configdrives and passwords. Default to hide all sensitive information.
 
-* Define a simple, sane default policy in code [0]_ , with shipped roles
-  including an admin role with full access; an observer role with
-  read-only access to non-secret information; and a role designed for use
-  by the nova driver, with only access to endpoints required for ironic
-  integration with nova. Names for these roles will be determined during
-  implementation and will be configurable by deployers via policy.json [1]_ .
+* Define sane default policies in code [0]_ , with shipped roles including an
+  admin role with full access and an observer role with read-only access to
+  non-secret information. Names for these roles will be determined during
+  implementation. A sample policy.json [1]_ shall be generatable using
+  oslopolicy-sample-generator.
 
+* Maintain compatibility with all roles in the previously-shipped policy.json
+  configuration file.
 
 Alternatives
 ------------
@@ -76,8 +80,10 @@ REST API impact
 A properly restricted user may receive a 403 error if they are unable to use
 the method/endpoint combination requested. However, the REST API will not be
 returning 403 in any case it could not today, for instance, an unauthorized
-user may receive 403 today. This simply increases the granularity available
-for configuring this authorization.
+user may receive 403 today. This simply increases the granularity available for
+configuring this authorization.
+
+The 403 response body shall indicate which resource access was denied to.
 
 
 Client (CLI) impact
@@ -152,8 +158,9 @@ to meet their specific needs.
 Developer impact
 ----------------
 
-Whenever a developer implements a new API method, they will be required to
-properly check policy and update default policy as necessary.
+Whenever a developer implements a new API method, they will be required to add
+a new policy rule to represent that API endpoint or method, define the default
+rule, enforce the policy appropriately, and update default policy as necessary.
 
 
 Implementation
@@ -196,8 +203,11 @@ Existing deployers are required to use an admin user for all uses of ironic,
 these users will continue to have full access to the ironic API, allowing for
 backwards compatibility.
 
-On upgrade, a user will be required to create a new project and new users to
-take advantage of the new policy support.
+On upgrade, an operator must define new keystone roles and assign these to
+users in order to take advantage of the new policy support. The names for these
+roles will be determined during implementation.
+
+The operator may choose to customize the policy settings for their deployment.
 
 
 Documentation Impact
