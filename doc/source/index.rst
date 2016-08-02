@@ -60,6 +60,18 @@ Implemented specifications
 These specifications have been implemented and are grouped in the
 development cycles in which they were completed.
 
+Newton
+------
+
+6.0
+~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/6.0/*
+
 Mitaka
 ------
 
