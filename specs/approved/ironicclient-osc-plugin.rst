@@ -97,15 +97,15 @@ openstack baremetal chassis
 openstack baremetal driver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* openstack baremetal driver show <driver_name>
-
-* openstack baremetal driver show properties <driver_name>
-
-* openstack baremetal driver show passthru <driver_name>
-
 * openstack baremetal driver list
 
-* openstack baremetal driver passthru <driver_name> <method>
+* openstack baremetal driver show <driver_name>
+
+* openstack baremetal driver properties show <driver_name>
+
+* openstack baremetal driver passthru show <driver_name>
+
+* openstack baremetal driver passthru call <driver_name> <method>
 
   <method>             Vendor passthru method to call.
 
