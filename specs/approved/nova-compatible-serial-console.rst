@@ -169,40 +169,20 @@ To use socat serial console, deployer needs to specify new driver.
 For example, to use PXE + IPMItool + socat, specify ``pxe_ipmitool_socat``.
 To use IPA + IPMItool + socat, specify ``agent_ipmitool_socat``.
 To use existing shellinabox console, deployer doesn't need to change anything.
-We will implement new driver ``IPMISocatConsole`` initially, so that just
-``pxe_ipmitool_socat`` and ``agent_ipmitool_socat`` drivers will support socat
-console. After ``Driver composition reform`` [#]_ is implemented, this feature
-will be available for a lot more drivers (or hardware types).
-About configuration options, existing options ``terminal``,
-``terminal_pid_dir``, ``subprocess_checking_interval``, ``subprocess_timeout``
-are available for socat in the same way as shellinabox.
+The new console interface ``IPMISocatConsole`` will be supported by two
+new drivers: ``pxe_ipmitool_socat`` and ``agent_ipmitool_socat``.
+After ``Driver composition reform`` [#]_ is implemented, this
+feature will be available for a lot more drivers (or hardware types).
+
+About configuration options, existing options ``terminal_pid_dir``,
+``subprocess_checking_interval``, ``subprocess_timeout`` are available for
+socat in the same way as shellinabox.
 ``terminal_cert_dir`` is not used in the case of socat because SSL is not
 supported.
-To use socat, .conf file will be::
-
-    [console]
-    # Path to serial console terminal program. "shellinaboxd"
-    # provides stand-alone web console. "socat" provides
-    # Nova-compatible serial console. Notes that only
-    # a few drivers support "socat". (string value)
-    terminal = shellinaboxd
-
-    # Directory containing the terminal SSL cert(PEM) for serial
-    # console access. Notes that only Shellinabox console uses
-    # this value. (string value)
-    terminal_cert_dir = <None>
-
-    # Directory for holding terminal pid files. If not specified,
-    # the temporary directory will be used. (string value)
-    terminal_pid_dir = <None>
-
-    # Time interval (in seconds) for checking the status of
-    # console subprocess. (integer value)
-    subprocess_checking_interval = 1
-
-    # Time (in seconds) to wait for the console subprocess to
-    # start. (integer value)
-    subprocess_timeout = 10
+``terminal`` is not used in the case of socat because hard-coded ``socat`` is
+used in the code, and absolute path is not needed because it's distro specific,
+in Ubuntu for example it's ``/usr/bin/socat``, but it might be different in
+other distros.
 
 Developer impact
 ----------------
