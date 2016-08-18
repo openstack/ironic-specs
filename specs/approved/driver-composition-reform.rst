@@ -81,7 +81,7 @@ The following concepts are used in this spec:
 With this spec we are going to achieve the following goals:
 
 * Make *vendors* in charge of defining a set of supported interface
-  implementations and the default implementation to be used.
+  implementations in priority order.
 
 * Allow *vendors* to guarantee that unsupported interface implementations
   will not be used with hardware types they define. This is done by having
@@ -130,16 +130,35 @@ Configuration
   enabled *hardware types*. This will not include *classic drivers* which
   are enabled by the existing ``enabled_drivers`` option.
 
+* Create a family of configuration options ``default_<INTERFACE>_interface``
+  that allows an operator to explicitly set a default interface for new nodes
+  upon creation, if one is not specified in the creation request.
+
+  Here ``<INTERFACE>`` is a type of interface: power, management, etc.
+
 * Create a family of configuration options ``enabled_<INTERFACE>_interfaces``
-  with a list of enabled implementations of each *hardware interface*.
+  with a list of enabled implementations of each *hardware interface* that
+  are available for use in the ironic deployment.
 
-  Note that the default implementation is implicitly enabled for each
-  interface of each enabled *hardware type* and does not have to be explicitly
-  listed in the configuration. There are several reasons for that,
-  the most important is to allow backward compatibility with the
-  ``driver`` fields as described below.
+  The default value, if provided by the ``default_<INTERFACE>_interface``, must
+  be in this list, otherwise a conductor will fail to start.
 
-* Change how we load drivers: instead of one singleton instance of a driver,
+* If no interface implementation is explicitly requested by a user in a node
+  creation request, use the value calculated as follows:
+
+  * If ``default_<INTERFACE>_interface`` is set, use its value. Return an
+    error if it is not supported by the *hardware type* of the node.
+
+  * Otherwise choose the first available interface implementation from an
+    intersection of the ``enabled_<INTERFACE>_interfaces`` as defined in
+    the deployment's configuration and the *hardware_type*'s priority ordered
+    list of supported_<INTERFACE>_interfaces. Return an error, if this
+    intersection is empty.
+
+  This calculated default will be stored in the database entry for the node
+  upon creation.
+
+* Change how we load drivers instead of one singleton instance of a driver,
   we'll have an instance of *dynamic driver* per node, containing links
   to hardware interface implementations (just like today).
 
@@ -187,8 +206,7 @@ Database and Rest API
   we add a new interface (which hopefully won't happen too often).
 
   For *hardware types* setting ``<interface_name>_interface`` field to ``None``
-  means using the *vendor* default defined in the *hardware type*.
-  If the *vendor* default is ``None``, the interface will be disabled.
+  means using the calculated default value as described in Configuration_.
 
   Trying to set any of these fields to a value other than ``None`` will result
   in an error if the ``driver`` field is set to a *classic driver*. Similarly,
@@ -352,7 +370,8 @@ REST API impact
   New response fields that are not ``None`` only for *hardware types*:
 
   ``default_<interface_name>_interface``
-    the entrypoint name of the default implementation for a given interface.
+    the entrypoint name of the calculated default implementation for a
+    given interface.
 
   ``enabled_<interface_name>_interfaces``
     the list of entrypoint names of enabled implementations for a given
@@ -362,9 +381,10 @@ REST API impact
   /v1/drivers/<NAME>/vendor_passthru/methods`` and the actual driver vendor
   passthru call implementation:
 
-  When requested for a *dynamic driver*, assume the default ``vendor``
-  interface implementation. We will need to support non-default implementations
-  as well, but it goes somewhat beyond the scope of this already big spec.
+  When requested for a *dynamic driver*, assume the calculated defaults for
+  the ``vendor`` interface implementation as described in Configuration_.
+  We will need to support non-default implementations as well, but it goes
+  somewhat beyond the scope of this already big spec.
 
 Client (CLI) impact
 -------------------
@@ -423,41 +443,31 @@ Hardware Types
 
         @property
         def supported_inspect_interfaces(self):
-            return []
-
-        @abc.abstractproperty
-        def default_power_interface(self):
-            pass
-
-        @abc.abstractproperty
-        def default_deploy_interface(self):
-            pass
-
-        @property
-        def default_inspect_interface(self):
-            return None
+            return [NoopInspect]
 
   Note that some interfaces (power, deploy) are mandatory, while the other
-  (inspect) are not. Optional interfaces will be disabled if not overridden in
-  a hardware type. An error indicating unsupported operation will be returned
-  to a user trying to access related features (e.g. inspection).
+  (inspect) are not. A dummy implementation will be provided for all optional
+  interfaces. Depending on the specific call it will either do nothing or
+  raise an error. For user-initiated calls (e.g. start inspection), an error
+  will be returned. For internal calls (e.g. attach cleaning ports), no action
+  will be taked.
 
 * Create a new ``GenericHardwareType`` class which most of the actual hardware
   type classes will want to subclass. This class will insert generic
-  implementations for some interfaces and provide meaningful defaults::
+  implementations for some interfaces::
 
     class GenericHardwareType(AbstractHardwareType):
         supported_deploy_interfaces = [AgentDeploy]
-        supported_inspect_interfaces = [InspectorInspect]
-        default_deploy_interface = AgentDeploy
+        supported_inspect_interfaces = [NoopInspect, InspectorInspect]
 
-  Note that all properties contain classes, not instances.
+  Note that all properties contain classes, not instances. Also note that
+  order matters: in this example ``NoopInspect`` will be the default, if
+  both implementations are enabled in the configuration.
 
 * Here is an example of how hardware types could be created::
 
     class GenericIpmiHardware(GenericHardwareType):
         supported_power_interfaces = [IpmitoolPower, IpminativePower]
-        default_power_interface = IpmitoolPower
 
     class iLOGen8Hardware(GenericHardwareType):
         supported_power_interfaces = (
@@ -468,7 +478,6 @@ Hardware Types
             GenericHardwareType.supported_inspect_interfaces
             + [IloInspect]
         )
-        default_inspect_interface = IloInspect
 
     class iLOGen9Hardware(iLOGen8Hardware):
         supported_power_interfaces = (
