@@ -10,18 +10,18 @@ Implementation of ironic commands as an OSC plugin
 
 https://bugs.launchpad.net/ironic/+bug/1526479
 
-The OpenStackClient is becoming the defacto cli client for OpenStack. This spec
+The OpenStackClient is becoming the defacto CLI client for OpenStack. This spec
 will spell out what the command structure should look like, including
 parameters and command names.
 
 Problem description
 ===================
 
-The OpenStackClient has become the preferred method of creating clients for
-OpenStack APIs. The initial implementation has been done. What needs to happen
-now is to define what the command structure should be. There has been some
-confusion/discussion about what these commands should look like, so it seemed
-the proper thing to create a spec.
+The OpenStackClient [#]_ has become the preferred method of creating clients
+for OpenStack APIs. The initial implementation has been done. What needs to
+happen is to define what the command structure should be. There has been some
+confusion/discussion [#]_ about what these commands should look like, so it
+seemed the proper thing to create a spec.
 
 The goal of the OpenStackClient is to make the CLI clients more 'natural' for
 the End User. This spec will specify the commands that the End User will use
@@ -31,7 +31,28 @@ Proposed change
 ===============
 
 The proposed implementation will have all of the commands implemented as
-specified below.
+specified in the `Client (CLI) impact`_ section below.
+
+In addition (or as clarification) to the OpenStackClient command
+structure [#]_ :
+
+* the OpenStackClient command structure is described as
+  ``<object1> <action> <object2>``. This doesn't work if there are commands
+  of the form ``<object1> <action>``. Instead, we will use the form
+  ``<object1> <object2> <action>``. (Perhaps think of it as one object with
+  two parts). For example, instead of "openstack baremetal node
+  set maintenance" (because we have "openstack baremetal node set"), we will
+  use "openstack baremetal node maintenance set".
+
+* don't use hyphenated nouns, because the commands should be more 'natural'
+  and there aren't any commands (yet) that use hyphens. For example,
+  instead of "openstack baremetal node boot-device set", we are going to use
+  "openstack baremetal node boot device set".
+
+* a small survey indicated that some people liked 'passthrough' and
+  others liked 'thru'. Ironic's REST API and documentation use
+  'thru', whereas 'passthrough' is more "proper" English. To make
+  everyone happy, we'll support both spellings.
 
 Alternatives
 ------------
@@ -94,24 +115,34 @@ openstack baremetal chassis
                                multiple times.
   --description <description>  Will unset the chassis description ('')
 
+ironic CLI users who want to see a list of nodes belonging to a given chassis
+should use `openstack baremetal node list --chassis`, since we will not
+provide an `openstack baremetal chassis xxx` equivalent to
+`ironic chassis-node-list`.
+
 openstack baremetal driver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * openstack baremetal driver list
 
 * openstack baremetal driver show <driver_name>
+  --properties                 Only shows available driver properties
 
-* openstack baremetal driver properties show <driver_name>
+* openstack baremetal driver passthrough list <driver_name>
 
-* openstack baremetal driver passthru show <driver_name>
+* openstack baremetal driver passthrough call <driver_name> <method>
+
+  <method>             Vendor passthrough method to call.
+
+  --arg <key=value>    key=value to add to passthrough method. Can be
+                       specified multiple times.
+  --http-method <http_method>  one of 'POST', 'PUT', 'GET', 'DELETE', 'PATCH'
+
+* openstack baremetal driver passthru list <driver_name>
+  An alias to 'openstack baremetal driver passthrough list'
 
 * openstack baremetal driver passthru call <driver_name> <method>
-
-  <method>             Vendor passthru method to call.
-
-  --param <key=value>  key=value to add to passthru call. Can be specified
-                       multiple times.
-  --http-method <http_method>  one of 'POST', 'PUT', 'GET', 'DELETE', 'PATCH'
+  An alias to 'openstack baremetal driver passthrough call'
 
 openstack baremetal node
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,8 +154,6 @@ openstack baremetal node
   --instance       Interpret <uuid> as an instance UUID
   --long           Display detailed information about node.
   --states         Include state information. Mutually exclusive with --long.
-
-* openstack baremetal node show passthru <uuid>
 
 * openstack baremetal node list
 
@@ -189,25 +218,33 @@ openstack baremetal node
                          multiple times.
   --instance-uuid <uuid>  Instance uuid.
 
-* openstack baremetal node passthru <uuid> <method>
+* openstack baremetal node passthrough list <uuid>
 
-  <method>              Vendor-passthru method to be called
+* openstack baremetal node passthrough call <uuid> <method>
 
-  --param <key=value>   param to send to passthru method. Can be specified
-                        multiple times.
+  <method>              Vendor-passthrough method to be called
+
+  --arg <key=value>     argument to send to passthrough method. Can
+                        be specified multiple times.
   --http-method <http_method>  One of 'POST', 'PUT', 'GET', 'DELETE', 'PATCH'
 
-* openstack baremetal node show console <uuid>
+* openstack baremetal node passthru list <uuid>
+  an alias to 'openstack baremetal node passthrough list'
 
-* openstack baremetal node set console <uuid>
+* openstack baremetal node passthru call <uuid> <method>
+  an alias to 'openstack baremetal node passthrough call'
 
-* openstack baremetal node unset console <uuid>
+* openstack baremetal node console show <uuid>
 
-* openstack baremetal node show boot-device <uuid>
+* openstack baremetal node console enable <uuid>
+
+* openstack baremetal node console disable <uuid>
+
+* openstack baremetal node boot device show <uuid>
 
   --supported       Show the supported boot devices
 
-* openstack baremetal node set boot-device <uuid> <device>
+* openstack baremetal node boot device set <uuid> <device>
 
   <device>          One of 'pxe', 'disk', 'cdrom', 'bios', 'safe'
 
@@ -234,11 +271,11 @@ openstack baremetal node
 
 * openstack baremetal node abort <uuid>
 
-* openstack baremetal node set maintenance <uuid>
+* openstack baremetal node maintenance set <uuid>
 
   --reason <reason>         Reason for setting to maintenance mode
 
-* openstack baremetal node unset maintenance <uuid>
+* openstack baremetal node maintenance unset <uuid>
 
 * openstack baremetal node power on <uuid>
 
@@ -248,13 +285,10 @@ openstack baremetal node
 
 * openstack baremetal node validate <uuid>
 
-* openstack baremetal node create port <uuid> <address>
-
-  This is an alias for
-  'openstack baremetal port create <address> --node <uuid>'
-
-  --extra <key=value>       Arbitrary key=value metadata. Can be specified
-                            multiple times.
+ironic CLI users who want to see a list of ports belonging to a given node
+should use `openstack baremetal port list --node`, since we will not
+provide an `openstack baremetal node xxx` equivalent to
+`ironic node-port-list`.
 
 openstack baremetal port
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -353,10 +387,13 @@ Assignee(s)
 -----------
 
 Primary assignee:
-  brad-9 <brad@redhat.com>
+
+* brad-9 <brad@redhat.com>
 
 Other contributors:
-  None
+
+* Romanenko_K <kromanenko@mirantis.com>
+* rloo <ruby.loo@intel.com>
 
 Work Items
 ----------
@@ -390,3 +427,4 @@ References
 
 .. [#] http://docs.openstack.org/developer/python-openstackclient/index.html
 .. [#] http://lists.openstack.org/pipermail/openstack-dev/2015-November/078998.html
+.. [#] http://docs.openstack.org/developer/python-openstackclient/commands.html
