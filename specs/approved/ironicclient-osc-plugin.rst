@@ -49,10 +49,12 @@ structure [#]_ :
   instead of "openstack baremetal node boot-device set", we are going to use
   "openstack baremetal node boot device set".
 
-* a small survey indicated that some people liked 'passthrough' and
-  others liked 'thru'. Ironic's REST API and documentation use
-  'thru', whereas 'passthrough' is more "proper" English. To make
-  everyone happy, we'll support both spellings.
+* only provide one OpenStackClient command to do something; avoid aliasing
+
+* for naming, the trend is to use Americanised spelling, eg 'favor' instead of
+  'favour'. Having said that, it is important to take into consideration
+  the terminology/usage outside of OpenStack, e.g. by operators and
+  administrators.
 
 Alternatives
 ------------
@@ -100,6 +102,7 @@ openstack baremetal chassis
   --description <description>  Chassis description
   --extra <key=value>          Extra chassis properties. Can be specified
                                multiple times.
+  --uuid <uuid>                UUID of the chassis
 
 * openstack baremetal chassis delete <uuid> [<uuid> ...]
 
@@ -116,33 +119,26 @@ openstack baremetal chassis
   --description <description>  Will unset the chassis description ('')
 
 ironic CLI users who want to see a list of nodes belonging to a given chassis
-should use `openstack baremetal node list --chassis`, since we will not
-provide an `openstack baremetal chassis xxx` equivalent to
-`ironic chassis-node-list`.
+should use ``openstack baremetal node list --chassis``, since we will not
+provide an ``openstack baremetal chassis xxx`` equivalent to
+``ironic chassis-node-list``.
 
 openstack baremetal driver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * openstack baremetal driver list
 
-* openstack baremetal driver show <driver_name>
-  --properties                 Only shows available driver properties
+* openstack baremetal driver show <driver>
 
-* openstack baremetal driver passthrough list <driver_name>
+* openstack baremetal driver passthru list <driver>
 
-* openstack baremetal driver passthrough call <driver_name> <method>
+* openstack baremetal driver passthru call <driver> <method>
 
-  <method>             Vendor passthrough method to call.
+  <method>             Vendor passthru method to call.
 
-  --arg <key=value>    key=value to add to passthrough method. Can be
+  --arg <key=value>    key=value to add to passthru method. Can be
                        specified multiple times.
   --http-method <http_method>  one of 'POST', 'PUT', 'GET', 'DELETE', 'PATCH'
-
-* openstack baremetal driver passthru list <driver_name>
-  An alias to 'openstack baremetal driver passthrough list'
-
-* openstack baremetal driver passthru call <driver_name> <method>
-  An alias to 'openstack baremetal driver passthrough call'
 
 openstack baremetal node
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,8 +148,7 @@ openstack baremetal node
   Obsoletes: openstack baremetal show
 
   --instance       Interpret <uuid> as an instance UUID
-  --long           Display detailed information about node.
-  --states         Include state information. Mutually exclusive with --long.
+  --fields <field,[field,...]>  Select fields to fetch and display.
 
 * openstack baremetal node list
 
@@ -203,6 +198,12 @@ openstack baremetal node
                              specified multiple times.
   --instance-info <key=value>  instance-info to set/update on the node. Can be
                                specified multiple times.
+  --target-raid-config <config>  Set the target RAID configuration (JSON) for
+                                 the node. This can be one of: 1. a file
+                                 containing JSON data of the RAID
+                                 configuration; 2. "-" to read the contents
+                                 from standard input; or 3. a valid JSON
+                                 string.
 
 * openstack baremetal node unset <uuid>
 
@@ -217,22 +218,18 @@ openstack baremetal node
   --instance-info <key>  key to unset from instance-info. Can be specified
                          multiple times.
   --instance-uuid <uuid>  Instance uuid.
-
-* openstack baremetal node passthrough list <uuid>
-
-* openstack baremetal node passthrough call <uuid> <method>
-
-  <method>              Vendor-passthrough method to be called
-
-  --arg <key=value>     argument to send to passthrough method. Can
-                        be specified multiple times.
-  --http-method <http_method>  One of 'POST', 'PUT', 'GET', 'DELETE', 'PATCH'
+  --name                 Name of the node.
+  --target-raid_config   target RAID configuration
 
 * openstack baremetal node passthru list <uuid>
-  an alias to 'openstack baremetal node passthrough list'
 
 * openstack baremetal node passthru call <uuid> <method>
-  an alias to 'openstack baremetal node passthrough call'
+
+  <method>              Vendor passthru method to be called
+
+  --arg <key=value>     argument to send to passthru method. Can
+                        be specified multiple times.
+  --http-method <http_method>  One of 'POST', 'PUT', 'GET', 'DELETE', 'PATCH'
 
 * openstack baremetal node console show <uuid>
 
@@ -286,9 +283,16 @@ openstack baremetal node
 * openstack baremetal node validate <uuid>
 
 ironic CLI users who want to see a list of ports belonging to a given node
-should use `openstack baremetal port list --node`, since we will not
-provide an `openstack baremetal node xxx` equivalent to
-`ironic node-port-list`.
+should use ``openstack baremetal port list --node``, since we will not
+provide an ``openstack baremetal node xxx`` equivalent to
+``ironic node-port-list``.
+
+ironic CLI users who want the equivalent to ``ironic node-show-states`` should
+use the following command::
+
+  openstack baremetal node show <node> --fields console_enabled last_error
+  power_state provision_state provision_updated_at raid_config
+  target_power_state target_provision_state target_raid_config
 
 openstack baremetal port
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -327,6 +331,17 @@ openstack baremetal port
 
   --extra <key>           key to remove. Can be specified multiple times.
 
+
+Not addressed
+~~~~~~~~~~~~~
+OpenStackClient commands corresponding to these ironic CLI commands are not
+addressed by this proposal. They will be addressed in a future release.
+
+* ``ironic driver-raid-logical-disk-properties``.  Get RAID logical disk
+                                                   properties for a driver.
+
+* ``ironic driver-properties``.  Get properties (node.driver_info keys and
+                                 descriptions) for a driver.
 
 RPC API impact
 --------------
