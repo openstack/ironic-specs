@@ -74,22 +74,33 @@ timestamp) will be defined as follows for ironic:
   Each string will start with "baremetal." to distinguish ironic notifications
   from other notifications on the message bus.
 
-  This will be followed by the object that's being acted on, optionally the
-  field of the object being acted on, a descriptor of the action being taken,
-  and the phase of the action ("start", "end", potentially "fail"), if
-  applicable. event_type will have a base class defining these fields, with
+  This will be followed by the object that's being acted on, a descriptor of
+  the action being taken, and the status of the action ("start", "end",
+  "error", or "success"). These statuses will have the following semantics:
+
+  * "start" will be used when an action that is not immediate begins.
+  * "end" will be used when an action that is not immediate succeeds.
+  * "error" will be used when an action fails, regardless of whether the action
+    is immediate or not.
+  * "success" will be used when an action that is immediate succeeds.
+
+  event_type will have a base class defining these fields, with
   subclasses for each type of event that occurs. These subclasses will be
   versioned objects. Each of these fields will be separated by a period in the
   event_type string sent with the notification.
 
+  Given the above information, event_type will end up as a string on the
+  message bus with the following format:
+  ``baremetal.<object>.<action>.<status>``
+
   A few examples of potential event_type strings:
 
-  * "baremetal.node.set_power_state.start"
-  * "baremetal.node.set_power_state.end"
-  * "baremetal.node.state_change.start"
-  * "baremetal.node.state_change.end"
-  * "baremetal.conductor.start"
-  * "baremetal.conductor.stop"
+  * "baremetal.node.power_set.start"
+  * "baremetal.node.power_set.end"
+  * "baremetal.node.provision_set.start"
+  * "baremetal.node.provision_set.end"
+  * "baremetal.conductor.init.success"
+  * "baremetal.conductor.stop.success"
 
 * payload will be a versioned object related to the notification topic. This
   should include relevant information about the event being notified on. For
@@ -297,6 +308,8 @@ Documentation Impact
 * Developer documentation will be added for how to add new notifications or
   modify existing notifications
 * Document an example of what an emitted notification will look like
+* Documentation should be added for each notification indicating when it's
+  expected to be emitted
 
 References
 ==========
