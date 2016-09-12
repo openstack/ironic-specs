@@ -32,8 +32,8 @@ system to test will be removed from the ironic tree.
 A driver test system will be deemed reliable if it runs the expected tests and
 reports the results of those tests consistently over a period of time. Tests
 will be expected to complete and report back to gerrit within 8 hours of the
-patch submission until the end of N release and within 4 hours by the end of O
-development cycle.
+patch submission until the end of Newton release and within 4 hours by the end
+of Ocata development cycle.
 
 A driver test system will be deemed reliable if:
 
@@ -62,7 +62,7 @@ Timeline
 --------
 
 The process to implement and start enforcing third party driver CI is to be
-completed by the end of the N development cycle.
+completed by the end of the Newton development cycle.
 
 Deliverable milestones:
 
@@ -84,9 +84,9 @@ cycle deadlines, but we are using the official deadlines as a reference point.
 Infra CI will continue to test the ssh drivers already being used in the gate.
 
 Third party driver teams that do not implement a reliable reporting CI test
-system by the N release feature freeze (see Deliverable milestones above) will
-be removed from the ironic source tree. Driver test systems that miss any of
-the milestones may be subject to immediate removal from the source tree.
+system by the Newton release feature freeze (see Deliverable milestones above)
+will be removed from the ironic source tree. Driver test systems that miss any
+of the milestones may be subject to immediate removal from the source tree.
 
 Driver test systems will be required to initially run a test similar to the
 `gate-tempest-dsvm-ironic-pxe_ipa` test, with the only difference being

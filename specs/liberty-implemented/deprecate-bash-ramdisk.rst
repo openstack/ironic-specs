@@ -44,7 +44,7 @@ Devstack and tempest jobs should also be updated to not use the bash
 ramdisk anymore.
 
 The element in `diskimage-builder`_ and the deprecated code in Ironic
-should be removed in the M release cycle of OpenStack.
+should be removed in the Mitaka release cycle of OpenStack.
 
 Alternatives
 ------------
@@ -145,7 +145,7 @@ Work Items
 * Stop accepting new features for the bash ramdisk (code reviews and
   spec review).
 
-* In the M release cycle remove the element from `diskimage-builder`
+* In the Mitaka release cycle remove the element from `diskimage-builder`
   and the code that supports the bash ramdisk in Ironic.
 
 Dependencies
