@@ -259,7 +259,7 @@ Documentation Impact
 
 * Update the Ironic documentation to mention that writing a custom
   vendor_passthru() and driver_vendor_passthru() methods in the vendor
-  class has been deprecated and will be removed in the L cycle.
+  class has been deprecated and will be removed in the Liberty cycle.
 
 References
 ==========
