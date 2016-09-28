@@ -63,6 +63,15 @@ development cycles in which they were completed.
 Newton
 ------
 
+6.2
+~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/6.2/*
+
 6.1
 ~~~
 
