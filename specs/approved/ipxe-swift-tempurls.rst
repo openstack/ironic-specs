@@ -11,13 +11,13 @@ iPXE to use Swift Temporary URLs
 https://bugs.launchpad.net/ironic/+bug/1526404
 
 This adds support for generating Swift temporary URLs for the
-deploy and image's ramdisk(s) and kernel(s) when booting with iPXE.
+deploy ramdisk and kernel when booting with iPXE.
 
 Problem description
 ===================
 
 Currently the iPXE driver requires an external HTTP server to serve
-the deploy and image's ramdisk and kernel. When used with Glance, the
+the deploy ramdisk and kernel. When used with Glance, the
 ``ironic-conductor`` fetches the images from it and place them under the
 HTTP root directory, and if a rebalance happens in the hash right the
 new ``ironic-conductor`` taking over the node have to do the same thing,
@@ -31,14 +31,20 @@ Proposed change
 ===============
 
 The proposed implementation consists in having the iPXE driver to create
-a Swift tempurl for the ramdisk and kernel (deploy or image) that the
+a Swift tempurl for the deploy ramdisk and kernel that the
 node will boot as part of the config generation.
 
 This also proposes adding a boolean configuration option under
-the ``ipxe`` group called ``use_swift``. If True this will tell iPXE to
+the ``pxe`` group called ``ipxe_use_swift``. If True this will tell iPXE to
 not cache the images in the disk and generate the Swift tempurl for the
 ramdisk and kernel, if False, iPXE will continue to cache the images
 under the HTTP root directory. Defaults to False.
+
+Note that in order to keep compatibility with Nova behavior,
+kernel/ramdisk of the user image still have to be cached in case
+``netboot`` is required. Doing otherwise will make it impossible for user
+to reboot the instance from within when tempurls have expired or the image
+is deleted from Glance altogether.
 
 Alternatives
 ------------
@@ -131,24 +137,22 @@ Primary assignee:
   lucasagomes <lucasagomes@gmail.com>
 
 Other contributors:
-
+  pshchelo <shchelokovskyy@gmail.com>
 
 Work Items
 ----------
 
-* Add the new ``use_swift`` configuration option under the ``ipxe`` group.
+* Add the new ``ipxe_use_swift`` configuration option under the ``pxe`` group.
 
-* Get the iPXE driver to generate the Swift temporary URLs as part of
-  the configuration generation when ``use_swift`` is True.
+* Get the PXE driver to generate the Swift temporary URLs as part of
+  the configuration generation when ``ipxe_use_swift`` is True.
 
-* Skip caching the image on the disk when ``use_swift`` is True.
+* Skip caching the image on the disk when ``ipxe_use_swift`` is True.
 
 Dependencies
 ============
 
-* This patch depends on the specification `ipxe-dymic-config
-  <https://review.openstack.org/#/c/177726/>`_ that makes the iPXE
-  configuration files to be dynamically generated.
+None
 
 Testing
 =======
