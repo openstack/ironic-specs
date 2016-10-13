@@ -37,7 +37,7 @@ cases like these will allow ironic to push out these event changes rather than
 putting the bulk of this burden on external services.
 
 This is especially problematic if ironic were ever to be used in a standalone
-deployment without a external service like Nova that keeps track of resources
+deployment without an external service like Nova that keeps track of resources
 and emits its own notifications, since the deployers of ironic wouldn't have
 any way to keep track of any state changes outside of querying the ironic API
 periodically or looking at logs.
