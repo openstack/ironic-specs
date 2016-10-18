@@ -1,0 +1,1 @@
+../approved/openbmc-driver.rst
