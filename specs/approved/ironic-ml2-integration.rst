@@ -120,10 +120,16 @@ addition to the base object it will have the following fields:
 * node_id
 * address
 * extra
+* internal_info
+* standalone_ports_supported
 
 The 'address' field represents the MAC address for bonded NICs of the bare
 metal server. The 'extra' field can be used to hold any additional information
 that operators or developers want to store in the portgroup.
+The 'internal_info' field is used to store internal metadata. This field is
+read-only.
+The 'standalone_ports_supported' indicates whether ports that are members of
+this portgroup can be used as stand-alone ports.
 
 The Ironic port object will then have the following fields added to support
 new functionality:
@@ -231,25 +237,29 @@ relationship with the port.
 
 The portgroup object is proposed with the following fields and data types:
 
-+-----------------------+-------------------------+
-| Field Name            | Field Type              |
-+=======================+=========================+
-| id                    | int                     |
-+-----------------------+-------------------------+
-| uuid                  | str                     |
-+-----------------------+-------------------------+
-| name                  | str_or_none             |
-+-----------------------+-------------------------+
-| node_id               | int_or_none             |
-+-----------------------+-------------------------+
-| address               | str                     |
-+-----------------------+-------------------------+
-| extra                 | dict_or_none            |
-+-----------------------+-------------------------+
-| created_at            | datetime_or_str_or_none |
-+-----------------------+-------------------------+
-| updated_at            | datetime_or_str_or_none |
-+-----------------------+-------------------------+
++----------------------------+-------------------------+
+| Field Name                 | Field Type              |
++============================+=========================+
+| id                         | int                     |
++----------------------------+-------------------------+
+| uuid                       | str                     |
++----------------------------+-------------------------+
+| name                       | str_or_none             |
++----------------------------+-------------------------+
+| node_id                    | int_or_none             |
++----------------------------+-------------------------+
+| address                    | str                     |
++----------------------------+-------------------------+
+| extra                      | dict_or_none            |
++----------------------------+-------------------------+
+| internal_info              | dict_or_none            |
++----------------------------+-------------------------+
+| standalone_ports_supported | bool                    |
++----------------------------+-------------------------+
+| created_at                 | datetime_or_str_or_none |
++----------------------------+-------------------------+
+| updated_at                 | datetime_or_str_or_none |
++----------------------------+-------------------------+
 
 State Machine Impact
 --------------------
@@ -595,9 +605,112 @@ model:
 
   * Response:
 
-      * JSON schema definition of PortgroupCollection
+      * JSON schema definition of PortgroupCollection with detail.
 
 
+* ``/v1/nodes/(node_ident)/portgroups``
+
+  * Retrieve a list of portgroups for node.
+
+  * Method type GET.
+
+  * Normal http response code will be 200.
+
+  * Expected error http response code(s):
+
+      * 400 for bad query or malformed syntax
+      * 404 for resource (e.g. node) not found
+
+  * Parameters:
+
+      * ``node_ident (uuid_or_name)`` - UUID or logical name of a
+        node.
+
+  * Body:
+
+      * None
+
+  * Response:
+
+      * JSON schema definition of PortgroupCollection.
+
+* ``/v1/nodes/(node_ident)/portgroups/detail``
+
+  * Retrieve a list of portgroups with detail for node.
+
+  * Method type GET.
+
+  * Normal http response code will be 200.
+
+  * Expected error http response code(s):
+
+      * 400 for bad query or malformed syntax
+      * 404 for resource (e.g. node) not found
+
+  * Parameters:
+
+      * ``node_ident (uuid_or_name)`` - UUID or logical name of a
+        node.
+
+  * Body:
+
+      * None
+
+  * Response:
+
+      * JSON schema definition of PortgroupCollection with detail.
+
+* ``/v1/portgroups/(portgroup_ident)/ports``
+
+  * Retrieve a list of ports for portgroup.
+
+  * Method type GET.
+
+  * Normal http response code will be 200.
+
+  * Expected error http response code(s):
+
+      * 400 for bad query or malformed syntax
+      * 404 for resource (e.g. portgroup) not found
+
+  * Parameters:
+
+      * ``portgroup_ident (uuid_or_name)`` - UUID or logical name of a
+        portgroup.
+
+  * Body:
+
+      * None
+
+  * Response:
+
+      * JSON schema definition of PortCollection.
+
+* ``/v1/portgroups/(portgroup_ident)/ports/detail``
+
+  * Retrieve a list of ports with detail for portgroup.
+
+  * Method type GET.
+
+  * Normal http response code will be 200.
+
+  * Expected error http response code(s):
+
+      * 400 for bad query or malformed syntax
+      * 404 for resource (e.g. portgroup) not found
+
+  * Parameters:
+
+      * ``portgroup_ident (uuid_or_name)`` - UUID or logical name of a
+        portgroup.
+
+  * Body:
+
+      * None
+
+  * Response:
+
+      * JSON schema definition of PortCollection with detail.
 
 * JSON schema definition of Portgroup (data sample):
 
@@ -609,19 +722,21 @@ model:
     "extra": {
       "foo": "bar",
     },
+    "internal_info": {},
     "links": [
       {
         "href": "http://localhost:6385/v1/portgroups/
-         6eb02b44-18a3-4659-8c0b-8d2802581ae4",
+        6eb02b44-18a3-4659-8c0b-8d2802581ae4",
         "rel": "self"
       },
       {
         "href": "http://localhost:6385/portgroups/
-         6eb02b44-18a3-4659-8c0b-8d2802581ae4",
+        6eb02b44-18a3-4659-8c0b-8d2802581ae4",
         "rel": "bookmark"
       }
     ],
     "node_uuid": "e7a6f1e2-7176-4fe8-b8e9-ed71c77d74dd",
+    "standalone_ports_supported": true,
     "updated_at": "2015-05-15T09:04:12.011844+00:00",
     "uuid": "6eb02b44-18a3-4659-8c0b-8d2802581ae4",
     "name": "node1_portgroup1"
@@ -638,17 +753,62 @@ model:
             "links": [
                 {
                     "href": "http://localhost:6385/v1/portgroups/
-                     6eb02b44-18a3-4659-8c0b-8d2802581ae4",
+                    6eb02b44-18a3-4659-8c0b-8d2802581ae4",
                     "rel": "self"
                 },
                 {
                     "href": "http://localhost:6385/portgroups/
-                     6eb02b44-18a3-4659-8c0b-8d2802581ae4",
+                    6eb02b44-18a3-4659-8c0b-8d2802581ae4",
                     "rel": "bookmark"
                 }
             ],
+            "name": "node1_portgroup1",
             "uuid": "6eb02b44-18a3-4659-8c0b-8d2802581ae4"
         }
+    ]
+  }
+
+* JSON schema definition of PortgroupCollection with detail:
+
+::
+
+  {
+    "portgroups": [
+      {
+        "address": "fe:54:00:77:07:d9",
+        "created_at": "2016-08-18T22:28:48.165105+00:00",
+        "extra": {},
+        "internal_info": {},
+        "links": [
+          {
+            "href": "http://127.0.0.1:6385/v1/portgroups/
+            6eb02b44-18a3-4659-8c0b-8d2802581ae4",
+            "rel": "self"
+          },
+          {
+            "href": "http://127.0.0.1:6385/portgroups/
+            6eb02b44-18a3-4659-8c0b-8d2802581ae4",
+            "rel": "bookmark"
+          }
+        ],
+        "name": "node1_portgroup1",
+        "node_uuid": "e7a6f1e2-7176-4fe8-b8e9-ed71c77d74dd",
+        "ports": [
+          {
+            "href": "http://127.0.0.1:6385/v1/portgroups/
+            6eb02b44-18a3-4659-8c0b-8d2802581ae4/ports",
+            "rel": "self"
+          },
+          {
+            "href": "http://127.0.0.1:6385/portgroups/
+            6eb02b44-18a3-4659-8c0b-8d2802581ae4/ports",
+            "rel": "bookmark"
+          }
+        ],
+        "standalone_ports_supported": true,
+        "updated_at": "2016-11-04T17:46:09+00:00",
+        "uuid": "6eb02b44-18a3-4659-8c0b-8d2802581ae4"
+      }
     ]
   }
 
@@ -722,6 +882,7 @@ by the caller and the response.
         {
         "address": "fe:54:00:77:07:d9",
         "node_uuid": "e7a6f1e2-7176-4fe8-b8e9-ed71c77d74dd",
+        "standalone_ports_supported": true,
         "name": "node1_portgroup1"
         }
 
@@ -736,6 +897,7 @@ by the caller and the response.
         "created_at": "2015-05-12T10:10:00.529243+00:00",
         "extra": {
         },
+        "internal_info": {},
         "links": [
           {
             "href": "http://localhost:6385/v1/portgroups/
@@ -748,6 +910,7 @@ by the caller and the response.
             "rel": "bookmark"
           }
         ],
+        "standalone_ports_supported": true,
         "updated_at": null,
         "uuid": "6eb02b44-18a3-4659-8c0b-8d2802581ae4",
         }
@@ -854,7 +1017,8 @@ same time, so this change must work with older clients without breaking them.
 Client (CLI) impact
 -------------------
 
-The python-ironicclient would need updated to support the new portgroup APIs.
+The python-ironicclient and OSC would need updated to support the new
+portgroups APIs.
 
 Example usage of the new methods:
 
@@ -863,45 +1027,98 @@ Example usage of the new methods:
     portgroup_id and pxe_enabled) and would also support update of these
     attributes. As examples:
 
-    * ironic port-create -a <address> -n <node> [-e <key=value>]
-      [--local_link_connection <local_link_connection>]
-      [--portgroup_uuid <portgroup_uuid>] [--pxe_enabled <pxe_enabled>]
+    "ironic" CLI:
 
-    * ironic port-update port_uuid replace portgroup_uuid=<portgroup_uuid>
+        * ironic port-create -a <address> -n <node> [-e <key=value>]
+          [--local-link-connection <local_link_connection>]
+          [--portgroup-uuid <portgroup_uuid>] [--pxe-enabled <pxe_enabled>]
+
+        * ironic port-update port_uuid replace portgroup_uuid=<portgroup_uuid>
+
+        * ironic port-list [--detail] [--address <mac-address>]
+          [--portgroup-uuid <portgroup_uuid>]
+
+
+    "openstack baremetal" CLI:
+
+        * openstack baremetal port create --node <node>
+          [--local-link-connection <key=value>]
+          [--portgroup-uuid <portgroup_uuid>]
+          [--pxe-enabled <boolean>]
+          <address>
+
+        * openstack baremetal port set [--portgroup-uuid <portgroup_uuid>]
+          <port>
+
+        * openstack baremetal port list --address <mac-address>]
+          [--node <node>] [--portgroup-uuid <portgroup_uuid>]
 
 
   * For portgroups, the CLI would support the following new methods:
 
-    * ironic portgroup-create --node <node> [--name <portgroupname>]
-      [--address <mac-address>] [-e <key=value>]
+    "ironic" CLI:
 
-        * To add ports to a portgroup, the portgroup should first
-          be created and then port_update called.
+        * ironic portgroup-create --node <node> [--name <portgroupname>]
+          [--address <mac-address>] [-e <key=value>]
 
-    * ironic portgroup-delete <portgroup_uuid>
+        * ironic portgroup-delete <portgroup_uuid>
 
-    * ironic portgroup-list [--detail] [--node <node>]
-      [--address <mac-address>]
-      [--limit <limit>]  [--marker <portgroup_uuid] [--sort-key <field>]
-      [--sort-dir <direction>]
+        * ironic portgroup-list [--detail] [--node <node>]
+          [--address <mac-address>]
+          [--limit <limit>]  [--marker <portgroup_uuid] [--sort-key <field>]
+          [--sort-dir <direction>]
 
-    * ironic portgroup-show [--address] <id>
+        * ironic portgroup-show [--address] <id>
 
-        * <id> is the UUID of the portgroup (or MAC address if --address is
-          specified)
+            * <id> is the UUID of the portgroup (or MAC address if --address is
+              specified)
 
-    * ironic portgroup-update <portgroup_uuid> <op> <path=value>
-      [<path=value> ... ]
+        * ironic portgroup-update <portgroup_uuid> <op> <path=value>
+          [<path=value> ... ]
 
-        * <op> is add, remove or replace.
+            * <op> is add, remove or replace.
 
-        * <path=value> is the attribute to add, remove or replace. Can be
-          specified multiple times. For 'remove' only <path> is necessary.
+            * <path=value> is the attribute to add, remove or replace. Can be
+              specified multiple times. For 'remove' only <path> is necessary.
 
+        * Note: Even though the ironic CLI includes 'ironic node-port-list',
+          we are NOT going to provide a corresponding
+          'ironic node-portgroup-list'. Rather, the list of portgroups
+          of a node will be available via ironic portgroup-list --node.
+
+    "openstack baremetal" CLI:
+
+        * openstack baremetal portgroup create --node <uuid> [--name NAME]
+          [--extra <key=value>]
+          [--support-standalone-ports | --unsupport-standalone-ports]
+          <address>
+
+        * openstack baremetal portgroup delete <portgroup> [<portgroup> ...]
+
+        * openstack baremetal portgroup list [--marker <portgroup>]
+          [--address <mac-address>] [--node <node>]
+          [--sort <key>[:<direction>]]
+          [--long | --fields <field> [<field> ...]]
+
+        * openstack baremetal portgroup show [--address]
+          [--fields <field> [<field> ...]]
+          <portgroup>
+
+        * openstack baremetal portgroup set [--address] [--name NAME]
+          [--node <uuid>] [--extra <key=value>]
+          [--support-standalone-ports | --unsupport-standalone-ports]
+          [--fields <field> [<field> ...]]
+          <portgroup>
+
+        * openstack baremetal portgroup unset [--name] [--extra <key>]
+          [--node <uuid>] <portgroup>
+
+
+    * To add ports to a portgroup, the portgroup should first
+      be created and then port_update or port create called.
 
 The python-ironicclient would also need the Port detailed resource extended
 to include the new port attributes.
-
 
 RPC API impact
 --------------
