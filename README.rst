@@ -56,3 +56,11 @@ confidence in the Jenkins result), please execute the following command::
 
 After running ``tox``, the documentation will be available for viewing in HTML
 format in the ``doc/build/`` directory.
+
+To quickly preview just the rst syntax rendering (without Sphinx features)
+of a single spec file execute the following command::
+
+    $ tox -evenv rst2html.py <path-to-your-spec.rst> <path-to-output.html>
+
+and open ``<path-to-output.html>`` in your browser.
+Running full ``tox`` is still advised before submitting your patch.
