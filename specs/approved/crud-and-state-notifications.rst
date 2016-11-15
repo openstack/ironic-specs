@@ -163,11 +163,21 @@ The following event types will be added:
 
 * "baremetal.node.console_set.end";
 
-* "baremetal.node.console_set.error".
+* "baremetal.node.console_set.error";
 
-Priority level - INFO or ERROR (for "error" status). Payload contains all
-fields from base ``NodePayload``. All these notifications will be implemented
-in the ironic-conductor, because setting of a node's console is an asynchronous
+* "baremetal.node.console_restore.start";
+
+* "baremetal.node.console_restore.end";
+
+* "baremetal.node.console_restore.error".
+
+``console_set`` action is used when start or stop console is initiated via API
+request, ``console_restore`` action is used when ``console_enabled`` flag is
+already enabled in the DB for node and console restart via driver is required
+(due to dead or restarted ironic-conductor process). Priority level - INFO or
+ERROR (for "error" status). Payload contains all fields from base
+``NodePayload``. All these notifications will be implemented in the
+ironic-conductor, because setting of a node's console is an asynchronous
 request, so ironic-conductor can easily emit notifications for the start/end of
 the change.
 
