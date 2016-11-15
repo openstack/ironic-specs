@@ -101,9 +101,18 @@ REST API impact
             "type": "object",
             "properties": {
                 "vifs": {
-                    "description": "List of vifs currently attached"
-                    "type": "list"
-                },
+                    "description": "List of VIFs currently attached"
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["id"]
+                    }
+                }
             },
             "required": ["vifs"]
         }
@@ -112,7 +121,9 @@ REST API impact
 
         {
             "vifs": [
-                "8e6ba175-1c16-4dfa-82b9-dfc12f129170",
+                        {
+                            "id": "8e6ba175-1c16-4dfa-82b9-dfc12f129170",
+                        }
             ]
         }
 
@@ -132,7 +143,7 @@ REST API impact
     + 409, Conflict between the requested VIF to attach and other VIFs already
       attached
     + 422, The request was good but unable to attach the VIF for a
-      defined reason, for example: "No physical interface's available to attach
+      defined reason, for example: "No physical interfaces available to attach
       too"
 
   - Expected data is a JSON
@@ -144,7 +155,7 @@ REST API impact
             "type": "object",
             "properties": {
                 "id": {
-                    "description": "ID of interface to attach"
+                    "description": "ID of VIF to attach"
                     "type": "string"
                 },
             },
@@ -159,7 +170,7 @@ REST API impact
 
   - Expected response body is empty
 
-* v1/nodes/<node_id>/vifs/<vif_id>
+* DELETE v1/nodes/<node_id>/vifs/<vif_id>
 
   - Calls vif_detach on the network interface for the node, passing in the json
     provided
