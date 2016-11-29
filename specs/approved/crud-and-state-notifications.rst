@@ -33,7 +33,11 @@ Node CRUD notifications
 
 The following event types will be added:
 
-* "baremetal.node.create.success";
+* "baremetal.node.create.start";
+
+* "baremetal.node.create.end";
+
+* "baremetal.node.create.error";
 
 * "baremetal.node.update.start";
 
