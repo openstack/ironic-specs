@@ -27,7 +27,7 @@ The layout of this repository is::
 There are also placeholder directories for old links that have been moved.
 
 Specifications must follow the template which can be found at
-`doc/source/specs/template.rst`.
+`specs/template.rst`.
 
 Specifications are proposed by adding them to the `specs/approved` directory,
 adding a soft link to it from the `specs/not-implemented` directory, and
