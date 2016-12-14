@@ -25,8 +25,24 @@ Ironic node notifications for provision state, maintenance and console
 state also could be used by Searchlight plugin in order to keep Searchlight's
 index of ironic resources up-to-date.
 
+Apart from searchlight, there is a use case of monitoring service, that
+caches all notification payloads along with event type, like
+start/end/error/<etc> and an operator can query this service to see if ironic
+is behaving properly. For example, if there are much more start notifications
+for node create, than there are end notifications, it may mean that the
+database is not behaving properly, or messaging is having a hard time
+delivering messages between API and conductor. That is a separate case from
+searchlight: searchlight for example does not need to know the payload of the
+node create start notification, as there is no actual node yet, but for
+monitoring purposes, it may be useful.
+
 Proposed change
 ===============
+
+As a general note for all CRUD notifications, ``*.start`` and ``*.error`` event
+payloads will be ignored by Searchlight, as in both cases it would mean that
+resource representation has not changed, or in case of ``*create*``
+notifications, that the resource was not created.
 
 Node CRUD notifications
 -----------------------
@@ -64,7 +80,11 @@ Port CRUD notifications
 
 The following event types will be added:
 
-* "baremetal.port.create.success";
+* "baremetal.port.create.start";
+
+* "baremetal.port.create.end";
+
+* "baremetal.port.create.error";
 
 * "baremetal.port.update.start";
 
@@ -82,7 +102,7 @@ Priority level - INFO or ERROR (for "error" status).
 Payload contains these fields: ``uuid``, ``node_uuid``, ``address``, ``extra``,
 ``local_link_connection``, ``pxe_enabled``, ``created_at``, ``updated_at``.
 These notifications will be implemented at the API level. In addition,
-"baremetal.port.create.success" will be emitted by the ironic-conductor service
+"baremetal.port.create.*" will be emitted by the ironic-conductor service
 when driver creates a port (examples are [#]_ and [#]_).
 
 Chassis CRUD notifications
@@ -90,15 +110,28 @@ Chassis CRUD notifications
 
 The following event types will be added:
 
-* "baremetal.chassis.create.success";
+* "baremetal.chassis.create.start";
 
-* "baremetal.chassis.update.success";
+* "baremetal.chassis.create.end";
 
-* "baremetal.chassis.delete.success".
+* "baremetal.chassis.create.error";
 
-Priority level - INFO. Payload contains these fields: ``uuid``, ``extra``,
-``description``, ``created_at``, ``updated_at``. All these notifications will
-be implemented at the API level.
+* "baremetal.chassis.update.start";
+
+* "baremetal.chassis.update.end";
+
+* "baremetal.chassis.update.error";
+
+* "baremetal.chassis.delete.start".
+
+* "baremetal.chassis.delete.end".
+
+* "baremetal.chassis.delete.error";
+
+Priority level - INFO or ERROR (for "error" status).
+Payload contains these fields: ``uuid``, ``extra``, ``description``,
+``created_at``, ``updated_at``. All these notifications will be implemented at
+the API level.
 
 Node provision state notifications
 ----------------------------------
@@ -317,6 +350,6 @@ References
 ==========
 
 .. [#] https://wiki.openstack.org/wiki/Searchlight
-.. [#] https://github.com/openstack/ironic/blob/master/ironic/drivers/modules/irmc/inspect.py#L177
-.. [#] https://github.com/openstack/ironic/blob/master/ironic/drivers/modules/ilo/inspect.py#L56
+.. [#] https://github.com/openstack/ironic/blob/2c76da5f437c5fc2f4022e8705e74fed0a46bebb/ironic/drivers/modules/irmc/inspect.py#L177
+.. [#] https://github.com/openstack/ironic/blob/2c76da5f437c5fc2f4022e8705e74fed0a46bebb/ironic/drivers/modules/ilo/inspect.py#L56
 .. [#] https://review.openstack.org/#/c/321865/

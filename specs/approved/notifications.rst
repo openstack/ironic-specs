@@ -82,7 +82,8 @@ timestamp) will be defined as follows for ironic:
   * "end" will be used when an action that is not immediate succeeds.
   * "error" will be used when an action fails, regardless of whether the action
     is immediate or not.
-  * "success" will be used when an action that is immediate succeeds.
+  * "success" will be used when an action that succeeds almost immediately, and
+    there is no need to report the intermediate resource states.
 
   event_type will have a base class defining these fields, with
   subclasses for each type of event that occurs. These subclasses will be
@@ -320,4 +321,3 @@ References
 .. [#] https://wiki.openstack.org/wiki/LoggingStandards#Log_level_definitions
 .. [#] Nova versioned notifications spec: https://github.com/openstack/nova-specs/blob/master/specs/mitaka/approved/versioned-notification-api.rst
 .. [#] http://docs.openstack.org/developer/oslo.messaging/opts.html
-
