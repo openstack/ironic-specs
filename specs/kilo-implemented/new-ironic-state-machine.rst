@@ -87,9 +87,9 @@ New state machine::
                               v
                   +------>MANAGEABLE<--------+
                   |        +  + ^ |          |
-                  |   R:zap|  | | |R:inspect |
+                  | R:clean|  | | |R:inspect |
                   +        |  | | |          +
-     [ZAP*/MANAGEABLE]<----+  | | +---->[INSPECT*/MANAGEABLE]
+     [CLEAN*/MANAGEABLE]<----+  | | +---->[INSPECT*/MANAGEABLE]
                               | |
                      R:provide| +----------+
                       +-------+   R:manage |
@@ -165,28 +165,9 @@ MANAGEABLE
   be transitioned to MANAGEABLE and (optionally) powered off.  From
   MANAGEABLE, nodes can transition to:
 
-  * MANAGEABLE (through ZAPPING) via the zap API call,
+  * MANAGEABLE (through CLEANING) via the clean API call,
   * MANAGEABLE (through INSPECTING) via the inspect API call, and
   * AVAILABLE (through CLEANING) via the provide API call.
-
-ZAPPING
-  Nodes in the ZAPPING state are performing (potentially) long-running and
-  destructive tasks, such as:
-
-  * changing RAID levels,
-  * updating firmware,
-  * going through burn in.
-
-  Management of tasks for ZAPPING shall be handled as outlined in `the
-  zapping spec <https://review.openstack.org/#/c/102685/>`_.
-  ZAPPING tasks must not rely on the information in node.properties
-  being correct beyond the information that each driver needs to
-  connect to the system.
-
-ZAPFAIL
-  Nodes that transition into ZAPFAIL will automatically enter
-  maintenance mode, as failure to ZAP a machine usually indicates a
-  hardware failure or something else that requires remote hands to fix.
 
 INSPECTING
   INSPECTING will utilize node introspection to update
@@ -206,9 +187,6 @@ CLEANING
   * Booting to a `long running deploy ramdisk
     <https://review.openstack.org/#/c/102405/>`_, if you want the
     machine to stay on while in AVAILABLE.
-
-  Management of CLEANING tasks should be handled in the same fashion
-  as ZAPPING tasks.
 
   No matter what tasks are performed during CLEANING, the apparent
   configuration of the system must not change.  For instance, if you
@@ -247,7 +225,7 @@ DEPLOYING
     that may be required by additional subsystems.
 
   Tasks for DEPLOYING should be handled in a manner similar to how
-  they are handled for ZAPPING (details to be addressed in a different
+  they are handled for CLEANING (details to be addressed in a different
   spec).
 
 DEPLOYWAIT
@@ -319,7 +297,7 @@ the state machine:
 +===========+==============+==========================+===========+
 | manage    | ENROLL       | VERIFYING -> VERIFIED    | MANAGEABLE|
 +-----------+--------------+--------------------------+-----------+
-| zap       | MANAGEABLE   | ZAPPING -> ZAPPED        | MANAGEABLE|
+| clean     | MANAGEABLE   | CLEANING -> CLEANED      | MANAGEABLE|
 +-----------+--------------+--------------------------+-----------+
 | inspect   | MANAGEABLE   | INSPECTING -> INSPECTED  | MANAGEABLE|
 +-----------+--------------+--------------------------+-----------+
