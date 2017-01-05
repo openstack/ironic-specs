@@ -29,10 +29,9 @@ Proposed change
 * Add InstanceRescueFailure, and InstanceUnRescueFailure exceptions to Nova
 * Add methods to Nova driver to poll Ironic to wait for nodes to rescue and
   unrescue, as appropriate.
-* Store hashed/salted (crypt(3)) password in Ironic node instance_info for
-  use in /etc/shadow on the rescued node
-* Add method to create salted hash appropriate for injecting into linux
-  /etc/shadow file.
+* Store plaintext password in Ironic node instance_info for use on the rescued
+  node.
+* Add method for injecting password into OS.
 * Modify Ironic state machine as described in the state machine impact section
 * Add AgentRescue driver (implements base.RescueInterface). This driver will
   be mixed into the agent_ipmitool and agent_pyghmi drivers.
@@ -65,33 +64,33 @@ Standard rescue process:
 4. Virt driver loops while waiting for provision_state to change, and updates
    Nova state as appropriate.
 5. Ironic API receives set_provision_state call, and performs do_node_rescue
-   RPC call.
-6. Ironic conductor hands off call to appropriate driver.
-7. Driver boots rescue ramdisk, using the configured boot driver. As part of
-   this process, Ironic will put the node onto the rescue_network, as
-   configured in ironic.conf.
-8. IPA ramdisk boots, performs a lookup and sets rescue password based on
-   returned data and begins heartbeating.
-9. Upon receiving heartbeat the conductor, if using multiple networks, places
-   the instance back onto the tenant network, isolating the rescue ramdisk
-   from the ironic control plane. When this completes, the node's provision
-   state will change to RESCUE.
-10. Inside the rescue image, automation (such as cloud-init), should configure
-    the rescue image as appropriate.
+   RPC call (ACTIVE -> RESCUING).
+6. Ironic conductor sets rescue password in instance_info and hands off call to
+   appropriate driver.
+7. Driver boots rescue ramdisk (RESCUING -> RESCUEWAIT), using the configured
+   boot driver. As part of this process, Ironic will put the node onto the
+   rescue_network, as configured in ironic.conf.
+8. Agent ramdisk boots, performs a lookup (/v1/lookup in ironic-api), gets node
+   info back, and begins heartbeating (/v1/heartbeat in ironic-api).
+9. Upon receiving heartbeat, the conductor calls finalize_rescue (/v1/commands)
+   with config drive and rescue password (RESCUEWAIT -> RESCUING), and removes
+   the rescue password from the instance_info, as it's no longer needed.
+10. Agent sets password, configures network from information in config drive,
+    and stops agent service.
+11. The conductor flips network ports putting the node back on the tenant
+    network, and the state is set to RESCUE.
 
 Standard Unrescue process:
 
 1. User calls Nova unrescue() on a node.
 2. Nova calls Ironic unrescue() virt driver.
-3. Virt driver removes rescue_password_hash from node instance info (set
-   during rescue process).
-4. Virt driver calls node.set_provision_state(ACTIVE).
-5. Virt driver loops while waiting for provision_state to change, and updates
+3. Virt driver calls node.set_provision_state(ACTIVE).
+4. Virt driver loops while waiting for provision_state to change, and updates
    Nova state as appropriate.
-6. Ironic API receives set_provision_state call, and performs
+5. Ironic API receives set_provision_state call, and performs
    do_node_unrescue RPC call.
-7. Ironic conductor hands off call to appropriate driver.
-8. Driver performs actions required to boot node normally, and sets provision
+6. Ironic conductor hands off call to appropriate driver.
+7. Driver performs actions required to boot node normally, and sets provision
    state to ACTIVE.
 
 Rescue/Unrescue with standalone Ironic:
@@ -101,8 +100,6 @@ Rescue/Unrescue with standalone Ironic:
 2. When finished with rescuing the instance, call Ironic provision state API
    with "unrescue" verb
 
-The current proposed methodology only works with Linux-based rescue ramdisks,
-due to the use of crypt(3) to store the password in a one-way hash.
 
 Alternatives
 ------------
@@ -125,12 +122,12 @@ State Machine Impact
   * RESCUING -> RESCUE (rescue succeeds)
   * RESCUING -> RESCUEWAIT (optionally, wait on external callback)
   * RESCUING -> RESCUEFAIL (rescue fails)
-  * RESCUEWAIT -> RESCUE (finish rescue after callback)
+  * RESCUEWAIT -> RESCUING (callback succeeds)
   * RESCUEWAIT -> RESCUEFAIL (callback fails)
+  * RESCUEWAIT -> DELETING (delete without waiting)
   * RESCUE -> RESCUING (re-rescue node)
   * RESCUE -> DELETING (delete rescued node)
   * RESCUE -> UNRESCUING (unrescue node)
-  * RESCUE -> UNRESCUEFAIL (unrescue fails)
   * UNRESCUING -> UNRESCUEFAIL (unrescue fails)
   * UNRESCUING -> ACTIVE (unrescue succeeds)
   * UNRESCUEFAIL -> RESCUING (re-rescue node after failed unrescue)
@@ -167,7 +164,7 @@ None, because we defined the RescueInterface a long time ago.
 Nova driver impact
 ------------------
 Implement rescue() and unrescue() in the Nova driver.  Add supporting methods
-including _wait_for_rescue(), _wait_for_unrescue(), and _hash_password().
+including _wait_for_rescue() and _wait_for_unrescue().
 
 Ramdisk impact
 --------------
@@ -261,7 +258,7 @@ See proposed changes.
 
 Dependencies
 ============
-Updating the Ironic virt driver in Nova to support this.
+* Updating the Ironic virt driver in Nova to support this.
 
 Testing
 =======
