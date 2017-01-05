@@ -123,7 +123,7 @@ State Machine Impact
   * RESCUING -> RESCUEWAIT (optionally, wait on external callback)
   * RESCUING -> RESCUEFAIL (rescue fails)
   * RESCUEWAIT -> RESCUING (callback succeeds)
-  * RESCUEWAIT -> RESCUEFAIL (callback fails)
+  * RESCUEWAIT -> RESCUEFAIL (callback fails or abort issued)
   * RESCUEWAIT -> DELETING (delete without waiting)
   * RESCUE -> RESCUING (re-rescue node)
   * RESCUE -> DELETING (delete rescued node)
