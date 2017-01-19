@@ -241,7 +241,7 @@ Database and Rest API
   The validation will be conducted on the API service side by checking the new
   ``conductor_hardware_interfaces`` database table.
 
-* If for some reason the existing *inteface* becomes invalid for a node (e.g.
+* If for some reason the existing *interface* becomes invalid for a node (e.g.
   it was disabled after the node was enrolled), it will be signalized via the
   usual node validation API. The validation for this interface won't pass with
   an appropriate error message. On the programming level, the driver attribute
@@ -267,7 +267,9 @@ Database and Rest API
 * Create a new table ``conductor_hardware_interfaces`` to hold the relationship
   between conductors, hardware types and available interfaces. A warning will
   be issued on conductor start up, if it detects that other conductors have
-  a different set of interfaces for the same enabled *hardware type*.
+  a different set of interfaces for the same enabled *hardware type*. This
+  will also track the default interface for each hardware type and interface
+  type combination.
 
   This situation is inevitable during live upgrades, so it must not result in
   an error. However, we will document that all conductors should have the same
@@ -326,6 +328,10 @@ Data model impact
   ``interface_type VARCHAR(16)`` - interface type name (e.g. ``deploy``),
 
   ``interface_name VARCHAR(255)`` - interface implementation entry point name.
+
+  ``default TINYINT(1)`` - boolean which denotes if this ``interface_name`` is
+                           the default for a given ``hardware_type`` and
+                           ``interface_type`` combination.
 
   This table will get populated on conductor start up and purged on deleting
   the conductor record. On conductor startup, during init_host(), the conductor
