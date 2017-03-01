@@ -7,13 +7,15 @@ OpenStack Ironic Project Plans
 Priorities
 ==========
 
-During each design summit, we agree what the whole community wants to focus
-on for the upcoming release. This is the output of those discussions:
+During each PTG (before Pike - each design summit), we agree what the whole
+community wants to focus on for the upcoming release. This is the output of
+those discussions:
 
 .. toctree::
    :glob:
    :maxdepth: 1
 
+   priorities/pike-priorities
    priorities/ocata-priorities
    priorities/newton-priorities
    priorities/mitaka-priorities
