@@ -28,7 +28,14 @@ DRAFT_REQUIRED_TITLES = {
         'Proposed change': [],
         }
 
-BUG_URL = 'https://bugs.launchpad.net/ironic/+bug/'
+# There has to be an RFE bug in launchpad associated with this spec,
+# and it could be in any ironic project (except for ironic-inspector
+# which has its own specs repository), not just 'ironic'. However,
+# checking for the presence of an ironic project in the URL isn't that
+# useful since a valid bug URL might not have anything to do with ironic;
+# e.g. https://bugs.launchpad.net/ironic/+bug/12345 :)
+BUG_URL = 'https://bugs.launchpad.net/'
+
 BLUEPRINT_URL = 'https://blueprints.launchpad.net/ironic/+spec/'
 
 
