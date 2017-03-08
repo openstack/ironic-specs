@@ -126,23 +126,22 @@ Assignee(s)
 -----------
 
 Primary assignee:
-bcornec
-lucasagomes
+
+* bcornec
+* lucasagomes
 
 Other contributors:
-ribaudr
+
+* ribaudr
 
 Work Items
 ----------
 
-* Add new Redfish hardware type, supporting power and management interface
-  APIs and providing PXE, virtual media boot and standard deployment
-  methods.
-* Writing unit-test cases for the Redfish type.
-* Adaptation of the devstack Ironic module to add this capability, based
-  on the virtualbmc work, adding to it the minimal required Redfish REST
-  API support.
-* Writing configuration documents.
+* Add a new ``redfish`` hardware type, power and management interfaces.
+* Write unit-tests for the new code.
+* Modify the Ironic DevStack module to setup a virtual environment that
+  is able to test nodes using the new Redfish driver.
+* Write documentation.
 
 Dependencies
 ============
@@ -153,7 +152,7 @@ Testing
 =======
 Unit-tests will be implemented for Redfish support.
 
-DevStack will be update to setup the nodes with the redfish driver and
+DevStack will be updated to setup the nodes with the redfish driver and
 the libvirt mockup that is shipped with Sushy allowing it to be tests
 in gate against virtual machines.
 
@@ -164,7 +163,6 @@ the RPC API.
 
 Documentation Impact
 ====================
-* Writing configuration documents.
 * Updating Ironic documentation section _`Enabling Drivers`:
   http://docs.openstack.org/developer/ironic/deploy/drivers.html with Redfish
   related instructions.
