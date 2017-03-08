@@ -1,0 +1,1 @@
+../approved/ironic-redfish.rst
