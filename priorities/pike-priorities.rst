@@ -24,9 +24,9 @@ Essential Priorities
 +---------------------------------------+-------------------------------------+
 | `Rolling upgrades`_                   | rloo, jlvillal                      |
 +---------------------------------------+-------------------------------------+
-| `Reference architecture guide`_       | jroll                               |
+| `Reference architecture guide`_       | jroll, dtantsur                     |
 +---------------------------------------+-------------------------------------+
-| Python 3.5 compatibility              | JayF, hurricanerix                  |
+| Python 3.5 compatibility              | Nisha                               |
 +---------------------------------------+-------------------------------------+
 | Deploying with Apache and WSGI in CI  | vsaienk0                            |
 +---------------------------------------+-------------------------------------+
@@ -34,9 +34,7 @@ Essential Priorities
 +---------------------------------------+-------------------------------------+
 | `Feature parity between two CLIs`_    | rloo, dtantsur                      |
 +---------------------------------------+-------------------------------------+
-| `OSC default API version change`_     | mariojv, dtantsur                   |
-+---------------------------------------+-------------------------------------+
-| `Rescue mode`_                        | mariojv, JayF                       |
+| `OSC default API version change`_     | dtantsur                            |
 +---------------------------------------+-------------------------------------+
 | Finish node tags                      | zhenguo, dtantsur                   |
 +---------------------------------------+-------------------------------------+
@@ -47,7 +45,7 @@ High Priorities
 +---------------------------------------+-------------------------------------+
 | Priority                              | Primary Contacts                    |
 +=======================================+=====================================+
-| `Specific fault support`_             | JayF, mariojv                       |
+| `Rescue mode`_                        | stendulker, aparnav                 |
 +---------------------------------------+-------------------------------------+
 | `Post-deploy VIF attach/detach`_      | sambetts, vsaienk0                  |
 +---------------------------------------+-------------------------------------+
@@ -56,8 +54,6 @@ High Priorities
 | `Routed networks support`_            | sambetts, vsaienk0                  |
 +---------------------------------------+-------------------------------------+
 | `Neutron event processing`_           | vdrok, vsaienk0                     |
-+---------------------------------------+-------------------------------------+
-| `Documentation reorganization`_       | JayF, TheJulia                      |
 +---------------------------------------+-------------------------------------+
 | `IPA REST API versioning`_            | sambetts                            |
 +---------------------------------------+-------------------------------------+
@@ -79,8 +75,6 @@ Optional Priorities
 | `Available clean steps API`_          | rloo                                |
 +---------------------------------------+-------------------------------------+
 | `E-Tags in API`_                      | galyna, vdrok                       |
-+---------------------------------------+-------------------------------------+
-| `IPA authentication`_                 | jroll, joanna                       |
 +---------------------------------------+-------------------------------------+
 
 Details
@@ -141,14 +135,6 @@ This is necessary for users that lose regular access to their machine (e.g.
 lost passwords). The spec was merged in Newton, the code is partially done,
 let's put some effort into making progress here in Pike.
 
-Specific fault support
-----------------------
-
-Currently we communicate certain node errors via setting maintenance mode.
-This is not obvious, and is a constant source of complaints from operators.
-This work allows us to better communicate such failures, by providing a new API
-for working with them.
-
 Post-deploy VIF attach/detach
 -----------------------------
 
@@ -176,15 +162,6 @@ Currently ironic has no way to determine when certain asynchronous events
 actually finish in neutron, and with what result. Nova, on the contrary, uses
 a special neutron driver, which filters out notifications and posts some of
 them to a special nova API endpoint. We should do the same.
-
-Documentation reorganization
-----------------------------
-
-For some time, our documentation has grown without strict definition of
-structure, as well as difficulties getting documentation into the primary
-OpenStack documentation. In the Pike cycle we plan on reaching a consensus of
-direction for our documentation structure so we can better self-service as
-OpenStack evolves to better support projects such as ironic.
 
 IPA REST API versioning
 -----------------------
@@ -231,10 +208,3 @@ E-Tags in API
 
 We should add E-Tag support to our API to avoid race conditions during
 concurrent updates.
-
-IPA authentication
-------------------
-
-Neither IPA API, nor the lookup/heartbeat endpoints it uses are currently
-authenticated. While this issue is hard to solve completely in generic case,
-we can at least consider reducing potential attack surface.
