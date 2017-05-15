@@ -61,19 +61,20 @@ configuration option.
 Physical Networks in Ironic
 ---------------------------
 
-An ironic port or portgroup is connected to a physical network.  If a neutron
-port is mapped to that port or portgroup and is attached to a neutron network
-or network segment on a different physical network, there will be no
+An ironic port is connected to a physical network.  As portgroups are a layer-2
+construct, all ports in a portgroup should be in the same physical network.  If
+a neutron port is mapped to a port or portgroup and is attached to a neutron
+network or network segment on a different physical network, there will be no
 connectivity between the bare metal node's NIC and other neutron ports on the
 network.  This is perhaps most obvious when it results in a failure to acquire
 a DHCP lease for the interface.
 
 The mapping between logical ports in neutron and physical ports and portgroups
 in ironic has always been somewhat unpredictable [2]_.  The ironic-neutron
-integration work added support for local link information for ports and
-portgroups [3]_.  In the interface attach/detach API work [4]_ ironic moved the
-responsibility for attaching virtual interfaces from nova to ironic.  In both
-of these features physical network-awareness was seen as out of scope.
+integration work added support for local link information for ports [3]_.  In
+the interface attach/detach API work [4]_ ironic moved the responsibility for
+attaching virtual interfaces from nova to ironic.  In both of these features
+physical network-awareness was seen as out of scope.
 
 Currently when a virtual interface is attached to a node, the procedure used to
 map it to an ironic port or portgroup is roughly as follows:
@@ -117,7 +118,7 @@ Proposed change
 There are four parts to the proposed solution to this problem.
 
 1. It must be possible to specify the physical network to which an ironic port
-   or portgroup is connected.
+   is connected.
 2. The ironic network interfaces must account for the physical network of an
    ironic node's ports and portgroups when attaching tenant virtual interfaces.
 3. When attaching a node to a provisioning or cleaning network, neutron ports
@@ -127,11 +128,10 @@ There are four parts to the proposed solution to this problem.
    physical network of the ironic port or portgroup to which the port was
    mapped.
 
-Tagging Ports and Portgroups
-----------------------------
+Tagging Ports
+-------------
 
-There are a few options for how ports and portgroups might be tagged with a
-physical network:
+There are a few options for how ports might be tagged with a physical network:
 
 1. a new attribute of the ``local_link_connection`` field
 2. a new attribute of the ``extra`` field
@@ -145,15 +145,30 @@ became a first class field on network segments [1]_.  Further, if ironic
 intends to support physical network-aware scheduling in future, the ability to
 efficiently filter ports by their physical network may be advantageous.  This
 spec therefore proposes to add a new first class ``physical_network`` field to
-ironic's ``Port`` and ``Portgroup`` objects.  For backwards compatibility, this
-field will be optional.
+ironic's ``Port`` object.  For backwards compatibility, this field will be
+optional.
 
-The process of mapping physical networks to ironic ports and portgroups and
-out of scope for ironic.  This could be done either through a manual procedure
-or through an automated process using information gathered during a hardware
-introspection process.  For example, if using ironic inspector to perform
-introspection it would be possible to create introspection rules [6] that map
-switch IDs discovered via LLDP to physical networks.
+The process of mapping physical networks to ironic ports is out of scope for
+ironic.  This could be done either through a manual procedure or through an
+automated process using information gathered during a hardware introspection
+process.  For example, if using ironic inspector to perform introspection it
+would be possible to create an introspection plugin [6] that maps switch IDs
+discovered via LLDP to physical networks.
+
+Portgroups
+----------
+
+The physical network of a portgroup will be determined through the physical
+network of its constituent ports.  All ports in the portgroup must have the
+same physical network, and this will be enforced in the ironic API when
+creating and updating ports.
+
+This has the unfortunate consequence of making it rather unwieldy to update the
+physical network of the ports in a portgroup, since the ports must be removed
+from the portgroup while their physical network is updated.  This may be
+improved upon in future through the use of a virtual physical network field in
+the portgroups API that allows simultaneous update of the physical network
+field of all the ports in the group.
 
 Mapping Logical Ports to Physical Ports
 ---------------------------------------
@@ -165,26 +180,18 @@ the neutron API as the ``physical_network`` field on network segments in the
 port's network or as ``provider:physical_network`` on the port's network.
 
 The virtual interface attachment mapping algorithm will be modified to the
-following:
+use the following set of criteria listed in order of descending priority:
 
-- if there is a free portgroup on one of the network's physical networks,
-  select one
-- else if there is a free port with PXE enabled on one of the network's
-  physical networks, select one
-- else if there is a free port with PXE disabled on one of the network's
-  physical networks, select one
-- else if there is a free portgroup with no physical network, select one
-- else if there is a free port with PXE enabled with no physical network,
-  select one
-- else if there is a free port with PXE disabled with no physical network,
-  select one
-- else fail
+1. reject ports and portgroups with a non-null physical network that is
+   different than all of the network's physical networks
+2. prefer ports and portgroups with a non-null physical network to ports with a
+   null physical network
+3. prefer portgroups to ports
+4. prefer ports with PXE enabled to ports with PXE disabled
 
-Essentially we are performing the same algorithm first with the restriction
-that the physical networks must match, and then again without that restriction,
-as was done previously.  This algorithm provides backwards compatibility for
-environments in which the port(s) and/or portgroup(s) associated with the
-ironic node do not have a ``physical_network`` property configured.
+This algorithm provides backwards compatibility for environments in which the
+port(s) and/or portgroup(s) associated with the ironic node do not have a
+``physical_network`` property configured.
 
 Provisioning and Cleaning Networks
 ----------------------------------
@@ -217,8 +224,8 @@ modified to retry interface attachment with a different neutron port if neutron
 determined the mapping to be invalid.  This method would be inefficient due to
 the retries necessary.
 
-We could avoid the need to tag ironic ports and portgroups with a physical
-network by providing a mechanism to map from the information in their
+We could avoid the need to tag ironic ports with a physical network by
+providing a mechanism to map from the information in their
 ``local_link_connection`` fields to a physical network.  This would require
 either an addition to ironic's data model to support Switch objects or a new
 neutron API providing a lookup from switch ID to physical network.
@@ -226,8 +233,8 @@ neutron API providing a lookup from switch ID to physical network.
 Data model impact
 -----------------
 
-A new ``physical_network`` field will be added to Port and Portgroup objects.
-In neutron the ``Segment`` object's ``physical_network`` field is defined as
+A new ``physical_network`` field will be added to Port object.  In neutron the
+``Segment`` object's ``physical_network`` field is defined as
 ``sqlalchemy.String(64)``, so the same will be used in ironic.
 
 State Machine Impact
@@ -238,9 +245,17 @@ None
 REST API impact
 ---------------
 
-The port and portgroup REST APIs will be modified to support the new
-``physical_network`` field.  The field will be readable by users with the
-baremetal observer role and writable by users with the baremetal admin role.
+The port REST API will be modified to support the new ``physical_network``
+field.  The field will be readable by users with the baremetal observer role
+and writable by users with the baremetal admin role.  If the port is a member
+of a portgroup, the API will enforce that all ports in the portgroup have the
+same value in their physical network field.
+
+Updates to the the physical network field of ports will be restricted in the
+same way as for other connectivity related fields (link local connection, etc.)
+- they will be restricted to nodes in the ``enroll``, ``inspecting`` and
+``manageable`` states.
+
 The API microversion will be bumped.
 
 Client (CLI) impact
@@ -249,14 +264,13 @@ Client (CLI) impact
 "ironic" CLI
 ~~~~~~~~~~~~
 
-The ironic CLI will be updated to support getting and setting the
-``physical_network`` field on ports and portgroups.
+The ironic CLI will not be updated.
 
 "openstack baremetal" CLI
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The openstack baremetal CLI will be updated to support getting and setting the
-``physical_network`` field on ports and portgroups.
+``physical_network`` field on ports.
 
 RPC API impact
 --------------
@@ -323,11 +337,9 @@ mgoddard
 Work Items
 ----------
 
-- Modify the ironic port and portgroup models to include a ``physical_network``
-  field.
-- Modify the ironic REST API to support the ``physical_network`` field.
-- Modify the ironic and openstack baremetal CLIs to support the
-  ``physical_network`` field.
+- Modify the ironic port model to include a ``physical_network`` field.
+- Modify the ironic ports REST API to support the ``physical_network`` field.
+- Modify the openstack baremetal CLI to support the ``physical_network`` field.
 - Modify the ironic ``VIFPortIDMixin`` plugin with the new port mapping
   algorithm.
 - Modify the ironic ``NeutronNetwork`` network driver to be physical network-
@@ -354,7 +366,7 @@ Upgrades and Backwards Compatibility
 
 The proposed data model and algorithm changes are backwards compatible.  A
 database migration will be provided to add the ``physical_network`` field to
-existing ports and portgroups with a null value.
+existing ports with a null value.
 
 Documentation Impact
 ====================
@@ -370,4 +382,4 @@ References
 .. [3] `Ironic neutron integration <https://specs.openstack.org/openstack/ironic-specs/specs/not-implemented/ironic-ml2-integration.html>`_
 .. [4] `interface attach/detach API <https://specs.openstack.org/openstack/ironic-specs/specs/approved/interface-attach-detach-api.html>`_
 .. [5] `pluggable network providers <http://specs.openstack.org/openstack/ironic-specs/specs/6.1/network-provider.html>`_
-.. [6] `introspection rules <https://docs.openstack.org/developer/ironic-inspector/usage.html#introspection-rules>`_
+.. [6] `introspection plugins <https://docs.openstack.org/developer/ironic-inspector/contributing.html#writing-a-plugin>`_
