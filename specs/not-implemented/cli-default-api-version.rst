@@ -1,0 +1,1 @@
+../approved/cli-default-api-version.rst
