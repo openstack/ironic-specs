@@ -57,9 +57,12 @@ individual ironic-api and ironic-conductor services to be upgraded one at a
 time, with the rest of the services still available. This upgrade would have
 minimal downtime.
 
-The rolling upgrade solution presented here is modelled after nova's
-upgrade process [2]_, with some differences. In addition, there have been
-several discussions about rolling upgrades ([3]_, [9]_, [10]_).
+Although we'd like the rolling upgrade solution presented here to be the same
+as that used by nova's upgrade process [2]_, there are some differences between
+nova and ironic that prevent us from using the same solution. The differences
+are mentioned below, in other sections of this specification.
+
+There have been several discussions about rolling upgrades ([3]_, [9]_, [10]_).
 
 
 Proposed change
@@ -119,22 +122,22 @@ Rolling upgrade process
 The rolling upgrade process to upgrade ironic from version ``FromVer`` to the
 next version ``ToVer`` is as follows:
 
-#. Upgrade Ironic Python Agent image before upgrading ironic.
+1. Upgrade Ironic Python Agent image before upgrading ironic.
 
-#. Upgrade DB schema to ``ToVer`` via :command:`ironic-dbsync upgrade`.
+2. Upgrade DB schema to ``ToVer`` via **ironic-dbsync upgrade**.
    Ironic already has the code in place to do this. However, a new DB
    migration policy (described below in `New DB model change policy`_) needs
    to be documented.
 
-#. Pin RPC and IronicObject versions to the same ``FromVer`` for both
+3. Pin RPC and IronicObject versions to the same ``FromVer`` for both
    ironic-api and ironic-conductor services, via the new configuration option
    described below in `RPC and object version pinning`_.
 
-#. Upgrade code and restart ironic-conductor services, one at a time.
+4. Upgrade code and restart ironic-conductor services, one at a time.
 
-#. Upgrade code and restart ironic-api services, one at a time.
+5. Upgrade code and restart ironic-api services, one at a time.
 
-#. Unpin RPC and object versions so that the services can now use the latest
+6. Unpin RPC and object versions so that the services can now use the latest
    versions in ``ToVer``. This is done via updating the new configuration
    option described below in `RPC and object version pinning`_ and then
    restarting the services. ironic-conductor services should be restarted
@@ -142,24 +145,43 @@ next version ``ToVer`` is as follows:
    functionality is exposed on the unpinned API service (via API micro
    version), it is available on the backend.
 
-#. Run a new command :command:`ironic-dbsync online_data_migration` to ensure
+7. Run a new command **ironic-dbsync online_data_migration** to ensure
    that all DB records are "upgraded" to the new data version.
    This new command is discussed in a separate RFE [12]_ (and is a dependency
    for this work).
 
-#. Upgrade ironic client libraries (e.g. python-ironicclient) and other
+8. Upgrade ironic client libraries (e.g. python-ironicclient) and other
    services which use the newly introduced API features and depend on the
    new version.
 
-Changes needed to support rolling upgrade
------------------------------------------
+The above process will cause the ironic services to be running the ``FromVer``
+and ``ToVer`` releases in this order (where 'step' refers to the steps above):
 
-For the above to work, there are several changes that have to be done.
-A framework patch [4]_ and an implementation reference patch [5]_ exist to
-verify the concept.
++------+---------------------------------+---------------------------------+
+| step | ironic-api                      | ironic-conductor                |
++======+=================================+=================================+
+|  0   | all FromVer                     | all FromVer                     |
++------+---------------------------------+---------------------------------+
+|  4.1 | all FromVer                     | some FromVer, some ToVer-pinned |
++------+---------------------------------+---------------------------------+
+|  4.2 | all FromVer                     | all ToVer-pinned                |
++------+---------------------------------+---------------------------------+
+|  5.1 | some FromVer, some ToVer-pinned | all ToVer-pinned                |
++------+---------------------------------+---------------------------------+
+|  5.2 | all ToVer-pinned                | all ToVer-pinned                |
++------+---------------------------------+---------------------------------+
+|  6.1 | all ToVer-pinned                | some ToVer-pinned, some ToVer   |
++------+---------------------------------+---------------------------------+
+|  6.2 | all ToVer-pinned                | all ToVer                       |
++------+---------------------------------+---------------------------------+
+|  6.3 | some ToVer-pinned, some ToVer   | all ToVer                       |
++------+---------------------------------+---------------------------------+
+|  6.4 | all ToVer                       | all ToVer                       |
++------+---------------------------------+---------------------------------+
+
 
 New DB model change policy
-``````````````````````````
+--------------------------
 
 This is not a code change but it impacts the SQLAlchemy DB model and needs to
 be documented well for developers as well as reviewers.
@@ -171,7 +193,7 @@ This new DB model change policy is as follows:
   to ironic deprecation policy [8]_.
   But its alembic script has to wait one more deprecation period, otherwise
   an "unknown column" exception will be thrown when ``FromVer`` services
-  access the DB. This is because :command:`ironic-dbsync upgrade` upgrades the
+  access the DB. This is because **ironic-dbsync upgrade** upgrades the
   DB schema but ``FromVer`` services still contain the dropped field in their
   SQLAlchemy DB model.
 
@@ -186,7 +208,39 @@ This new DB model change policy is as follows:
   store a large dataset), these cases must be mentioned in the release notes.
 
 RPC and object version pinning
-``````````````````````````````
+------------------------------
+
+For the ironic (ironic-api and ironic-conductor) services to be running
+old and new releases at the same time during a rolling upgrade, the services
+need to be able to handle different RPC versions and object versions.
+
+[4]_ has a good description of why we need RPC versioning, and describes how
+nova deals with it. This proposes taking a similar approach in ironic.
+
+For object versioning, ironic uses oslo.versionedobjects. [5]_ describes nova's
+approach to the problem. Unfortunately, ironic's solution is different, since
+ironic has a more complex situation. In nova, all database access (reads and
+writes) is done via the nova-conductor service. This makes it possible for the
+nova-conductor service to be the only service to handle conversions between
+different object versions. (See [5]_ for more details.) Given an object that
+it doesn't understand, a (non nova-conductor) service will issue an RPC request
+to the nova-conductor service to get the object converted to its desired target
+version. Furthermore, for a nova rolling upgrade, all the non-nova-compute
+services are shut down, and then restarted with the new releases;
+nova-conductor being the first service to be restarted ([2]_). Thus, the
+nova-conductor services are always running the same release and don't have to
+deal with differing object versions amongst themselves. Once they are running
+the new release, they can handle requests from other services running old or
+new releases.
+
+Contrast that to ironic, where both the ironic-api and ironic-conductor
+services access the database for reading and writing. Both these services need
+to be aware of different object versions. For example, ironic-api can
+create objects such as Chassis, Ports, and Portgroups, saving them directly to
+the database without going through the conductor. We cannot take down the
+ironic-conductor in a similar way as the nova-conductor service, because
+ironic-conductor does a whole lot more than just interacting with the database,
+and at least one ironic-conductor needs to be running during a rolling upgrade.
 
 A new configuration option will be added. It will be used to pin the RPC and
 IronicObject (e.g., Node, Conductor, Chassis, Port, and Portgroup) versions for
@@ -196,7 +250,7 @@ to properly handle the communication between different versions of services.
 The new configuration option is: ``[DEFAULT]/pin_release_version``.
 The default value of empty indicates that ironic-api and ironic-conductor
 will use the latest versions of RPC and IronicObjects. Its possible values are
-releases, named (e.g. ``newton``) or sem-versioned (e.g. ``5.2``).
+releases, named (e.g. ``ocata``) or sem-versioned (e.g. ``7.0``).
 
 Internally, ironic will maintain a mapping that indicates the RPC and
 IronicObject versions associated with each release. This mapping will be
@@ -215,175 +269,199 @@ example:
 
               {'mitaka': '1.33', '5.23': '1.33'}
 
-Set version_cap to pinned version
-:::::::::::::::::::::::::::::::::
-``ConductorAPI.__init__()`` already sets a ``version_cap`` to the latest
-RPC API version and passes it to the ``RPCClient`` as an initialization
+During a rolling upgrade, the services using the new release should set this
+value to be the name (or version) of the old release. This will indicate
+to the services running the new release, which RPC and object versions that
+they should be compatible with, in order to communicate with the services
+using the old release.
+
+
+Handling RPC versions
+~~~~~~~~~~~~~~~~~~~~~
+
+``ConductorAPI.__init__()`` already sets a ``version_cap`` variable to the
+latest RPC API version and passes it to the ``RPCClient`` as an initialization
 parameter.  This ``version_cap`` is used to determine the maximum requested
 message version that the ``RPCClient`` can send.
 
 In order to make a compatible RPC call for a previous release, the code will
 be changed so that the ``version_cap`` is set to a pinned version
-(corresponding to the desired release) rather than the latest
+(corresponding to the previous release) rather than the latest
 ``RPC_API_VERSION``. Then each RPC call will customize the request according
 to this ``version_cap``.
 
-Make use of target_version
-::::::::::::::::::::::::::
-Object instances will make use of a new value ``target_version`` when
-the service interacts with another service.
-If pinned version was given, the value of ``target_version`` will be set
-to a corresponding value in ``objects_mapping``. Otherwise, the value is None.
 
-Object instances are instantiated according to ``VERSION``, so ``FromVer``
-and ``ToVer`` services are still running their own version object instances.
-However at first, the database only contains old records in ``FromVer``.
-When services interact, the serialized object instances can be converted to
-``target_version`` by ``ToVer`` services. To assist in this, several methods
-will be added or changed for ``ironic.objects.base.IronicObject``.
+Handling IronicObject versions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Putting it together
-:::::::::::::::::::
+Internally, ironic services (ironic-api and ironic-conductor) will deal with
+IronicObjects in their latest versions. Only at these boundaries, when the
+IronicObject enters or leaves the service, will we need to deal with object
+versioning:
 
-In the following descriptions:
+* *getting objects from the database*: convert to latest version
+* *saving objects to the database*: if pinned, save in pinned version; else
+  save in latest version
+* *serializing objects (to send over RPC)*: if pinned, send pinned version;
+  else send latest version
+* *deserializing objects (receiving objects from RPC)*: convert to latest
+  version
 
-* ``FromVer`` uses version '1.14' of a Node object.
-* ``ToVer`` uses version '1.15' of a Node object -- this has a deprecated
-  ``extra`` field and a new ``fake`` field that replaces ``extra``.
-* db_obj['fake'] and db_obj['extra'] are the database representations of those
+The ironic-api service also has to handle API requests/responses
+based on whether or how a feature is supported by the API version and object
+versions. For example, when the ironic-api service is pinned, it can only
+allow actions that are available to the object's pinned version, and cannot
+allow actions that are only available for the latest version of that object.
+
+To support this:
+
+* add a new column named ``version`` to all the database tables (SQLAlchemy
+  models) of the IronicObjects. The value is the version of the object that
+  is saved in the database.
+
+  This version column will be null at first and will be filled with the
+  appropriate versions by a data migration script. If there is a change in
+  Ocata that requires migration of data, we will check for null in the new
+  version column.
+
+  No project uses the version column mechanism for this purpose, but it is more
+  complicated without it. For example, Cinder has a migration policy which
+  spans 4 releases in which data is duplicated for some time. Keystone uses
+  triggers to maintain duplicated data in one release cycle. In addition, the
+  version column may prove useful for zero-downtime upgrades (in the future).
+
+* add a new method ``IronicObject.get_target_version(self)``. This will return
+  the target version. If pinned, the pinned version is returned. Otherwise,
+  the latest version is returned.
+
+* add a new method ``IronicObject.convert_to_version(self, target_version)``.
+  This method will convert the object into the target version. The target
+  version may be a newer or older version that the existing version of the
+  object. The bulk of the work will be done in the new helper method
+  ``IronicObject._convert_to_version(self, target_version)``. Subclasses that
+  have new versions should redefine this to perform the actual conversions.
+
+* add a new method ``IronicObject.do_version_changes_for_db(self)``. This is
+  described below in `Saving objects to the database (API/conductor --> DB)`_.
+
+* add a new method ``IronicObjectSerializer._process_object(self, context,
+  objprim)``. This is described below in
+  `Receiving objects via RPC (API/conductor <- RPC)`_.
+
+In the following,
+
+* The old release is ``FromVer``; it uses version '1.14' of a Node object.
+* The new release is ``ToVer``; it uses version '1.15' of a Node object --
+  this has a deprecated ``extra`` field and a new ``meta`` field that replaces
+  ``extra``.
+* db_obj['meta'] and db_obj['extra'] are the database representations of those
   node fields.
-* ``ToVer`` is pinned to ``FromVer``.
 
-Instantiate services' version objects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-``IronicObject._from_db_object(obj, db_object)`` is a method that already
-exists; it converts a database entity to a formal object.
 
-Each IronicObject class will need to be changed, to implement its own
-_from_db_object() to instantiate its own version objects (regardless of
-any pinning) from the database. In this case:
+Getting objects from the database (API/conductor <-- DB)
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-* ``FromVer`` will instantiate version '1.14' of Node object,
-  ignoring db_obj['fake'] but setting node.extra = db_obj['extra'].
-* ``ToVer`` will instantiate version '1.15' of the Node object, setting
-  node.fake = db_obj['extra'] and setting node.extra = None. (With
-  pinning, db_obj['fake'] is still empty, but node.fake on the object should be
-  available for the new code release to use.)
+Both ironic-api and ironic-conductor services read values from the database.
+These values are converted to IronicObjects via the existing method
+``IronicObject._from_db_object(context, obj, db_object)``. This method will be
+changed so that the IronicObject will be in the latest version, even if it was
+in an older version in the database. This is done regardless of the service
+being pinned or not.
 
-Get target version
-~~~~~~~~~~~~~~~~~~
-A new method ``IronicObjectSerializer._get_target_version(self, obj)`` will be
-added. This will return a string, the IronicObject version corresponding to the
-pinned release version. If there is no pinning, it will return the latest
-version for that IronicObject.
+Note that if an object is converted to a later version, that IronicObject will
+retain any changes resulting from that conversion (in case the object later
+gets saved in the latest version).
 
-In this case, ``ToVer`` is pinned to ``FromVer``, so
-serializer._get_target_version(Node) would return version '1.14'.
+For example, if the node in the database is in version 1.14 and has
+db_obj['extra'] set:
 
-Convert passed instance values to the target version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Based on the target version, an IronicObject instance will be serialized
-to correspond to the target version. This will be done before sending the
-object over-the-wire to other services with IronicObjectSerializer.
+* a ``FromVer`` service will get a Node with node.extra = db_obj['extra']
+  (and no knowledge of node.meta since it doesn't exist).
 
-In this case, since ``ToVer`` is pinned to ``FromVer``, a ``ToVer`` Node
-object instance 'node' will be serialized to look like version '1.14',
-with node.extra = node.fake, and no node.fake attribute.
+* a ``ToVer`` service (pinned or unpinned), will get a Node with:
 
-Save pinned-version values to DB (API/Conductor --> DB)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-During the rolling upgrade, some services will be running ``ToVer`` and pinned
-to ``FromVer``, while the others are still running ``FromVer``.
-Since these services access the same database and to avoid saving
-into different columns, ironic won't save values in new columns until after
-the unpinning.
+  * node.meta = db_obj['extra']
+  * node.extra = None
+  * node._changed_fields = ['meta', 'extra']
 
-A new method ``IronicObject._obj_get_db_compatible_changes(self)``
-will return a dictionary of DB-compatible changed fields and values.
-These will be compatible with the pinned version.
 
-Wherever an IronicObject writes to the database (typically in .create() and
-.save()), it will call ._obj_get_db_compatible_changes() instead of
-.obj_get_changes(), to get changes that are compatible with the database
-(i.e., the database that corresponds to the pinned version).
+Saving objects to the database (API/conductor --> DB)
+:::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Use actual versions when reading values from DB (API/Conductor <-- DB)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The unpinning operation is not atomic. There can also be a situation, where
-all services are running in ``ToVer``, but some of the conductors are
-unpinned. On the other extreme, all conductors can be unpinned and some of
-api services may still be pinned. Because of this, a service may retrieve from
-DB or receive via RPC a ``ToVer`` object instance, while it is still pinned to
-``FromVer``.
+The version used for saving IronicObjects to the database is determined as
+follows:
 
-For example, in case of retrieving an object from the DB, it could happen that
-one conductor is pinned, the other is not. When data is
+* for an unpinned service, the object will be saved in its latest version.
+  Since objects are always in their latest version, no conversions are needed.
+* for a pinned service, the object will be saved in its pinned version. Since
+  objects are always in their latest version, the object will need to be
+  converted to the pinned version before being saved.
 
-1. saved by the unpinned conductor
-2. retrieved and saved by the pinned conductor
+The new method ``IronicObject.do_version_changes_for_db()`` will handle this
+logic, returning a dictionary of changed fields and their new values (similar
+to the existing
+``oslo.versionedobjects.VersionedObjectobj.obj_get_changes()``).
+Since we do not keep track internally, of the database version of an object,
+the object's ``version`` field will always be part of these changes.
 
-and if the pinned conductor assumes the data is in a previous (pinned) version,
-the resulting state is, that the data is inconsistent.
+The `Rolling upgrade process`_  (at step 6.1) ensures that by the time an
+object can be saved in its latest version, all services are running the newer
+release (although some may still be pinned) and can handle the latest object
+versions.
 
-It may happen because there was a new column introduced (the ``fake`` column
-from the above example), so:
+An interesting situation can occur when the services are as described in step
+6.1. It is possible for an IronicObject to be saved in a newer version and
+subsequently get saved in an older version. For example, a ``ToVer`` unpinned
+conductor might save a node in version 1.5. A subsequent request may cause a
+``ToVer`` pinned conductor to replace and save the same node in version 1.4!
 
-1. the unpinned conductor saves data into a new column (the ``fake`` column),
-2. the pinned conductor reads and updates data in an old column (``extra``).
 
-The end result is that we don't know in which column we have the up-to date
-values. At the same time, if an outdated value was used to calculate a new one,
-data is lost.
+Sending objects via RPC (API/conductor -> RPC)
+::::::::::::::::::::::::::::::::::::::::::::::
 
-To maintain data consistency, when a ``ToVer`` object is retrieved from the DB
-by a ``ToVer`` service, which is still pinned to ``FromVer``, it should ignore
-the globally configured pin for this instance of the object and use its actual
-version. The same follows for receiving a ``ToVer`` object through RPC.
+When a service makes an RPC request, any IronicObjects that are sent as
+part of that request are serialized into entities or primitives (via
+``oslo.versionedobjects.VersionedObjectSerializer.serialize_entity()``). The
+version used for objects being serialized is as follows:
 
-In short, use target version: api/conductor --> db (when creating/saving a new
-object) and use actual (unpinned) version: api/conductor <-- db.
+* for an unpinned service, the object will be serialized in its latest version.
+  Since objects are always in their latest version, no conversions are needed.
+* for a pinned service, the object will be serialized in its pinned version.
+  Since objects are always in their latest version, the object will need to be
+  converted to the pinned version before being serialized. The converted object
+  will include changes that resulted from the conversion; this is needed so
+  that the service at the other end of the RPC request has the necessary
+  information if that object will be saved to the database.
 
-When we receive an unpinned object, we should save it in its actual version,
-so that we don't lose data which may have been added to it in ``ToVer``.
+The ``IronicObjectSerializer.serialize_entity()`` method will be modified to do
+any IronicObject conversions.
 
-To make sure reading the DB object versions happens transparently for the
-developer, a version column will be introduced to SQLAlchemy models.
 
-This version column will be null at first and will be filled with the
-appropriate versions by a data migration script. If there is a change in
-Ocata that requires migration of data, we will check for null in the new
-version column.
+Receiving objects via RPC (API/conductor <- RPC)
+::::::::::::::::::::::::::::::::::::::::::::::::
 
-No project uses the version column mechanism for this purpose, but it is more
-complicated without it. For example, Cinder has a migration policy which spans
-4 releases in which data is duplicated for some time. Keystone uses triggers to
-maintain duplicated data in one release cycle. In addition, the version column
-may prove useful for zero-downtime upgrades (in the future).
+When a service receives an RPC request, any entities that are part of the
+request need to be deserialized (via
+``oslo.versionedobjects.VersionedObjectSerializer.deserialize_entity()``).
+For entities that represent IronicObjects, we want the deserialization process
+to result in IronicObjects that are in their latest version, regardless of the
+version they were sent in and regardless of whether the receiving service is
+pinned or not. Again, any objects that are converted will retain the changes
+that resulted from the conversion, useful if that object is later saved to the
+database.
 
-Passing target version object instances via RPC (API <---> Conductor)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-When ironic-api makes an RPC call to update an object instance (in
-ironic.conductor.rpcapi.ConductorAPI: e.g., create_node(), update_node(),
-update_port() and update_portgroup()), the object instance `with updates` is
-passed as a parameter to the method. After updating the database, an updated
-object instance is returned.
+The deserialization method invokes
+``VersionedObjectSerializer._process_object()`` to deserialize and get the
+IronicObject. We will add ``IronicObjectSerializer._process_object()`` to
+convert the IronicObject to its latest version.
 
-It could happen that a ``FromVer`` API gets a '1.15' Node object from
-a ``ToVer`` (unpinned) Conductor. In this case, IronicObjectSerializer will
-convert the object based on the target version (``FromVer``), so that the API
-is dealing with the correctly versioned node object.
-The object_backport_versions RPC method is called to convert the object.
-The sequence of events is the following:
-
-#. API (FromVer) -> RPC -> conductor (unpinned ToVer)
-#. conductor -> (1.15 obj) -> RPC -> API
-#. API raises eyebrow, err exception -> RPC -> conductor
-#. conductor -> (1.14 obj) -> RPC -> API
-
-Likewise, a ``FromVer`` API could send an older version object to a
-``ToVer`` conductor. So the conductor has to accept and handle older,
-compatible objects.
-destroy_port() and destroy_portgroup() RPC calls are also affected by this.
+For example, a ``FromVer`` ironic-api could issue an update_node() RPC request
+with a node in version 1.4, where node.extra was changed (so
+node._changed_fields = ['extra']). This node will be serialized in version 1.4.
+The receiving ``ToVer`` pinned ironic-conductor deserializes it and converts
+it to version 1.5. The resulting node will have node.meta set (to the changed
+value from node.extra in v1.4), node.extra = None, and node._changed_fields =
+['meta', 'extra'].
 
 Alternatives
 ------------
@@ -391,11 +469,46 @@ Alternatives
 A cold upgrade can be done, but it means the ironic services will not be
 available during the upgrade, which may be time consuming.
 
+Instead of having the services always treat objects in their latest versions,
+a different design could be used, for example, where pinned services treat
+their objects in their pinned versions. However, after some experimentation,
+this proved to have more (corner) cases to consider and was more difficult
+to understand. This approach would make it harder to maintain and trouble-shoot
+in the future, assuming reviewers would be able to agree that it worked in the
+first place!
+
+What if we changed the ironic-api service, so that it had read-only access to
+the DB and all writes would go via the ironic-conductor service. Would that
+simplify the changes needed to support rolling upgrades? Perhaps; perhaps not.
+(Although this author thinks it would be better, regardless, to have
+all writes being done by the conductor.) With or without this change, we need
+to ensure that objects are not saved in a newer version (i.e., that is newer
+than the version in the older release) until all services are running with the
+new release -- step 5.2 of the `Rolling upgrade process`_. The solution
+described in this document has objects being saved in their newest versions
+starting in step 6.1, because it seemed conceptually easy to understand if
+we save objects in their latest versions only when a service is unpinned. We'd
+need a similar mechanism regardless.
+
+Of course, there are probably other ways to handle this, like having all
+services "register" what versions they are running in the database and
+leveraging that data somehow. Dmitry Tantsur mused about whether some remote
+synchronization stuff (e.g. etcd) could be used for services to be aware of
+the upgrade process.
+
+Ideally, ironic would use some "OpenStack-preferred" way to implement
+rolling upgrades but that doesn't seem to exist, so this tries to leverage the
+work that nova did.
+
 Data model impact
 -----------------
 
 A DB migration policy is adopted and introduced above in
 `New DB model change policy`_.
+
+A new ``version`` column will be added to all the database tables of the
+IronicObject objects. Its value will be the version of the object that is
+saved in the database.
 
 State Machine Impact
 --------------------
@@ -422,6 +535,14 @@ disallow requests for new functionality while the API service is pinned.
 
 Client (CLI) impact
 -------------------
+None
+
+"ironic" CLI
+~~~~~~~~~~~~
+None
+
+"openstack baremetal" CLI
+~~~~~~~~~~~~~~~~~~~~~~~~~
 None
 
 RPC API impact
@@ -504,11 +625,13 @@ Assignee(s)
 -----------
 
 Primary assignee:
-  xek
+
+* xek
+* rloo
 
 Other contributors:
 
-  mario-villaplana-j (documentation)
+* mario-villaplana-j (documentation)
 
 Work Items
 ----------
@@ -516,7 +639,7 @@ Work Items
 #. Add new configuration option ``[DEFAULT]/pin_release_version``
    and RPC/Object version mappings to releases.
 #. Make Objects compatible with a previous version and handle the interaction
-   with DB and user.
+   with DB and services.
 #. Make IronicObjectSerializer downgrade objects when passing via RPC.
 #. Add tests.
 #. Add documentation and pointers for RPC and oslo objects versioning.
@@ -528,7 +651,7 @@ Work Items
 Dependencies
 ============
 
-* Needs the new command :command:`ironic-dbsync online_data_migration` [12]_.
+* Needs the new command **ironic-dbsync online_data_migration** [12]_.
 
 * Needs multi-node grenade CI working.
 
@@ -581,8 +704,8 @@ References
 .. [1] https://github.com/openstack/governance/blob/master/reference/tags/assert_supports-rolling-upgrade.rst
 .. [2] http://docs.openstack.org/developer/nova/upgrade.html
 .. [3] https://etherpad.openstack.org/p/ironic-mitaka-midcycle
-.. [4] Ironic rolling upgrade framework https://review.openstack.org/#/c/306357/
-.. [5] Refactor configdrive into a new field https://review.openstack.org/#/c/306358/
+.. [4] http://superuser.openstack.org/articles/upgrades-in-openstack-nova-remote-procedure-call-apis
+.. [5] http://superuser.openstack.org/articles/upgrades-in-openstack-nova-objects/
 .. [6] https://releases.openstack.org/reference/release_models.html
 .. [7] http://semver.org/
 .. [8] http://governance.openstack.org/reference/tags/assert_follows-standard-deprecation.html
