@@ -221,7 +221,7 @@ for boot from volume, we propose the following:
 
          utils.check_capability(
              task.driver.boot.capabilities, 'iscsi_volume_boot')
-         utils.check_compatability(
+         utils.check_compatibility(
              task.driver.deploy.capabilities, 'iscsi_volume_deploy')
 
     This would be implemented via a list of capability 'tags' to
@@ -251,7 +251,7 @@ for boot from volume, we propose the following:
          if (task.node.storage_interface is not None and
                  not task.driver.storage.should_write_image(task)):
 
-    Additionally, validation logic will need need to be updated in the deploy
+    Additionally, validation logic will need to be updated in the deploy
     drivers to pass specific checks of instance_info fields that do not apply
     with the case of booting from a volume.
 
@@ -322,7 +322,7 @@ for boot from volume, we propose the following:
 
         - At the beginning and completion of the storage detachment
           interaction, a notification shall be generated to allow
-          visibity into if the process is successfully completed.
+          visibility into if the process is successfully completed.
 
   - Updating the iPXE template logic to support the creation of
     the various file formats required for Scenarios 1, 2, 5.  See:
@@ -345,7 +345,7 @@ understand how to deploy to a system with such configuration.
   - Agent will need to be informed of the desired volume for the boot volume,
     and, if supplied to the target, connection information. The appropriate
     information should be passed in using `Root device hints`_, specifically
-    setting a WWN or volume serial number if avilable.
+    setting a WWN or volume serial number if available.
 
 In order to support scenario 5:
   - Scenario 3 must be implemented.  This is anticipated to largely be
@@ -582,7 +582,7 @@ gate test could be where an ironic deployment boots from a Cinder volume,
 which a tempest test could orchestrate.
 
 Scenarios 3 and 4 are the most difficult to test as they have detached
-infrastucture expectations outside of our direct control. However, we may
+infrastructure expectations outside of our direct control. However, we may
 find that the base overlay is sufficient to test with unit tests due to
 what will ultimately be significant underlying common paths.
 
@@ -615,7 +615,7 @@ findings at a technical level.
 References
 ==========
 
-Relevent specifications:
+Relevant specifications:
   - `Add volume connection information for Ironic nodes`_
   - `Nova Specs - Ironic - Boot from Cinder volume`_
 Mitaka midcycle etherpad:
