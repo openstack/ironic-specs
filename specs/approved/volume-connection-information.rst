@@ -413,7 +413,7 @@ Six new REST API endpoints will be introduced with this change.
       DELETE /v1/volume/connectors/<volume_connector_uuid>
 
     It will return 204 on success or 404 if volume connector is not found or
-    405 if the node is not in POWER_OFF state.
+    400 if the node is not in POWER_OFF state.
 
 - ``/v1/nodes/<node_uuid or name>/volume/connectors``
 
@@ -522,7 +522,7 @@ Six new REST API endpoints will be introduced with this change.
       PATCH /v1/volume/targets/<volume_target_uuid>
 
     This will return 200 and the representation of the updated resource on
-    success, 404 if volume target is not found or 405 if the node is not
+    success, 404 if volume target is not found or 400 if the node is not
     POWER_OFF state.
 
   .. note::
@@ -536,7 +536,7 @@ Six new REST API endpoints will be introduced with this change.
       DELETE /v1/volume/targets/<volume_target_uuid>
 
     It will return 204 on success, 404 if volume target is not found or
-    405 if the node is not in POWER_OFF state.
+    400 if the node is not in POWER_OFF state.
 
 - ``/v1/nodes/<node_uuid or name>/volume/targets``
 
