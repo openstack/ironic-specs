@@ -48,20 +48,13 @@ information to create port group dynamically on the ToR switch.
       switches. For example `MLAG <https://eos.arista.com/mlag-basic-configuration/>`__
       configuration.
 
-The ``binding:profile`` data structures is yet in discussion. Possible options
-are provided in the `Binding profile data structure`_
 
 Binding profile data structure
 ------------------------------
 
-Scenario 1 (Preferred)
-~~~~~~~~~~~~~~~~~~~~~~
-
-* Introduce new ``local_groups_information`` array that stores portgroups
+* Introduce new ``local_group_information`` dictionary that stores portgroups
   information.
 * Reuse existing ``local_link_information`` for port objects only
-* Setup links between ``local_groups_information`` and
-  ``local_link_information`` objects.
 
 A JSON example of ``binding:profile`` with ``local_link_information`` reuse:
 
@@ -70,87 +63,38 @@ A JSON example of ``binding:profile`` with ``local_link_information`` reuse:
     "binding:profile": {
         'local_link_information': [
             {
-                'id': '13070d34-fcc6-46d9-ad45-fb8d489873bf',
                 'switch_info': 'tor-switch0',
                 'port_id': 'Gig0/1'
                 'switch_id': 'aa:bb:cc:dd:ee:ff'
             },
             {
-                'id': '62a4428a-3974-409d-9934-d88d0a815397',
                 'switch_info': 'tor-switch0',
                 'port_id': 'Gig0/2',
                 'switch_id': 'aa:bb:cc:dd:ee:ff'
             }
         ],
-        'local_groups_information': [
-            {
+        'local_group_information': {
                 'id': '51a9642b-1414-4bd6-9a92-1320ddc55a63',
                 'name': 'PortGroup0',
                 'bond_mode': 'active-backup',
-                'bond_ports': ['13070d34-fcc6-46d9-ad45-fb8d489873bf', '62a4428a-3974-409d-9934-d88d0a815397'],
                 'bond_properties': {
                     'bond_xmit_hash_policy': 'layer3+4',
                     'bond_miimon': 100,
                 }
             },
-        ],
     }
 
-
-Scenario 2
-~~~~~~~~~~
-
-* Introduce new ``links`` array that stores mixed group of objects (ports and
-  portgroups). Where ``type`` of object is the only one mandatory key.
-* Deprecate existing ``local_link_information``
-
-A JSON example of ``binding:profile`` with ``links`` array:
-
-  ::
-
-    "binding:profile": {
-        'links': [
-            {
-                'id': '51a9642b-1414-4bd6-9a92-1320ddc55a63',
-                'name': 'PortGroup0',
-                'type': 'bond',
-                'bond_mode': 'active-backup',
-                'bond_ports': ['13070d34-fcc6-46d9-ad45-fb8d489873bf', '62a4428a-3974-409d-9934-d88d0a815397'],
-                'bond_properties': {
-                    'bond_xmit_hash_policy': 'layer3+4',
-                    'bond_miimon': 100,
-                }
-            },
-            {
-                'id': '13070d34-fcc6-46d9-ad45-fb8d489873bf',
-                'type': 'phy',
-                'switch_info': 'tor-switch0',
-                'port_id': 'Gig0/1'
-                'switch_id': 'aa:bb:cc:dd:ee:ff'
-            },
-            {
-                'id': '62a4428a-3974-409d-9934-d88d0a815397',
-                'type': 'phy',
-                'switch_info': 'tor-switch0',
-                'port_id': 'Gig0/2',
-                'switch_id': 'aa:bb:cc:dd:ee:ff'
-            }
-        ],
-    }
 
 The data types:
 
 +-----------------------+---------------------------------------------------+
 | Field Name            | Description                                       |
 +=======================+===================================================+
-| id                    | The UUID of Ironic port/portgroup object          |
+| id                    | The UUID of Ironic portgroup object               |
 +-----------------------+---------------------------------------------------+
 | name                  | The name of the ironic port group                 |
 +-----------------------+---------------------------------------------------+
 | bond_mode             | Ironic portgroup mode                             |
-+-----------------------+---------------------------------------------------+
-| bond_ports            | List with UUID of Ironic ports, that are members  |
-|                       | of port group                                     |
 +-----------------------+---------------------------------------------------+
 | bond_properties       | Ironic portgroup properties                       |
 +-----------------------+---------------------------------------------------+
