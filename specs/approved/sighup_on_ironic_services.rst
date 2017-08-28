@@ -69,7 +69,7 @@ Mutable configuration options that will be available are:
 
 * ``[DEFAULT]/pin_release_version``
 
-Other ironic configuration options can be made mutable in the future; such
+Other ironic configuration options can be made `mutable in the future`_; such
 changes should have corresponding release notes. The belief is that most, if
 not all, of the configuration options should be made mutable. However, that is
 outside the scope of this specification -- which is to lay the groundwork
@@ -77,6 +77,9 @@ to make this possible with a small number of options. When mentioning that
 ironic supports SIGHUP, operators might assume (incorrectly) that this applies
 to all configuration options, so we should make other configuration options
 available in a timely fashion.
+
+The value of a mutable configuration option should not be cached; or at least,
+if it is cached, the value must be updated upon a SIGHUP occurrence.
 
 Alternatives
 ------------
@@ -175,6 +178,8 @@ Work Items
 
 * change our services so they are launched with ``restart_method='mutate'``
 * change the desired configuration options so that they are mutable
+* make sure the mutable options are not cached, or if they are, make sure that
+  they are updated appropriately with a SIGHUP occurrence
 
 Dependencies
 ============
@@ -214,3 +219,4 @@ References
 .. _`oslo.config library`: http://docs.openstack.org/developer/oslo.config/opts.html?highlight=mutable#option-definitions
 .. _`mutable option note`: https://github.com/openstack/ironic/blob/ebfc4fe4c4c3910bf8b1229cb75259befa530877/etc/ironic/ironic.conf.sample#L383
 .. _`launched`: https://docs.openstack.org/developer/oslo.service/api/service.html#oslo_service.service.launch
+.. _`mutable in the future`: https://bugs.launchpad.net/ironic/+bug/1713571
