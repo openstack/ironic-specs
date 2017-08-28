@@ -1,0 +1,1 @@
+../approved/sighup_on_ironic_services.rst
