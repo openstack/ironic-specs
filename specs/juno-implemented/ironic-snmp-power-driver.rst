@@ -39,15 +39,19 @@ Proposed change
 ===============
 
 The proposed design would introduce a new driver to Ironic, snmp.py.
-A driver class would provide the SNMP MIB read-write mechanisms.
-Classes would derive from this base driver to add vendor-specific MIB
-OIDs and methods for interfacing with different vendor equipment.
+A driver class would provide the SNMP manager entity which can convey
+power management operations over SNMP all the way to the SNMP agent
+running at the PDU. Classes would derive from this base driver to add
+specific Object Identifiers (OIDs) and methods for interfacing with
+different vendor equipment.
 
-The proposed design would use PySNMP to perform the SNMP transactions.
-The PySNMP module supports all SNMP protocol versions - v1, v2c and v3.
-Smart PDUs from APC appear to support SNMP v1 and v3. The ability to specify
-a protocol version for each managed PDU would be desirable. By default,
-version 3 should be used due to its superior security.
+The proposed design would use the
+`PySNMP package <https://pypi.python.org/pypi/pysnmp/>`_ which implements
+many aspects of the SNMP technology. The PySNMP package supports all
+SNMP versions e.g. v1, v2c and v3. Smart PDUs from APC appear to support
+SNMP v1 and v3. The ability to specify a protocol version for each managed
+PDU would be desirable. By default, version 3 should be used due to its
+superior security.
 
 Note that this blueprint only proposes power management for baremetal
 compute node instances.
@@ -94,21 +98,25 @@ The advantages of an SNMP-based approach are:
 
 * MIBs tend to be a common interface implemented by all products from a vendor.
   A MIB interface is not susceptible to variations between products.
-* Once published a MIB interface is not changed. A MIB interface is not
-  susceptible to variations between firmware versions.
+* Once published a MIB interface is not changed in a backward-incompatible
+  way. A MIB interface is not susceptible to variations between firmware
+  versions.
 * Conventionally vendor MIBs are published and freely available.
 
-Vendor-specific enterprise MIBs are not included in PySNMP MIB packages,
-which only include standard MIBs. However, by convention enterprise MIB
-definitions are published and freely available.
+Options exist for turning symbolic representation of MIB objects into a
+MIB-independent OID form.
 
-Options exist for the symbolic representation of MIB definitions in an
-implementation:
-
+* The Net-SNMP package comes with the `snmptranslate` command-line tool
+  which can turn any MIB object into OID.
 * libsmi includes a tool called smidump can be used to convert MIB definitions
   into Python dictionaries with some hierarchical structure.
-* The PySNMP package includes a tool, libsmi2pysnmp, which further processes
-  the Python dictionaries into a hierarchy of objects.
+* The `PySMI <https://pypi.python.org/pypi/pysmi>`_ pure-Python package is
+  able to parse MIB files into either JSON document or a Python module which
+  PySNMP can readily consume. The PySMI package comes with the `mibdump.py`
+  tool which can be used at the command line for MIB conversion similar
+  to what `snmptranslate` does.
+* Current PySNMP has PySMI as a dependency so PySNMP would invoke PySMI
+  automatically to parse a MIB whenever needed.
 
 Note that these approaches are heavyweight solutions. For example,
 parsing just the APC vendor MIB involves the creation of a hierarchical
@@ -131,14 +139,18 @@ attached to the node object:
 * snmp_driver - The class of power driver to interface with. This will
   identify a vendor-specific MIB interface to use.
 * snmp_protocol - The SNMP protocol version to use: v1, v2c, or v3
-* snmp_address - The hostname or IP address of the power driver.
-* snmp_community - The write community to use for changing power state.
+* snmp_address - The hostname or IP address of the SNMP agent running
+  at the PDU.
+* snmp_community - The write SNMP community name shared between SNMP manager
+  (e.g. Ironic SNMP driver) and SNMP agent (at PDU).
 * snmp_outlet - The power outlet number on the power device.
 
 These attributes would be passed through with other instance data to the
-Ironic SNMP driver and used to generate the SNMP operations to achieve the
-required power action.
+Ironic SNMP driver and used to generate the SNMP management operations to
+achieve the required power action.
 
+For full SNMPv3 support additional attributes might need to be added
+to the node object.
 
 REST API impact
 ---------------
@@ -281,8 +293,8 @@ from various vendors would be valuable.
 References
 ==========
 
-* PySNMP home page: http://pysnmp.sourceforge.net/
-* PySNMP package on PyPI (version 4.2.5): https://pypi.python.org/pypi/pysnmp/4.2.5
+* PySNMP package on PyPI: https://pypi.python.org/pypi/pysnmp/
 * APC PowerNet MIB download (registration may be required): http://www.apc.com/resource/include/techspec_index.cfm?base_sku=SFPMIB403&tab=software
 * CyberPower MIB: http://www.cyberpowersystems.com/software/CPSMIB2011.mib
 * Eaton Power MIB: http://powerquality.eaton.com/Support/Software-Drivers/Downloads/ePDU/EATON-EPDU-MIB.zip
+* Public MIB files repository: http://mibs.snmplabs.com/asn1/
