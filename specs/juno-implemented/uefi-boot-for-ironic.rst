@@ -103,7 +103,7 @@ Alternatives
   - Different bootloaders will have different ways of preparing their
     configuration files.
   - Though pxelinux and syslinx.efi have same configuration changes, but
-    syslinux.efi is not yet availabe on ubuntu 12/13/14. syslinux.efi is
+    syslinux.efi is not yet available on ubuntu 12/13/14. syslinux.efi is
     scheduled for ubuntu utopic release.
   - We will support only elilo.efi at the moment. We can later add support
     to other efi bootloader.

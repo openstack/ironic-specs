@@ -166,7 +166,7 @@ Security impact
 ---------------
 
 Drivers using ``iscsi_deploy.ISCSIDeploy`` will do in-band disk erase which
-will be a security benifit for tenants.
+will be a security benefit for tenants.
 
 Other end user impact
 ---------------------

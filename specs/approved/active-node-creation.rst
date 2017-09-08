@@ -61,7 +61,7 @@ state to the ``ACTIVE`` state, bypassing actual deployment of the node.
     - Use cases of the feature while explicitly predicating that proper
       operation requires node validation to succeed.
     - Explicitly detail that it is the operator's responsibility to
-      define the node with all relevent appropriate configuration else
+      define the node with all relevant appropriate configuration else
       the node could fail node state provision operations of ``rebuild``
       and ``delete``. Which would result in manual intervention being
       necessary.

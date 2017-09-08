@@ -117,7 +117,7 @@ new client that support microversions and tries to communicate with an old
 Ironic.  The version that the new client uses is the maximum microversion
 it supports.
 
-* The user does not specify the microversion to use in communciation with
+* The user does not specify the microversion to use in communication with
   the client.  Consequentally, the client attempts to use the latest
   microversion that the client knows about.
 * The client makes a connection to an old Ironic, supplying a

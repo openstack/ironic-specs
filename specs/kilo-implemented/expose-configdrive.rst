@@ -182,7 +182,7 @@ Work Items
 * Add support to PXE drivers to consume the config drive and expose it
   to the tenants.
 
-* Add tempest tests (in conjuction with the Nova driver).
+* Add tempest tests (in conjunction with the Nova driver).
 
 
 Dependencies

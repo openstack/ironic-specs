@@ -54,8 +54,8 @@ architecture. Then the underlying driver API for get_supported_boot_devices()
 would just assume that this node must be of a specific architecture and always
 return a static list for that architecture.
 
-This approach is limiting and would result in an unecessary increase
-in the number of drivers available for ironic, and a unecessary potential
+This approach is limiting and would result in an unnecessary increase
+in the number of drivers available for ironic, and a unnecessary potential
 duplication of code.
 
 

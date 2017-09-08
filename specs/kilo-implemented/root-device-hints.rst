@@ -73,7 +73,7 @@ The logic about which disk will be picked will follow:
 #. If hints are specified and only one disk is found Ironic will pick it.
 
 #. If hints are specified and multiple disks are found Ironic will pick
-   the first disk that matches the all the criterias.
+   the first disk that matches the all the criteria.
 
 #. If hints are specified and no disks are found the deployment is aborted.
 
