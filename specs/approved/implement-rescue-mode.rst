@@ -33,8 +33,12 @@ Proposed change
   node.
 * Add method for injecting password into OS.
 * Modify Ironic state machine as described in the state machine impact section
-* Add AgentRescue driver (implements base.RescueInterface). This driver will
-  be mixed into the agent_ipmitool and agent_pyghmi drivers.
+* Add AgentRescue driver (implements base.RescueInterface). This implementation
+  will be available only through hardware type. It would not be supported in
+  the classic drivers as they would be deprecated shortly.
+* For classic drivers rescue interface would be set to 'no-rescue' which would
+  generate 'UnsupportedDriverExtension' exception when any methods of this
+  interface are invoked.
 * Add periodic task _check_rescue_timeouts to fail the rescue process if
   it takes longer than rescue_callback_timeout seconds for the rescue ramdisk
   to come online.
@@ -151,7 +155,19 @@ clients using an earlier microversion.
 
 Client (CLI) impact
 -------------------
-Support for the new verbs "rescue" and "unrescue" must be added to the client.
+
+"ironic" CLI
+~~~~~~~~~~~~
+
+None, as this CLI is anticipated to be deprecated prior to this feature
+landing.
+
+"openstack baremetal" CLI
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The OSC command line will require additional code to handle the new state.
+New command line options ``rescue`` and ``unrescue`` would be added to
+support rescue and unrescue operations.
 
 RPC API impact
 --------------
@@ -159,7 +175,16 @@ Add do_node_rescue and do_node_unrescue to the Conductor RPC API.
 
 Driver API impact
 -----------------
-None, because we defined the RescueInterface a long time ago.
+Add a new method clean_up() for RescueInterface in base.py. This method would
+perform any necessary clean up of the node upon RESCUEWAIT timeout/failure
+or finishing rescue operation. Some of the cleaning tasks are removing rescue
+password from the node. Ramdisk boot environment should be cleaned if
+ironic is managing the ramdisk boot. It would have default implementation as
+given below::
+
+    class RescueInterface(BaseInterface):
+        def clean_up(self, task):
+            pass
 
 Nova driver impact
 ------------------
@@ -211,7 +236,7 @@ sufficiently isolated during rescue operations.
 
 Other end user impact
 ---------------------
-We will add rescue and unrescue commands to python-ironicclient.
+We will add rescue and unrescue commands to OSC Client.
 
 Scalability impact
 ------------------
@@ -250,7 +275,8 @@ Primary assignee:
   JayF
 
 Other contributors:
-  Help Wanted!
+  Shivanand Tendulker (stendulker)
+  Aparna (aparnavtce)
 
 Work Items
 ----------
