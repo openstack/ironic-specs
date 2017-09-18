@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/queens-priorities
    priorities/pike-priorities
    priorities/ocata-priorities
    priorities/newton-priorities
