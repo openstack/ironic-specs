@@ -66,6 +66,24 @@ development cycles in which they were completed.
 Pike
 ------
 
+9.1
+~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/9.1/*
+
+9.0
+~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/9.0/*
+
 8.0
 ~~~
 
