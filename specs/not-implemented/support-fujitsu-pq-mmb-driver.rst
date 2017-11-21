@@ -1,0 +1,1 @@
+../approved/support-fujitsu-pq-mmb-driver.rst
