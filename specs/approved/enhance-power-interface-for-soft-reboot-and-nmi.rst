@@ -249,50 +249,6 @@ REST API impact
      {"target": "soft power off",
       "timeout": 600}
 
-* Add a new "supported_power_states" member to the return type Node
-  and NodeStates, and enhance the following APIs::
-
-   GET /v1/nodes/(node_ident)
-
-   GET /v1/nodes/(node_ident)/states
-
-   JSON example of the returned type NodeStates
-       {
-         "console_enabled": false,
-         "last_error": null,
-         "power_state": "power on",
-         "provision_state": null,
-         "provision_updated_at": null,
-         "target_power_state": "soft power off",
-         "target_provision_state": "active",
-         "supported_power_states": [
-             "power on",
-             "power off",
-             "rebooting",
-             "soft rebooting",
-             "soft power off"
-          ]
-        }
-
-   Consequently Ironic CLI "ironic node-show" and "ironic node-show-states"
-   return "supported_power_states" member in the table format.
-
-   example of "ironic node-show-states"
-
-   +------------------------+----------------------------------------+
-   | Property               | Value                                  |
-   +------------------------+----------------------------------------+
-   | target_power_state     | soft power off                         |
-   | target_provision_state | None                                   |
-   | last_error             | None                                   |
-   | console_enabled        | False                                  |
-   | provision_updated_at   | 2015-08-01T00:00:00+00:00              |
-   | power_state            | power on                               |
-   | provision_state        | active                                 |
-   | supported_power_states | ["power on", "power off", "rebooting", |
-   |                        |   "soft rebooting", "soft power off"]  |
-   +------------------------+----------------------------------------+
-
 * Add a new management API to support inject NMI::
 
    PUT /v1/nodes/(node_ident)/management/inject_nmi
