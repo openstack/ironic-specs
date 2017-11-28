@@ -1,0 +1,1 @@
+../approved/ilo-uefi-iscsi-boot.rst
