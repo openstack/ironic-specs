@@ -343,6 +343,49 @@ ansible_extra_args
     Extra arguments to pass to ``ansible-playbook`` on each invocation.
     Default is None.
 
+default_username
+    Name of the user to use for Ansible when connecting to the ramdisk
+    over SSH. Default is 'ansible'.
+    It may be overriden by per-node ``ansible_username`` option
+    in node's ``driver_info`` field.
+
+default_key_file
+    Absolute path to the private SSH key file to use by Ansible by default
+    when connecting to the ramdisk over SSH. If none is provided (default),
+    Ansible will use the default SSH keys configured for the user running
+    ironic-conductor service.
+    Also note that private keys with password must be pre-loaded
+    into ``ssh-agent``.
+    It may be overriden by per-node ``ansible_key_file`` option
+    in node's ``driver_info`` field.
+
+default_deploy_playbook
+    Path (relative to $playbooks_path or absolute) to the default
+    playbook used for deployment. Default is 'deploy.yaml'.
+    It may be overriden by per-node ``ansible_deploy_playbook`` option
+    in node's ``driver_info`` field.
+
+default_shutdown_playbook
+    Path (relative to $playbooks_path or absolute) to the default
+    playbook used for graceful in-band node shutdown.
+    Default is 'shutdown.yaml'.
+    It may be overriden by per-node ``ansible_shutdown_playbook`` option
+    in node's ``driver_info`` field.
+
+default_clean_playbook
+    Path (relative to $playbooks_path or absolute) to the default
+    playbook used for node cleaning.
+    Default is 'clean.yaml'.
+    It may be overriden by per-node ``ansible_clean_playbook`` option
+    in node's ``driver_info`` field.
+
+default_clean_steps_config
+    Path (relative to $playbooks_path or absolute) to the default
+    auxiliary cleaning steps file used during the node cleaning.
+    Default is 'clean_steps.yaml'.
+    It may be overriden by per-node ``ansible_clean_steps_config`` option
+    in node's ``driver_info`` field.
+
 extra_memory
     Memory (in MiB) consumed by the Ansible-related processes
     in the deploy ramdisk.
@@ -371,39 +414,42 @@ more general name (like ``[deploy]``).
 Per-node fields in driver_info
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-These parameters can be provided with driver_info, all are optional:
+These parameters can be provided with driver_info, all are optional
+and their default values can be set in the ironic configuration file:
 
-ansible_deploy_username
+ansible_username
     User name to use for Ansible to access the node (default is ``ansible``).
 
-ansible_deploy_key_file
+ansible_deploy_username
+    Deprecated in favor of ``ansible_username``.
+
+ansible_key_file
     Private SSH key used to access the node. If none is provided (default),
     Ansible will use the default SSH keys configured for the user running
     ironic-conductor service.
     Also note that private keys with password must be pre-loaded
     into ``ssh-agent``.
 
+ansible_deploy_keyfile
+    Deprecated in favor of ``ansible_key_file``.
+
 ansible_deploy_playbook
     Name of the playbook file inside the ``playbooks_path`` folder
     to use when deploying this node.
-    Default is ``deploy.yaml``.
 
 ansible_shutdown_playbook
     Name of the playbook file inside the ``playbooks_path`` folder
     to use to gracefully shutdown the node in-band.
-    Default is ``shutdown.yaml``.
 
 ansible_clean_playbook
     Name of the playbook file inside the ``playbooks_path`` folder
     to use when cleaning the node.
-    Default is ``clean.yaml``.
 
 ansible_clean_steps_config
     Name of the YAML file inside the ``playbooks_path`` folder
     that holds description of cleaning steps used by this node,
     and defines playbook tags in ``ansible_clean_playbook`` file
     corresponding to each cleaning step.
-    Default is ``clean_steps.yaml``.
 
 
 Developer impact
