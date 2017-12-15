@@ -34,6 +34,9 @@ Essential Priorities
 +---------------------------------------+-------------------------------------+
 | `Reference architecture guide`_       | dtantsur, sambetts                  |
 +---------------------------------------+-------------------------------------+
+| `Traits support planning`_            | johnthetubaguy, TheJulia, dtantsur, |
+|                                       | mgoddard                            |
++---------------------------------------+-------------------------------------+
 
 High Priorities
 ~~~~~~~~~~~~~~~~~~
@@ -56,8 +59,6 @@ High Priorities
 | `BIOS config framework`_              | dtantsur, yolanda, rpioso           |
 +---------------------------------------+-------------------------------------+
 | `Ansible deploy interface`_           | pas-ha, yuriyz                      |
-+---------------------------------------+-------------------------------------+
-| `Traits support planning`_            | johnthetubaguy, TheJulia, dtantsur  |
 +---------------------------------------+-------------------------------------+
 
 Details
