@@ -98,6 +98,16 @@ In the Queens cycle we will deprecate classic drivers.
   the driver-specific documentation and the upgrade documentation bit explained
   above.
 
+* Provide automatic migration to hardware types as part of the
+  ``online_data_migration`` command - see `Automatic migration`_.
+
+  .. note::
+    We decided to not provide any automatic migration on the API level in the
+    node create and update API. Doing so would require us to maintain mapping
+    between classic drivers and corresponding hardware types/interfaces
+    foreever. It also may be confusing for operators, if, for example, the
+    result of the node creation request differs from the outcome.
+
 **Rocky**
 
 In the Rocky release the support for classic drivers is removed.
@@ -115,6 +125,74 @@ In the Rocky release the support for classic drivers is removed.
 
 * Update the driver listing API to always return an empty result when
   ``classic`` type is requested.
+
+Automatic migration
+-------------------
+
+To simplify transition for operators, make ``online_data_migration`` in the
+Queens release automatically update nodes.
+
+* Extend BaseDriver_ with a new class method:
+
+  .. code-block:: python
+
+    @classmethod
+    def to_hardware_type(cls, node):
+        """Return corresponding hardware type and hardware interfaces.
+
+        :param cls: the driver class
+        :param node: node record from the database
+        :returns: dictionary containing node fields to update: ``driver`` and
+            all interface fields (except for ``network`` and ``storage`` which
+            have always been dynamic, even for nodes with a classic driver).
+        """
+
+  For example, for the ``agent_ipmitool`` driver:
+
+  .. code-block:: python
+
+    @classmethod
+    def to_hardware_type(cls, node):
+        if CONF.inspector.enabled:
+            inspect_interface = 'inspector'
+        else:
+            inspect_interface = 'no-inspect'
+
+        return {'driver': 'ipmi',
+                'boot_interface': 'pxe',
+                'console_interface': 'no-console',
+                'deploy_interface': 'direct',
+                'inspect_interface': inspect_interface,
+                'management_interface': 'ipmitool',
+                'power_interface': 'ipmitool',
+                'raid_interface': 'agent',
+                'vendor_interface': 'no-vendor'}
+
+* Update the ``online_data_migration`` command with a new migration:
+
+  #. Load classes for all classic drivers in the ``ironic.drivers`` entrypoint
+     (but do not instantiate them).
+
+  #. For each node using a classic driver:
+
+     #. Calculate required changes using ``DriverClass.to_hardware_type``.
+
+     #. If the hardware type or any interface is not in the enabled list
+        (``enabled_hardware_types`` or ``enabled_***_interfaces``), issue
+        a warning and skip the node.
+
+        .. note::
+            Due to idempotency of the migrations, operators will be able to
+            re-run this command after fixing the warnings to update the
+            skipped nodes.
+
+     #. Update the node record in the database.
+
+* In the **Rocky** cycle, update the ``dbsync`` command with a check that no
+  nodes are using classic drivers. As the list of classic drivers will not be
+  available at that time (they will be removed from the tree), maintain the
+  list of classic driver names that used to be in tree and check nodes against
+  this list. Remove this check in the release after Rocky.
 
 Alternatives
 ------------
@@ -266,3 +344,4 @@ References
 ==========
 
 .. _driver_factory.py: https://git.openstack.org/cgit/openstack/ironic/tree/ironic/common/driver_factory.py
+.. _BaseDriver: https://docs.openstack.org/ironic/latest/contributor/api/ironic.drivers.base.html#ironic.drivers.base.BaseDriver
