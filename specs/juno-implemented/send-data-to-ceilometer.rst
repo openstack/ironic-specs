@@ -126,7 +126,7 @@ Alternatives
 
 * We can allow sensor types to be collected configurable so that it will only
   collect the sensor data of interest. The default can be all sensors. This can
-  be an optional feature that some Ironic drivers (IPMI dirver or non-IPMI
+  be an optional feature that some Ironic drivers (IPMI driver or non-IPMI
   vendor drivers) may choose to support later with a separate spec.
 
 * Another way, Ceilometer can pull Ironic API *get_sensors_data* to retrieve
