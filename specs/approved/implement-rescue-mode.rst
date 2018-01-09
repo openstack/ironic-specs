@@ -36,9 +36,9 @@ Proposed change
 * Add AgentRescue driver (implements base.RescueInterface). This implementation
   will be available only through hardware type. It would not be supported in
   the classic drivers as they would be deprecated shortly.
-* For classic drivers rescue interface would be set to 'no-rescue' which would
-  generate 'UnsupportedDriverExtension' exception when any methods of this
-  interface are invoked.
+* For classic drivers rescue interface would be set to 'None'. An exception
+  of type 'UnsupportedDriverExtension' would be generated when any methods of
+  this interface are invoked for nodes managed by classic drivers.
 * Add periodic task _check_rescue_timeouts to fail the rescue process if
   it takes longer than rescue_callback_timeout seconds for the rescue ramdisk
   to come online.
@@ -128,9 +128,9 @@ State Machine Impact
   * RESCUING -> RESCUEFAIL (rescue fails)
   * RESCUEWAIT -> RESCUING (callback succeeds)
   * RESCUEWAIT -> RESCUEFAIL (callback fails or abort issued)
-  * RESCUEWAIT -> DELETING (delete without waiting)
+  * RESCUEWAIT -> DELETING (delete instance without waiting)
   * RESCUE -> RESCUING (re-rescue node)
-  * RESCUE -> DELETING (delete rescued node)
+  * RESCUE -> DELETING (delete rescued instance)
   * RESCUE -> UNRESCUING (unrescue node)
   * UNRESCUING -> UNRESCUEFAIL (unrescue fails)
   * UNRESCUING -> ACTIVE (unrescue succeeds)
@@ -139,7 +139,7 @@ State Machine Impact
   * UNRESCUEFAIL -> DELETING (delete instance that failed unrescuing)
   * RESCUEFAIL -> RESCUING (re-rescue after rescue failed)
   * RESCUEFAIL -> UNRESCUING (unrescue after failed rescue)
-  * RESCUEFAIL -> DELETING (delete after failed rescue)
+  * RESCUEFAIL -> DELETING (delete instance after failed rescue)
 
 * Add state machine verbs:
 
