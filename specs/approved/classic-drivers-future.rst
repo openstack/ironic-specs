@@ -137,14 +137,14 @@ Queens release automatically update nodes.
   .. code-block:: python
 
     @classmethod
-    def to_hardware_type(cls, node):
+    def to_hardware_type(cls):
         """Return corresponding hardware type and hardware interfaces.
 
-        :param cls: the driver class
-        :param node: node record from the database
-        :returns: dictionary containing node fields to update: ``driver`` and
-            all interface fields (except for ``network`` and ``storage`` which
-            have always been dynamic, even for nodes with a classic driver).
+        :returns: a tuple with two items:
+
+            * new driver field - the target hardware type
+            * dictionary containing interfaces to update, e.g.
+              {'deploy': 'iscsi', 'power': 'ipmitool'}
         """
 
   For example, for the ``agent_ipmitool`` driver:
@@ -152,41 +152,61 @@ Queens release automatically update nodes.
   .. code-block:: python
 
     @classmethod
-    def to_hardware_type(cls, node):
+    def to_hardware_type(cls):
         if CONF.inspector.enabled:
             inspect_interface = 'inspector'
         else:
             inspect_interface = 'no-inspect'
 
-        return {'driver': 'ipmi',
-                'boot_interface': 'pxe',
-                'console_interface': 'no-console',
-                'deploy_interface': 'direct',
-                'inspect_interface': inspect_interface,
-                'management_interface': 'ipmitool',
-                'power_interface': 'ipmitool',
-                'raid_interface': 'agent',
-                'vendor_interface': 'no-vendor'}
+        return 'ipmi', {'boot': 'pxe',
+                        'deploy': 'direct',
+                        'inspect': inspect_interface,
+                        'management': 'ipmitool',
+                        'power': 'ipmitool',
+                        'raid': 'agent'}
 
-* Update the ``online_data_migration`` command with a new migration:
+* Update the ``online_data_migrations`` to accept options for migrations in
+  the form of ``--option <MIGRATION NAME><KEY>=<VALUE>``. They will be passed
+  as keyword arguments to the migration matching the provided name.
+
+* Update the ``online_data_migrations`` command with a new migration
+  ``migrate_to_harware_types``. It will accept one option
+  ``reset_unsupported_interfaces``, which is a boolean value with the default
+  of ``False``. The migration will do the following:
 
   #. Load classes for all classic drivers in the ``ironic.drivers`` entrypoint
      (but do not instantiate them).
 
-  #. For each node using a classic driver:
+  #. For each classic driver:
 
      #. Calculate required changes using ``DriverClass.to_hardware_type``.
 
-     #. If the hardware type or any interface is not in the enabled list
-        (``enabled_hardware_types`` or ``enabled_***_interfaces``), issue
-        a warning and skip the node.
+        Missing interfaces, other than ``boot``, ``deploy``, ``management``
+        and ``power``, are defaulted to their no-op implementations
+        (``no-***``).
 
         .. note::
-            Due to idempotency of the migrations, operators will be able to
-            re-run this command after fixing the warnings to update the
-            skipped nodes.
+            We consider ``boot``, ``deploy``, ``management`` and ``power``
+            mandatory, as they do not have a no-op implementation.
+
+     #. If the hardware type is not in ``enabled_hardware_types``, issue a
+        and skip all nodes with this classic driver.
+
+     #. If any interface is not enabled (not in ``enabled_***_interfaces``):
+
+        #. if this interface is one of ``boot``, ``deploy``, ``management``
+           or ``power``, or if ``reset_unsupported_interfaces`` is ``False``,
+           issue a warning and skip the nodes.
+
+        #. otherwise try again with resetting the interface to its no-op
+           implementation (``no-***``).
 
      #. Update the node record in the database.
+
+     .. note::
+         Due to idempotency of the migrations, operators will be able to
+         re-run this command after fixing the warnings to update the
+         skipped nodes.
 
 * In the **Rocky** cycle, update the ``dbsync`` command with a check that no
   nodes are using classic drivers. As the list of classic drivers will not be
