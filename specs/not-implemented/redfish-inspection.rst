@@ -1,0 +1,1 @@
+../approved/redfish-inspection.rst
