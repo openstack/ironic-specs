@@ -251,7 +251,7 @@ and writable by users with the baremetal admin role.  If the port is a member
 of a portgroup, the API will enforce that all ports in the portgroup have the
 same value in their physical network field.
 
-Updates to the the physical network field of ports will be restricted in the
+Updates to the physical network field of ports will be restricted in the
 same way as for other connectivity related fields (link local connection, etc.)
 - they will be restricted to nodes in the ``enroll``, ``inspecting`` and
 ``manageable`` states.
