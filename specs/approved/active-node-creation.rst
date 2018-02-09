@@ -23,7 +23,7 @@ beginning step in the ironic workflow.
 As part of hardware fleet lifecycle management, an operator expects to
 be able to migrate inventory and control systems for their hardware fleet
 utilizing their existing inventory data and allocation records.
-Ultimately this means that that an imported host MAY already be allocated
+Ultimately this means that an imported host MAY already be allocated
 and unavailable for immediate allocation.
 
 For an operator of multiple distinct OpenStack infrastructures, it is
@@ -81,7 +81,7 @@ transition instead of pure API logic.
 
 Alternatively, we could craft operator documentation to help assist operators
 in directly loading nodes into the ironic database, coupled with the caveats
-of doing so, and require that that documentation is updated in lock-step with
+of doing so, and require that documentation is updated in lock-step with
 any database schema changes.
 
 Data model impact
