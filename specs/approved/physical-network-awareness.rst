@@ -382,4 +382,4 @@ References
 .. [3] `Ironic neutron integration <https://specs.openstack.org/openstack/ironic-specs/specs/not-implemented/ironic-ml2-integration.html>`_
 .. [4] `interface attach/detach API <https://specs.openstack.org/openstack/ironic-specs/specs/approved/interface-attach-detach-api.html>`_
 .. [5] `pluggable network providers <http://specs.openstack.org/openstack/ironic-specs/specs/6.1/network-provider.html>`_
-.. [6] `introspection plugins <https://docs.openstack.org/developer/ironic-inspector/contributing.html#writing-a-plugin>`_
+.. [6] `introspection plugins <https://docs.openstack.org/ironic-inspector/latest/contributor/index.html#writing-a-plugin>`_

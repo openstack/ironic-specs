@@ -308,5 +308,5 @@ References
 .. _`updating a node`: https://developer.openstack.org/api-ref/baremetal/?expanded=set-raid-config-detail,update-node-detail
 .. _`node's set raid config`: https://developer.openstack.org/api-ref/baremetal/?expanded=set-raid-config-detail
 .. _`PTG operations etherpad`: https://etherpad.openstack.org/p/ironic-pike-ptg-operations
-.. _`OpenStackClient command`: https://docs.openstack.org/developer/python-openstackclient/commands.html
+.. _`OpenStackClient command`: https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html
 .. _`RFE to get properties for a dynamic driver and non-default interfaces`: https://bugs.launchpad.net/ironic/+bug/1671549
