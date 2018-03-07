@@ -64,6 +64,18 @@ Implemented specifications
 These specifications have been implemented and are grouped in the
 development cycles in which they were completed.
 
+Queens
+------
+
+9.2
+~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/9.2/*
+
 Pike
 ------
 
