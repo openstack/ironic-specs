@@ -67,6 +67,15 @@ development cycles in which they were completed.
 Queens
 ------
 
+10.1
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/10.1/*
+
 9.2
 ~~~
 
