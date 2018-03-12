@@ -61,9 +61,8 @@ class TestTitles(testtools.TestCase):
         return titles
 
     def _check_titles(self, filename, expect, allowed, actual):
-        missing_sections = [x for x in expect.keys() if x not in actual.keys()]
-        extra_sections = [x for x in actual.keys() if x not in
-                dict(expect.items() + allowed.items())]
+        missing_sections = set(expect) - set(actual)
+        extra_sections = set(actual) - set(expect).union(allowed)
 
         msgs = []
         if len(missing_sections) > 0:
