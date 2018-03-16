@@ -29,8 +29,11 @@ Let's therefore have a new passive state in the **ironic** state machine, the
 
 For asynchronous inspection like ironic inspector driver, ironic conductor
 will move node from ``manageable`` to ``inspecting`` state when an inspect
-request is issued, then the ironic conductor moves node to ``inspect-wait``
-state if ``InspectInterface.inspect_hardware`` returns ``INSPECTING``.
+request is issued, then the ironic conductor moves node to ``inspect wait``
+state if ``InspectInterface.inspect_hardware`` returns ``INSPECTING`` or
+``INSPECTWAIT``. The behavior of returning ``INSPECTING`` will be
+deprecated and logged as a warning. After deprecation period, returning
+``INSPECTING`` will cause node be moved to ``inspect failed`` state.
 
 Add a new option ``[conductor]inspect_wait_timeout`` to guard the
 ``inspect wait`` state, the default value is 1800 seconds as same as
@@ -145,7 +148,7 @@ Other deployer impact
 ---------------------
 
 Add a new option ``[conductor]inspect_wait_timeout`` to guard timeout of state
-``inspecting``, defaults to 150 seconds.
+``inspecting``, defaults to 1800 seconds.
 
 Developer impact
 ----------------
