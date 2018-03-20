@@ -261,44 +261,44 @@ A new ``BIOSInterface`` will be available for the drivers to allow them to
 implement BIOS configuration. There will be several new methods and cleaning
 steps in the interface:
 
-  - ``do_factory_reset()`` - This method is called to reset all the BIOS
-    settings supported by driver to factory default. It will also update
-    the records of ``bios_settings`` database table to the known defaults once
-    reset action succeeds. It is up to the vendor to decide the BIOS defaults
-    settings that will be set.
+- ``do_factory_reset()`` - This method is called to reset all the BIOS
+  settings supported by driver to factory default. It will also update
+  the records of ``bios_settings`` database table to the known defaults once
+  reset action succeeds. It is up to the vendor to decide the BIOS defaults
+  settings that will be set.
 
-  - ``factory_reset()`` - This cleaning step will delegate the actual reset
-    work into the abstract method ``do_factory_reset()``.
+- ``factory_reset()`` - This cleaning step will delegate the actual reset
+  work into the abstract method ``do_factory_reset()``.
 
-    The operator can choose to call it as part of manual cleaning steps. The
-    corresponding manual cleaning step will be ``bios.factory_reset``.
+  The operator can choose to call it as part of manual cleaning steps. The
+  corresponding manual cleaning step will be ``bios.factory_reset``.
 
-  - ``do_apply_configuration(configuration={})`` - The driver implementation
-    of this method will take the settings from the configuration dictionary
-    and will apply BIOS configuration on the bare metal. The driver is
-    responsible for doing the corresponding validation before applying the
-    settings, and/or manage failures when setting an invalid BIOS config.
-    Implementation of this method needs to rollback previous settings upon
-    first failure. In the case of needing password to update the BIOS config,
-    it will be taken from the ``driver_info`` properties. The implementation
-    detail is up to the driver.
+- ``do_apply_configuration(configuration={})`` - The driver implementation
+  of this method will take the settings from the configuration dictionary
+  and will apply BIOS configuration on the bare metal. The driver is
+  responsible for doing the corresponding validation before applying the
+  settings, and/or manage failures when setting an invalid BIOS config.
+  Implementation of this method needs to rollback previous settings upon
+  first failure. In the case of needing password to update the BIOS config,
+  it will be taken from the ``driver_info`` properties. The implementation
+  detail is up to the driver.
 
-  - ``apply_configuration(configuration={})`` - This cleaning step will
-    delegate the actual configuration work into the abstract method
-    ``do_apply_configuration(configuration={})``.
+- ``apply_configuration(configuration={})`` - This cleaning step will
+  delegate the actual configuration work into the abstract method
+  ``do_apply_configuration(configuration={})``.
 
-    The operator can choose to call it as part of manual cleaning steps. The
-    corresponding manual cleaning step will be ``bios.apply_configuration``.
+  The operator can choose to call it as part of manual cleaning steps. The
+  corresponding manual cleaning step will be ``bios.apply_configuration``.
 
-  - ``cache_bios_settings()`` - This method will be called to update BIOS
-    configuration in ``bios_settings`` database table. It will attempt to
-    get the current BIOS settings and store them in the ``bios_settings``
-    database table. It will also update the timestamp fields of 'created_at'
-    and 'updated_at' accordingly. The implementation detail is up to the
-    driver, for example, whether to have a sub method shared by
-    ``do_factory_reset``, ``do_apply_configuration`` and
-    ``cache_bios_settings`` to retrieve and save bios information in
-    ``bios_settings`` table.
+- ``cache_bios_settings()`` - This method will be called to update BIOS
+  configuration in ``bios_settings`` database table. It will attempt to
+  get the current BIOS settings and store them in the ``bios_settings``
+  database table. It will also update the timestamp fields of 'created_at'
+  and 'updated_at' accordingly. The implementation detail is up to the
+  driver, for example, whether to have a sub method shared by
+  ``do_factory_reset``, ``do_apply_configuration`` and
+  ``cache_bios_settings`` to retrieve and save bios information in
+  ``bios_settings`` table.
 
 
 Nova driver impact
