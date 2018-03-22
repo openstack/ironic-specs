@@ -1,0 +1,1 @@
+../approved/power-fault-recovery.rst
