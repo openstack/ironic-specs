@@ -28,6 +28,10 @@ DRAFT_REQUIRED_TITLES = {
         'Proposed change': [],
         }
 
+# There has to be an RFE story in StoryBoard associated with this spec.
+STORYBOARD_URL = 'https://storyboard.openstack.org/#!/story/'
+
+# Backwards compatibility:
 # There has to be an RFE bug in launchpad associated with this spec,
 # and it could be in any ironic project (except for ironic-inspector
 # which has its own specs repository), not just 'ironic'. However,
@@ -36,6 +40,7 @@ DRAFT_REQUIRED_TITLES = {
 # e.g. https://bugs.launchpad.net/ironic/+bug/12345 :)
 BUG_URL = 'https://bugs.launchpad.net/'
 
+# Backwards compatibility:
 BLUEPRINT_URL = 'https://blueprints.launchpad.net/ironic/+spec/'
 
 
@@ -105,10 +110,13 @@ class TestTitles(testtools.TestCase):
 
         (root, _) = os.path.splitext(os.path.basename(filename))
         for i, line in enumerate(raw.split("\n")):
-            if BUG_URL in line:
+            if STORYBOARD_URL in line:
                 return
 
             # Backward compatibility
+            if BUG_URL in line:
+                return
+
             if BLUEPRINT_URL in line:
                self.assertTrue(line.endswith(root),
                        "Filename '%s' must match blueprint name '%s'" %
@@ -117,7 +125,7 @@ class TestTitles(testtools.TestCase):
 
             if line.startswith(FIRST_TITLE):
                 break
-        self.fail("URL of launchpad bug is missing")
+        self.fail("URL of associated story in Storyboard is missing")
 
     def _check_license(self, raw):
         # Check for the presence of this license string somewhere within the

@@ -8,10 +8,9 @@
 Title of the Spec
 =================
 
-Include the URL of your launchpad bug (which should be tagged with ``rfe``
-tag):
+Include the URL of your StoryBoard story (which should have an `rfe`` tag):
 
-https://bugs.launchpad.net/ironic/+bug/XXXXXX
+https://storyboard.openstack.org/#!/story/XXXXXXX
 
 Introduction paragraph -- start here.
 
@@ -442,10 +441,10 @@ If more than one person is working on the implementation, please designate the
 primary author and contact.
 
 Primary assignee:
-  <launchpad-id or None>
+  <IRC handle, email address, or None>
 
 Other contributors:
-  <launchpad-id or None>
+  <IRC handle, email address, None>
 
 Work Items
 ----------
