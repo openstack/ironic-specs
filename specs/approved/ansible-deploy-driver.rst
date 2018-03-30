@@ -346,7 +346,7 @@ ansible_extra_args
 default_username
     Name of the user to use for Ansible when connecting to the ramdisk
     over SSH. Default is 'ansible'.
-    It may be overriden by per-node ``ansible_username`` option
+    It may be overridden by per-node ``ansible_username`` option
     in node's ``driver_info`` field.
 
 default_key_file
@@ -356,34 +356,34 @@ default_key_file
     ironic-conductor service.
     Also note that private keys with password must be pre-loaded
     into ``ssh-agent``.
-    It may be overriden by per-node ``ansible_key_file`` option
+    It may be overridden by per-node ``ansible_key_file`` option
     in node's ``driver_info`` field.
 
 default_deploy_playbook
     Path (relative to $playbooks_path or absolute) to the default
     playbook used for deployment. Default is 'deploy.yaml'.
-    It may be overriden by per-node ``ansible_deploy_playbook`` option
+    It may be overridden by per-node ``ansible_deploy_playbook`` option
     in node's ``driver_info`` field.
 
 default_shutdown_playbook
     Path (relative to $playbooks_path or absolute) to the default
     playbook used for graceful in-band node shutdown.
     Default is 'shutdown.yaml'.
-    It may be overriden by per-node ``ansible_shutdown_playbook`` option
+    It may be overridden by per-node ``ansible_shutdown_playbook`` option
     in node's ``driver_info`` field.
 
 default_clean_playbook
     Path (relative to $playbooks_path or absolute) to the default
     playbook used for node cleaning.
     Default is 'clean.yaml'.
-    It may be overriden by per-node ``ansible_clean_playbook`` option
+    It may be overridden by per-node ``ansible_clean_playbook`` option
     in node's ``driver_info`` field.
 
 default_clean_steps_config
     Path (relative to $playbooks_path or absolute) to the default
     auxiliary cleaning steps file used during the node cleaning.
     Default is 'clean_steps.yaml'.
-    It may be overriden by per-node ``ansible_clean_steps_config`` option
+    It may be overridden by per-node ``ansible_clean_steps_config`` option
     in node's ``driver_info`` field.
 
 extra_memory
