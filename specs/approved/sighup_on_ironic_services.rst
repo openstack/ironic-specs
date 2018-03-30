@@ -218,5 +218,5 @@ References
 .. _`rolling upgrade`: http://specs.openstack.org/openstack/ironic-specs/specs/approved/support-rolling-upgrade.html#rolling-upgrade-process
 .. _`oslo.config library`: http://docs.openstack.org/developer/oslo.config/opts.html?highlight=mutable#option-definitions
 .. _`mutable option note`: https://github.com/openstack/ironic/blob/ebfc4fe4c4c3910bf8b1229cb75259befa530877/etc/ironic/ironic.conf.sample#L383
-.. _`launched`: https://docs.openstack.org/developer/oslo.service/api/service.html#oslo_service.service.launch
+.. _`launched`: https://docs.openstack.org/oslo.service/latest/reference/service.html#oslo_service.service.launch
 .. _`mutable in the future`: https://bugs.launchpad.net/ironic/+bug/1713571
