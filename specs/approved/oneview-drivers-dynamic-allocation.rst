@@ -388,4 +388,4 @@ OneView page
 OneView 2.0 REST API Reference
     http://h17007.www1.hp.com/docs/enterprise/servers/oneview2.0/cic-rest/en/content/
 python-oneviewclient
-    https://pypi.python.org/pypi/python-oneviewclient
+    https://pypi.org/project/python-oneviewclient

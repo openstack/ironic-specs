@@ -216,7 +216,7 @@ Work Items
 
 Dependencies
 ============
-* The driver requires `python-oneviewclient package <https://pypi.python.org/pypi/python-oneviewclient>`_.
+* The driver requires `python-oneviewclient package <https://pypi.org/project/python-oneviewclient>`_.
 
 Testing
 =======
@@ -241,4 +241,4 @@ OneView Page
 OneView REST API Reference
     http://h17007.www1.hp.com/docs/enterprise/servers/oneviewhelp/oneviewRESTAPI/content/images/api/index.html
 python-oneviewclient
-    https://pypi.python.org/pypi/python-oneviewclient
+    https://pypi.org/project/python-oneviewclient

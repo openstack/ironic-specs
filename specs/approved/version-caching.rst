@@ -197,7 +197,7 @@ References
   https://github.com/openstack/requirements/blob/master/global-requirements.txt
 * [3] https://github.com/openstack/os-client-config
 * [4] https://github.com/openstack/python-openstackclient
-* [5] Documentation on appdirs is found here: https://pypi.python.org/pypi/appdirs
+* [5] Documentation on appdirs is found here: https://pypi.org/project/appdirs
 * [6] Original custom file cache solution: https://review.openstack.org/#/c/173674/1/
 * [7] Current state of the implementation at the time of this spec being
   raised: https://review.openstack.org/#/c/173674/19

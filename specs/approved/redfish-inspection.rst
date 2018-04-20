@@ -207,6 +207,6 @@ References
 .. _`Introspect spec`: https://github.com/openstack/ironic-specs/blob/master/specs/kilo/ironic-node-properties-discovery.rst
 .. _`Common Ironic Capabilities spec`: https://specs.openstack.org/openstack/ironic-specs/specs/not-implemented/add-new-oob-properties-to-ilo-drivers.html
 .. _`DMTF standard Redfish schemas`: https://www.dmtf.org/standards/redfish
-.. _`Sushy library`: https://pypi.python.org/pypi/sushy
+.. _`Sushy library`: https://pypi.org/project/sushy
 .. _`Ironic Inspector`: https://docs.openstack.org/ironic-inspector/latest/
 .. _`Redfish hardware type`: https://docs.openstack.org/ironic/latest/admin/drivers/redfish.html

@@ -265,7 +265,7 @@ References
 
 1. UcsSdk library:
 * https://github.com/CiscoUCS/UcsSdk
-* https://pypi.python.org/pypi/UcsSdk
+* https://pypi.org/project/UcsSdk
 
 2. Introspect spec:
 * https://github.com/openstack/ironic-specs/blob/master/specs/kilo/ironic-node-properties-discovery.rst
