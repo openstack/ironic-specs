@@ -1,0 +1,1 @@
+../approved/vnc-graphical-console.rst
