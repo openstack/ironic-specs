@@ -1,0 +1,1 @@
+../approved/boot-from-ramdisk.rst
