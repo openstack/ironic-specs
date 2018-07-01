@@ -2,7 +2,7 @@
  This work is licensed under a Creative Commons Attribution 3.0 Unported
  License.
 
- http://creativecommons.org/licenses/by/3.0/legalcode
+ https://creativecommons.org/licenses/by/3.0/legalcode
 
 ============================================
 Move Ironic to a feature-based release model
@@ -256,21 +256,21 @@ References
 
 [0] https://etherpad.openstack.org/p/liberty-ironic-scaling-the-dev-team
 
-[1] http://governance.openstack.org/reference/tags/release_at-6mo-cycle-end.html
+[1] https://governance.openstack.org/tc/reference/tags/release_at-6mo-cycle-end.html
 
-[2] http://governance.openstack.org/reference/tags/release_independent.html
+[2] https://governance.openstack.org/tc/reference/tags/release_independent.html
 
-[3] http://governance.openstack.org/reference/tags/integrated-release.html
+[3] https://governance.openstack.org/tc/reference/tags/integrated-release.html
 
 [4] https://wiki.openstack.org/wiki/Liberty_Release_Schedule
 
-[5] http://semver.org/
+[5] https://semver.org/
 
 [6] http://lists.openstack.org/pipermail/openstack-dev/2015-May/065211.html
 
 [7] https://wiki.openstack.org/wiki/DepFreeze
 
-[8] http://docs.openstack.org/developer/ironic/
+[8] https://docs.openstack.org/developer/ironic/
 
 [9] https://en.wikipedia.org/wiki/Feature_toggle
 
