@@ -39,9 +39,9 @@ Problem description
   similar with boot from volume, and if we ever support RBD booting,
   we would functionally require this exact feature. What delineates
   this from the Boot from Volume iPXE chain loading scenarios and
-  virtual media based booting from a remote volume, is that these
-  are ultimately reliant upon back-end block storage, which is
-  not always needed or desired for all cases.
+  virtual media based booting from a remote volume, is that Boot
+  from Volume scenarios are ultimately reliant upon back-end block
+  storage, which is not always needed or desired for all cases.
 
 Proposed change
 ===============
@@ -67,6 +67,7 @@ Mechanism wise, if the ``ramdisk`` deployment interface is set:
 
 * The instance ``boot_option`` will be ignored by the
   ramdisk interface, and will be explicitly set to ``ramdisk``.
+  If otherwise set, the interface logs a warning.
 
 * The same ``kernel`` and ``ramdisk`` parameters that are used
   for a "glance" image based deployment could be re-used to contain
@@ -85,10 +86,12 @@ Mechanism wise, if the ``ramdisk`` deployment interface is set:
 
 * Users must explicitly allow TFTP and/or HTTP iPXE endpoint access for
   booting the baremetal nodes. Typically deployments do not allow tenant
-  networks are not permitted access to these endpoints.
+  networks to access to these endpoints.
 
 * Configuration drives would be ignored by ironic, and users would be
-  advised to make use of the metadata service.
+  advised to make use of the metadata service. Deployments with a
+  configuration drive will explicitly result in an warning being logged
+  by the conductor.
 
   * Operators who directly deploy nodes using ironic may need to pass
     additional kernel command line arguments to the node being "deployed"
@@ -103,7 +106,7 @@ operators have expressed desire for. Ceph RBD support would need to
 be in the underlying ``pxe`` boot interface, as the ramdisk interface
 overlays the ``pxe`` interface. Support for Ceph RBD or NFS based
 booting, from ``volume target`` information, would be a future
-enhanement.
+enhancement.
 
 Alternatives
 ------------
