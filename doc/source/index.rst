@@ -65,6 +65,27 @@ Implemented specifications
 These specifications have been implemented and are grouped in the
 development cycles in which they were completed.
 
+Rocky
+-----
+
+11.1
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/11.1/*
+
+11.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/11.0/*
+
 Queens
 ------
 
