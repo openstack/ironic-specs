@@ -57,8 +57,8 @@ likely create their own tooling around list processing.
 Data model impact
 -----------------
 
-A ``owner`` field would be added to the nodes table as a ``VARCHAR(64)``
-and will have a default value of ``None``.
+A ``owner`` field would be added to the nodes table as a ``VARCHAR(255)``
+and will have a default value of ``null`` in the database.
 
 State Machine Impact
 --------------------
@@ -74,8 +74,9 @@ updated to allow a user to set and unset the value via the API.
 Additionally the GET syntax for the nodes list will be updated to allow a
 list of matching nodes to be returned.
 
-POST/PATCH operations to the field will be guarded by a new microversion,
-however returning the field will not be guarded by the microversion.
+POST/PATCH operations to the field will be guarded by a new microversion.
+The field shall not be returned unless the sufficient microversion is supplied
+for GET operations.
 
 Client (CLI) impact
 -------------------
