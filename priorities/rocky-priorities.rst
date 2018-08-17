@@ -79,7 +79,7 @@ Details
 Deploy Steps
 ------------
 
-We created cleaning with the the ability to compose an ordered list of
+We created cleaning with the ability to compose an ordered list of
 actions to be taken. However we left deployment as a static set of actions.
 
 In order to allow templates to apply using chosen traits, we want to have
