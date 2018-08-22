@@ -77,7 +77,7 @@ with ``@deploy_step``, defined in ironic/drivers/base.py as follows::
     """Decorator for deployment steps.
 
     :param priority: an integer priority; used for determining the order in
-        which the step is run in the the deployment process. (See below,
+        which the step is run in the deployment process. (See below,
         "When are deploy steps executed" for more details.)
     :param argsinfo: a dictionary of keyword arguments where key is the name of
         the argument and value is a dictionary as follows:
