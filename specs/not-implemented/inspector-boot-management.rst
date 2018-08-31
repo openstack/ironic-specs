@@ -1,1 +1,0 @@
-../approved/inspector-boot-management.rst

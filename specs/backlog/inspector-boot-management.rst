@@ -8,7 +8,7 @@
 Boot management for in-band inspection
 ======================================
 
-https://bugs.launchpad.net/ironic/+bug/1528920
+https://storyboard.openstack.org/#!/story/1528920
 
 This is a cross-project (**ironic** and **ironic-inspector**) spec for making
 the **ironic-inspector** inspection interface implementation optionally manage
@@ -27,6 +27,8 @@ will manage the boot for each inspection.
 
 Inspector changes
 -----------------
+
+.. note:: This proposal was implemented in **ironic-inspector** 8.0.0.
 
 #. Modify **ironic-inspector** inspection API to accept ``manage_boot``
    parameter (boolean, defaults to ``True``). If it's set to ``False``,
@@ -72,6 +74,20 @@ Ironic changes
 
    ``boot.prepare_ramdisk`` will be used for this. We will assume
    the IPA ramdisk, as it's the only ramdisk supported right now.
+
+Unsolved problems
+-----------------
+
+This specification has the following problems that must be solved in its final
+version:
+
+#. ``PXEboot.validate`` will not pass without instance image parameters.
+#. ``PXEBoot.prepare_ramdisk`` tries to configure DHCP, which requires VIFs and
+   conflicts with DHCP of **ironic-inspector**.
+#. It is not specified how to pass kernel parameters when **ironic-inspector**
+   DHCP is not used (e.g. for virtual media).
+#. The change will be in effect immediately for many deployments without a way
+   to opt-out.
 
 Alternatives
 ------------
