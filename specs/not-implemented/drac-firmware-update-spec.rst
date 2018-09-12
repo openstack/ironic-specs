@@ -1,0 +1,1 @@
+../approved/drac-firmware-update-spec.rst
