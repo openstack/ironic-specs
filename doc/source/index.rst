@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/stein-priorities
    priorities/rocky-priorities
    priorities/queens-priorities
    priorities/pike-priorities
