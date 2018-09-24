@@ -12,14 +12,14 @@ https://bugs.launchpad.net/ironic/+bug/1712032
 
 The proposal is intended to create a new hardware interface for BIOS automated
 configuration and a method to make BIOS configuration available as part of
-manual cleaning [0].
+manual cleaning [0]_.
 
 Problem description
 ===================
 
 * There are several use cases that need to configure BIOS options to enable
   certain functionality or gain performance optimization on OpenStack baremetal
-  nodes. For example, in order to use SRIOV [1] or DPDK [2] technologies, the
+  nodes. For example, in order to use SRIOV [1]_ or DPDK [2]_ technologies, the
   'Virtualization Technology' BIOS option shall be enabled; to achieve
   deterministic low packet latency in real time scenario, BIOS options related
   to Power Management, CPU sleep states etc shall be disabled; another good
@@ -77,8 +77,8 @@ Alternatives
 Data model impact
 -----------------
 
-* Unlike the RAID configuration [3], the target BIOS settings will be passed as
-  an argument to cleaning step and not stored in the database.
+* Unlike the RAID configuration [3]_, the target BIOS settings will be passed
+  as an argument to cleaning step and not stored in the database.
 
 * The current BIOS config will be cached and will be stored in a separate BIOS
   table. The following database table and fields will be added:

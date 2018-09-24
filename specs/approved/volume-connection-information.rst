@@ -157,7 +157,7 @@ Proposed change
 
   .. note::
      The contents of the `properties` field depend on volume type. Reference
-     information should be added in Bare Metal API document[1]:
+     information should be added in Bare Metal API document:
 
      For iSCSI example::
 
@@ -223,7 +223,7 @@ Proposed change
     inspection, but that is not in the scope of this spec.
 
   .. note::
-     In the future, Ironic will provide driver capabilities information[3].
+     In the future, Ironic will provide driver capabilities information.
      Nova can use that information to choose appropriate node.
 
 * If a list of targets are specified, it's up to the driver handling the deploy
@@ -235,7 +235,7 @@ Proposed change
 
 * Information which is stored in volume_connector and volume_target tables
   are used in drivers in order to boot the node from volume. Changes for
-  reference driver, driver interfaces are described in the spec[4].
+  reference driver, driver interfaces are described in the spec [4]_.
 
 
 Alternatives
@@ -264,7 +264,7 @@ Alternatives
 * Not implement storage of target and initiator information, which ultimately
   would not improve user experience and require manual post-deployment
   configuration for out-of-band control. For in-band use, Nova ironic driver
-  can manage initiator information and it is proposed by jroll[2].
+  can manage initiator information and it is proposed by jroll [2]_.
 
 Data model impact
 -----------------
@@ -727,7 +727,7 @@ When spawning a new instance, Nova Ironic virt driver queries Ironic
 (through API) to find out the volume connector information. It passes the
 volume connector information to Cinder which returns the target information.
 This is then passed down to Ironic. Detailed information about Nova Ironic
-driver can be found in the spec [5].
+driver can be found in the spec [5]_.
 
 Ramdisk impact
 --------------
@@ -740,7 +740,7 @@ Security impact
 None.
 
 .. note::
-   As for FC zoning, Cinder takes care of it[6].
+   As for FC zoning, Cinder takes care of it [6]_.
 
 
 Other end user impact
@@ -867,11 +867,7 @@ explain the newly added fields and end points.
 References
 ==========
 
-.. [1] http://developer.openstack.org/api-ref/baremetal/index.html
 .. [2] https://review.openstack.org/#/c/184652/
-.. [3] http://specs.openstack.org/openstack/ironic-specs/specs/backlog/driver-capabilities.html
 .. [4] https://review.openstack.org/#/c/294995
 .. [5] https://review.openstack.org/#/c/211101/
 .. [6] http://docs.openstack.org/mitaka/config-reference/block-storage/fc-zoning.html
-.. [7] https://blueprints.launchpad.net/ironic/+spec/cinder-integration
-.. [8] https://wiki.openstack.org/wiki/Ironic/blueprints/cinder-integration

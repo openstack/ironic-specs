@@ -39,7 +39,7 @@ Example use cases:
   remote sites from a central location. With the current setup of L2 dependency
   we need to provide VPN L2 tunnel between Ironic Conductor and remote target
   server.
-  example: Edge cloud servers or Distributed VNF Flexi Zone Controllers:[5].
+  example: Edge cloud servers or Distributed VNF Flexi Zone Controllers [5]_.
 
 Proposed change
 ===============
@@ -65,8 +65,8 @@ nodes which can be derived as follows:
    network.
 
 Ironic virtmedia boot interfaces can use this derived information to construct
-os-net-config JSON structure:[2]. This would be added as "host_network_info" in
-parameters.txt when running create_vfat_image:[1].
+os-net-config JSON structure [2]_. This would be added as "host_network_info"
+in parameters.txt when running create_vfat_image [1]_.
 
 Example:- Content for *host_network_info*
 
@@ -132,8 +132,8 @@ dependency.
 Alternatives
 ------------
 
-glean:[3] can also be used instead of os-net-config:[2]
-Ignition:[4] can also be used instead of os-net-config:[2]
+glean [3]_ can also be used instead of os-net-config [2]_
+Ignition [4]_ can also be used instead of os-net-config [2]_
 
 Data model impact
 -----------------

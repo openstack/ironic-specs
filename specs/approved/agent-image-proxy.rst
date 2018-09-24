@@ -52,9 +52,9 @@ New behavior of agent deploy driver methods:
     no_proxy='192.168.1.5,10.0.0.3'
 
 If "proxies" key is present IPA adds a parameter to requests.get() method.
-Requests library supports "no_proxy" only as environment variable, not as a
-get() parameter. If "no_proxy" parameter is set agent should add it to Python's
-"os.environ" before get() call.
+Requests library [0]_ supports "no_proxy" only as environment variable, not as
+a get() parameter. If "no_proxy" parameter is set agent should add it to
+Python's "os.environ" before get() call.
 
 Swift Temporary URL changes:
 
@@ -204,4 +204,4 @@ Usage of agent's proxy configuration will be documented.
 References
 ==========
 
-.. [#] http://docs.python-requests.org/en/latest/user/advanced/#proxies
+.. [0] http://docs.python-requests.org/en/latest/user/advanced/#proxies

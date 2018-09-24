@@ -31,7 +31,7 @@ Proposed change
 ===============
 
 The proposed implementation consists in having the iPXE driver to create
-a Swift tempurl for the deploy ramdisk and kernel that the
+a Swift tempurl [0]_ for the deploy ramdisk and kernel that the
 node will boot as part of the config generation.
 
 This also proposes adding a boolean configuration option under
@@ -173,4 +173,4 @@ this spec.
 References
 ==========
 
-.. [#] http://docs.openstack.org/kilo/config-reference/content/object-storage-tempurl.html
+.. [0] http://docs.openstack.org/kilo/config-reference/content/object-storage-tempurl.html

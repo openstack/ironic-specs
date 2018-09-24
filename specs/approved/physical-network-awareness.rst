@@ -152,7 +152,7 @@ The process of mapping physical networks to ironic ports is out of scope for
 ironic.  This could be done either through a manual procedure or through an
 automated process using information gathered during a hardware introspection
 process.  For example, if using ironic inspector to perform introspection it
-would be possible to create an introspection plugin [6] that maps switch IDs
+would be possible to create an introspection plugin [6]_ that maps switch IDs
 discovered via LLDP to physical networks.
 
 Portgroups

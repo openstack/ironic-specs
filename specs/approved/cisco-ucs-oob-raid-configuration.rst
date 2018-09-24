@@ -23,8 +23,8 @@ UCSM managed servers.
 Proposed change
 ===============
 
-It proposes implementing the RAID interface as described by the parent spec [1]
-for UCS drivers.
+It proposes implementing the RAID interface as described by the parent spec
+[1]_ for UCS drivers.
 
 List of changes required:
 
