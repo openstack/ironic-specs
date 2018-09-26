@@ -8,7 +8,7 @@
 Support a new hardware type for Fujitsu PRIMEQUEST MMB
 ======================================================
 
-https://bugs.launchpad.net/ironic/+bug/1726271
+https://storyboard.openstack.org/#!/story/1726271
 
 This spec proposes adding a new hardware type that supports deployment of
 servers managed by ManageMent Board(MMB) for Fujitsu PRIMEQUEST 3000 Series.
