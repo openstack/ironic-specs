@@ -65,7 +65,7 @@ Swift and update the Node's instance_info to include the temporary URL
 from the upload or if swift if not configured, the config drive data
 will be stored directly into the Node's instance_info field.
 
-From there deploy drivers will will be responsible for exposing the
+From there deploy drivers will be responsible for exposing the
 configdrive to the instance, as well as removing the configdrive from the
 instance upon deletion. This cannot be coordinated by code outside of the
 driver, as only the driver can know when and how to take these actions.
