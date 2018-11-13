@@ -59,7 +59,7 @@ A couple of alternatives exist:
 Data model impact
 -----------------
 
-New ``agent_version`` field will be be stored in ``node.driver_internal_info``
+New ``agent_version`` field will be stored in ``node.driver_internal_info``
 on agent heartbeat.
 
 State Machine Impact
