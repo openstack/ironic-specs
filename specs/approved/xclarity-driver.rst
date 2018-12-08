@@ -184,7 +184,7 @@ Testing
 =======
 * Unit tests will be implemented for new XClarity driver.
 
-* Third pary Continuous integration (CI) support will be added for Lenovo
+* Third party Continuous integration (CI) support will be added for Lenovo
   servers.
 
 Upgrades and Backwards Compatibility
