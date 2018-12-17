@@ -1,0 +1,1 @@
+../approved/deploy-templates.rst
