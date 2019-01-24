@@ -104,7 +104,8 @@ The enhancements for Neutron OVS L2 agent captured in [1]_, [2]_ and [3]_.
   deployment interfaces will intermittently boot the baremetal into the BIOS
   shell, providing a state where the ovs on the smart NIC may be configured
   properly before rebooting the bare metal into the actual guest image or
-  ramdisk.
+  ramdisk. The ovs on the smart NIC will get programmed after we verify that
+  the neutron ovs agent is alive.
 
 
   The following code for configure/unconfigure network:
