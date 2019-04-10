@@ -1,0 +1,1 @@
+../approved/support-intel-speed-select.rst
