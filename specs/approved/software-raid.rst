@@ -75,10 +75,49 @@ configurations: a RAID-1 holder device can look like a standalone disk and does
 not require the bootloader to have any knowledge or capabilities to understand
 more complex RAID configurations.
 
+In order to signal that a software RAID configuration is indeed desired (and
+to protect from a situation where a software RAID is set up accidentally
+when the configuration passed via the ``target_raid_config`` was meant for a
+hardware RAID setup, for instance), the ``controller`` property of all of the
+logical disks needs to be set to ``software``. Without this setting, the
+software RAID code in the GenericHardwareManager of the IPA will ignore the
+given ``target_raid_config``. If it is set on only one of the logical drives,
+the validation code will raise an error.
+
+The ``controller`` property set to ``software`` will also be used by the
+conductor to identify a software RAID and trigger the required installation of
+the bootloader. While whole-disk images are expected to come with a bootloader
+configuration as part of the image, for software RAIDs in the current design
+the image will not be at the start of a real disk, but inside the first
+partition on top of a software RAID-1. The bootloader must hence be explicitly
+installed onto the underlying holder disks, and this property will indicate
+when to do this.
+
+An example of a valid software RAID configuration would hence look like::
+
+    {
+        "logical_disks": [
+            {
+                "size_gb": 100,
+                "raid_level": "1",
+                "controller": "software"
+            },
+            {
+                "size_gb": "MAX",
+                "raid_level": "0",
+                "controller": "software"
+            }
+        ]
+    }
+
 Support for more than one RAID-N, support for the selection of a subset of
-drives to act as holder devices, as well as support to partition the created
-RAID-N device are left for follow-up enhancements and beyond the scope of
-this specification.
+drives to act as holder devices, support for simultaneous software and
+hardware RAID devices as well as support to partition the created RAID-N
+device are left for follow-up enhancements and beyond the scope of this
+specification.
+
+Also, there is currently no support for partition images, only whole disk
+images are supported.
 
 A first prototype very close to the proposal is available from [2][3][4].
 
