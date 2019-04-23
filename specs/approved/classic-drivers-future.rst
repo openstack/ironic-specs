@@ -363,5 +363,5 @@ to hardware types with a examples and a mapping between old and new drivers.
 References
 ==========
 
-.. _driver_factory.py: https://git.openstack.org/cgit/openstack/ironic/tree/ironic/common/driver_factory.py
+.. _driver_factory.py: https://opendev.org/openstack/ironic/src/branch/master/ironic/common/driver_factory.py
 .. _BaseDriver: https://docs.openstack.org/ironic/latest/contributor/api/ironic.drivers.base.html#ironic.drivers.base.BaseDriver

@@ -540,8 +540,8 @@ tree as well.
 References
 ==========
 
-.. [#] http://www.ansible.com/
-.. [#] http://git.openstack.org/cgit/openstack/ironic-staging-drivers
+.. [#] https://www.ansible.com/
+.. [#] https://opendev.org/x/ironic-staging-drivers/
 .. [#] http://ironic-staging-drivers.readthedocs.io/en/latest/drivers/ansible.html
-.. [#] http://git.openstack.org/cgit/openstack/ironic-python-agent-builder
-.. [#] http://pshchelo.github.io/ansible-deploy-perf.html
+.. [#] https://opendev.org/openstack/ironic-python-agent-builder/
+.. [#] https://pshchelo.github.io/ansible-deploy-perf.html
