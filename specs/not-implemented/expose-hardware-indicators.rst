@@ -1,0 +1,1 @@
+../approved/expose-hardware-indicators.rst
