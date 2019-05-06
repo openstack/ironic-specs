@@ -10,19 +10,18 @@ Add Intel® Speed Select Support
 
 https://storyboard.openstack.org/#!/story/2005390
 
-Multiple type of servers are needed to handle diverse workloads. Purchasing
+Multiple types of servers are needed to handle diverse workloads. Purchasing
 and managing these servers introduces complexity and increases total cost of
 ownership(TCO).
 Intel Speed Select Technology(SST)[1] is a collection of features that improves
-performance and optimize TCO by providing more control over CPU performance.
-With Intel SST, one server can do more which means same server can be used to
-run different workloads. One of the feature is Intel Speed Select
-Technology-Performance Profile (SST-PP) allows configuring the CPU to run at
-3 distinct operating points or profiles.
+performance and optimizes TCO by providing more control over CPU performance.
+With Intel SST, one server can do more which means the same server can be used
+to run different workloads. One of the feature is Intel Speed Select
+Technology-Performance Profile (SST-PP) which allows configuring the CPU to run
+at 3 distinct operating points or profiles.
 
 With Intel SST-PP, one can set the desired core count and their base and turbo
-frequency. It allows to set the number of cores and their frequencies which can
-help to tune the server to specific workload performance.
+frequencies which can help to tune the server to specific workload performance.
 
 Problem description
 ===================
@@ -56,8 +55,8 @@ Proposed change
 ===============
 
 Intel SST-PP can be set over IPMI. Each configuration level has its
-own hexa raw code that server understands. Ironic sends this code to the server
-via IPMI to set the desired SST-PP level.
+own hexa raw code that the server understands. Ironic sends this code to the
+server via IPMI to set the desired SST-PP level.
 
 We will map these configurations to traits that Ironic understands.
 
@@ -72,21 +71,21 @@ Scheduling
 
 The solution to support Intel SST-PP is first enable scheduling the request
 for baremetal instance deployment on the nodes that supports it. We set the
-desired configuration as the trait in our flavor.
+desired configuration as the trait in our flavor::
 
   $ openstack flavor set --property \
     trait:CUSTOM_INTEL_SPEED_SELECT_CONFIG_2=required baremetal
 
 Now, we also need to update the Ironic node's trait with the supported
-configuration levels.
+configuration levels::
 
-  $ openstack --os-baremetal-api-version 1.37 baremetal node add trait node-0 \
+  $ openstack baremetal node add trait node-0 \
     CUSTOM_INTEL_SPEED_SELECT_CONFIG_BASE CUSTOM_INTEL_SPEED_SELECT_CONFIG_1 \
     CUSTOM_INTEL_SPEED_SELECT_CONFIG_2
 
 
-Now, when user sends a request to boot a node with the ``baremetal`` flavor.
-Placement API service will select the Ironic node that supports Intel SST-PP.
+Now, when user sends a request to boot a node with the ``baremetal`` flavor,
+placement API service will select the Ironic node that supports Intel SST-PP.
 
 Provisioning
 ------------
@@ -95,8 +94,8 @@ The Intel SST-PP needs to be set via IPMI before powering on the node
 in the process of provisioning. Ironic API service receives the desired
 configuration in ``node.instance_info.traits`` in the boot request. Ironic will
 then run the deploy template's step matching the trait. The deploy template
-will specify the new ``configure_intel_speedselect`` step which configure
-the Intel SST-PP configuration and then power on the node.
+will specify the new ``configure_intel_speedselect`` step which configures
+the Intel SST-PP configuration level and then powers on the node.
 
 Ironic will need below details to configure Intel SST-PP on the node:
 
@@ -105,8 +104,8 @@ Ironic will need below details to configure Intel SST-PP on the node:
   is set by admins in the  flavor's trait they want to boot the baremetal node
   with. Nova in turn updates the Ironic's node information with the trait.
 
-* No. of socket: This is the no. of sockets per CPU. Setting Intel SST-PP needs
-  to be done for every socket.
+* Number of sockets: This is the number of sockets per CPU. Setting Intel
+  SST-PP needs to be done for every socket.
 
 Both these information can be provided as an argument to the
 ``configure_intel_speedselect`` deploy step.
@@ -156,40 +155,40 @@ Driver API impact
 -----------------
 
 * Add a new hardware type ``IntelIPMIHardware`` to support Intel SST-PP
-  enabled hardwares.
+  enabled servers.
 
-   .. code-block:: python
+  .. code-block:: python
 
-       class IntelIPMIHardware(IPMIHardware):
+      class IntelIPMIHardware(IPMIHardware):
 
-* Add a new management interface ``IntelIPMIManagement`` to manage configuring
-  Intel SST-PP on the servers. This class will have a new deploy step
-  ``configure_intel_speedselect`` to configure Intel SST-PP on the nodes. This
-  will also be enabled as a clean step so that it can be used to reset
-  configuration while node cleaning.
+* Add a new management interface ``IntelIPMIManagement`` to manage the
+  configuration of Intel SST-PP on the servers. This class will have a new
+  deploy step ``configure_intel_speedselect`` to configure Intel SST-PP on
+  the nodes. This will also be enabled as a clean step so that it can be used
+  to reset the configuration while node cleaning.
 
 
-   .. code-block:: python
+  .. code-block:: python
 
-       class IntelIPMIManagement(ipmitool.IPMIManagement):
-           @base.deploy_step(priority=200, argsinfo={
-               'intel_speedselect_config': {
-                   'description': (
-                        "Intel SST-PP configuration."
-                   ),
-                   'required': True
-               },
-               'socket_count': {
-                   'description': (
-                       "No. of sockets."
-                   )
-               }
-           })
-           def configure_intel_speedselect(self, task, **kwargs):
-               return None
+      class IntelIPMIManagement(ipmitool.IPMIManagement):
+          @base.deploy_step(priority=200, argsinfo={
+              'intel_speedselect_config': {
+                  'description': (
+                       "Intel SST-PP configuration."
+                  ),
+                  'required': True
+              },
+              'socket_count': {
+                  'description': (
+                      "No. of sockets."
+                  )
+              }
+          })
+          def configure_intel_speedselect(self, task, **kwargs):
+              return None
 
-  Following is table for ``intel_speedselect_config`` value
-  corresponding each deploy template::
+  The following table contains the ``intel_speedselect_config`` values
+  for the proposed deploy templates::
 
    -----------------------------------------------------------------------
    |   Deploy Template                      |  intel_speedselect_config  |
@@ -218,8 +217,8 @@ None
 Other end user impact
 ---------------------
 
-Users will have to update the traits with required Intel SST-PP configuration
-level in flavor.
+Users will have to update the traits with the desired Intel SST-PP
+configuration level in the corresponding flavors.
 
 Scalability impact
 ------------------
