@@ -1,0 +1,1 @@
+../approved/ilo-oob-disk-erase.rst
