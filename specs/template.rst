@@ -363,6 +363,11 @@ Examples of things to consider here include:
 * Any change in the number of physical nodes which can be managed by each
   conductor service.
 
+A question an author may wish to ask themselves is what about scales beyond
+their current context. We shouldn't afraid to ask "What about in a deployment
+10x or 100x larger than any we know of?", or what if the nodes are on the Mars,
+and the conductor is running on a satellite in orbit?
+
 Performance Impact
 ------------------
 
