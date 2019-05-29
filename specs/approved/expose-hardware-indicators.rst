@@ -68,7 +68,7 @@ Data model impact
 
 None.
 
-Due to the interactive nature of indicator information, it seem that
+Due to the interactive nature of indicator information, it seems that
 user-indicator link should be as immediate as possible, having it cached by
 the database can make indicators confusing.
 
@@ -251,9 +251,12 @@ The following commands will be created:
 
 .. code-block:: bash
 
-    openstack baremetal indicator list [component]
-    openstack baremetal indicator show <component> indicator
-    openstack baremetal indicator set <component> <indicator> --state {ON,OFF,BLINKING}
+    openstack baremetal node indicator list <node> [component]
+    openstack baremetal node indicator show <node> <component> indicator
+    openstack baremetal node indicator set <node> <component> <indicator> --state {ON,OFF,BLINKING}
+
+The first command lists all indicators for the specified component, or for all
+components if specific component is not given.
 
 RPC API impact
 --------------
