@@ -67,6 +67,27 @@ Implemented specifications
 These specifications have been implemented and are grouped in the
 development cycles in which they were completed.
 
+Stein
+-----
+
+12.1
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/12.1/*
+
+12.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/12.0/*
+
 Rocky
 -----
 
@@ -99,6 +120,15 @@ Queens
    :maxdepth: 1
 
    specs/10.1/*
+
+10.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/10.0/*
 
 9.2
 ~~~
