@@ -130,7 +130,7 @@ None
 References
 ==========
 
-* `Spec for ManagementInterface <https://git.openstack.org/cgit/openstack/ironic-specs/tree/specs/juno/new-management-interface.rst>`_
+* `Spec for ManagementInterface <https://opendev.org/openstack/ironic-specs/src/branch/master/specs/juno/new-management-interface.rst>`_
 
 * `OpenWSMAN library <http://openwsman.github.io/>`_
 

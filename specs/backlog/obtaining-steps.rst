@@ -15,7 +15,7 @@ https://storyboard.openstack.org/#!/story/1715419
 In Ironic, we have a concept of steps [1]_ to be executed to achieve a task
 utilizing a blend of driver code running in the conductor and code operating
 inside of the
-`ironic-python-agent <https://git.openstack.org/cgit/openstack/ironic-python-agent>`_.
+`ironic-python-agent <https://opendev.org/openstack/ironic-python-agent>`_.
 
 In order for this to be useful, we have to be able to raise the visibility of
 what is available to be performed to the end user of the API. Presently users
