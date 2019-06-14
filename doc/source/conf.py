@@ -182,7 +182,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Ironic-specs.tex', u'Ironic Specs',
+  ('index', 'doc-ironic-specs.tex', u'Ironic Specs',
    u'OpenStack Ironic Team', 'manual'),
 ]
 
