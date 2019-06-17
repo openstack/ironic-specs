@@ -1,0 +1,1 @@
+../approved/idrac-support-of-redfish-interfaces.rst
