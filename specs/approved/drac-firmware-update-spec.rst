@@ -67,7 +67,7 @@ Support for firmware management in ``redfish`` hardware type
 ------------------------------------------------------------
 
 A patch for firmware update in sushy has been merged:
-https://review.openstack.org/#/c/613828/
+https://review.opendev.org/#/c/613828/
 There is no support for firmware update in the ``redfish`` hardware type yet.
 
 Proposed change

@@ -375,7 +375,7 @@ References
 ==========
 
 * `DevStack bare metal network simulation split (abandoned)
-  <https://review.openstack.org/#/c/509844>`__
+  <https://review.opendev.org/#/c/509844>`__
 * `Sam Betts libvirt bare metal simulation
   <https://github.com/Tehsmash/libvirt-baremetal-simulation>`__
 * `QuintupleO: OpenStack virtual bare metal

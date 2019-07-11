@@ -547,7 +547,7 @@ Dependencies
 ============
 
 * Root device hints - http://specs.openstack.org/openstack/ironic-specs/specs/kilo/root-device-hints.html
-* Zapping of nodes - https://review.openstack.org/#/c/140826/
+* Zapping of nodes - https://review.opendev.org/#/c/140826/
 
 Testing
 =======
@@ -582,4 +582,4 @@ Other references:
 
 * New Ironic provisioning state machine: http://specs.openstack.org/openstack/ironic-specs/specs/kilo/new-ironic-state-machine.html
 
-* Support Zapping of Nodes: https://review.openstack.org/#/c/140826/
+* Support Zapping of Nodes: https://review.opendev.org/#/c/140826/

@@ -252,4 +252,4 @@ Documentation Impact
 References
 ==========
 
-.. [#] https://review.openstack.org/#/c/334113/
+.. [#] https://review.opendev.org/#/c/334113/

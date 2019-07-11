@@ -406,8 +406,8 @@ Documentation Impact
 References
 ==========
 
-.. [1] https://review.openstack.org/#/c/619920/
+.. [1] https://review.opendev.org/#/c/619920/
 
-.. [2] https://review.openstack.org/#/c/595402/
+.. [2] https://review.opendev.org/#/c/595402/
 
-.. [3] https://review.openstack.org/#/c/595512/
+.. [3] https://review.opendev.org/#/c/595512/

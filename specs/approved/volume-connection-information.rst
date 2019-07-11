@@ -867,7 +867,7 @@ explain the newly added fields and end points.
 References
 ==========
 
-.. [2] https://review.openstack.org/#/c/184652/
-.. [4] https://review.openstack.org/#/c/294995
-.. [5] https://review.openstack.org/#/c/211101/
+.. [2] https://review.opendev.org/#/c/184652/
+.. [4] https://review.opendev.org/#/c/294995
+.. [5] https://review.opendev.org/#/c/211101/
 .. [6] http://docs.openstack.org/mitaka/config-reference/block-storage/fc-zoning.html

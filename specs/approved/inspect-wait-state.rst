@@ -217,5 +217,5 @@ References
 ==========
 
 .. [#] https://docs.openstack.org/ironic-inspector/pike/user/http-api.html#start-introspection
-.. [#] https://review.openstack.org/#/c/482867/16/specs/approved/inspection-abort.rst
+.. [#] https://review.opendev.org/#/c/482867/16/specs/approved/inspection-abort.rst
 .. [#] https://etherpad.openstack.org/p/inspector-queens-virtual-ptg

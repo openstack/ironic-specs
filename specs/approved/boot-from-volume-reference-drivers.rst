@@ -624,9 +624,9 @@ Mitaka midcycle etherpad:
 .. _`IPXE sanhook command`: http://ipxe.org/cmd/sanhook
 .. _`IPXE san connection URLs`: http://ipxe.org/sanuri
 .. _`Driver composition reform specification`: https://specs.openstack.org/openstack/ironic-specs/specs/not-implemented/driver-composition-reform.html
-.. _`Add network interface to base driver class`: https://review.openstack.org/#/c/285852/
+.. _`Add network interface to base driver class`: https://review.opendev.org/#/c/285852/
 .. _`Add volume connection information for Ironic nodes`: https://specs.openstack.org/openstack/ironic-specs/specs/not-implemented/volume-connection-information.html
-.. _`Nova Specs - Ironic - Boot from Cinder volume`: https://review.openstack.org/#/c/311696/
+.. _`Nova Specs - Ironic - Boot from Cinder volume`: https://review.opendev.org/#/c/311696/
 .. _`ironic mitaka midcycle`: https://etherpad.openstack.org/p/ironic-mitaka-midcycle
 .. _`nfsroot kernel command line option`: https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt
 .. _`Root device hints`: https://specs.openstack.org/openstack/ironic-specs/specs/kilo-implemented/root-device-hints.html

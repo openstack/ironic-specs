@@ -235,7 +235,7 @@ deployment by polling IPA using the already known IP address. That being
 said, this is realistically going to require `Task execution improvements`_
 to be complete to help ensure that operators are able to have performant
 deployments. The specification can be found at
-`change 212206 <https://review.openstack.org/#/c/212206/>`_.
+`change 212206 <https://review.opendev.org/#/c/212206/>`_.
 The story can be found at `story 1526486 <https://storyboard.openstack.org/#!/story/1526486>`_.
 
 Getting steps

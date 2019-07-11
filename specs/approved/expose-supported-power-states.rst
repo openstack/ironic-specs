@@ -226,4 +226,4 @@ References
 ==========
 
 This change was originally mentioned in reviewing a SPEC to support soft
-shutdown.: https://review.openstack.org/#/c/186700/
+shutdown.: https://review.opendev.org/#/c/186700/

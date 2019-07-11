@@ -31,7 +31,7 @@ in production. The following points describe two of them:
 #. Disable powering off a node upon a deployment failure.
 
    Operators could `disable powering off a node upon a deployment
-   failure <https://review.openstack.org/#/c/259119>`_ but this has
+   failure <https://review.opendev.org/#/c/259119>`_ but this has
    some implications:
 
    a. It does not work in conjunction with Nova. When the instance

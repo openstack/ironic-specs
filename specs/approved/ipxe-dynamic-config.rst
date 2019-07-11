@@ -194,7 +194,7 @@ Dependencies
 ============
 
 * `New boot interface
-  <https://review.openstack.org/#/c/177726/6/specs/liberty/ipxe-dynamic-config.rst>`_:
+  <https://review.opendev.org/#/c/177726/6/specs/liberty/ipxe-dynamic-config.rst>`_:
   This spec is refactoring the boot logic out of the current Ironic
   ``deploy`` drivers into a new boot interface.
 

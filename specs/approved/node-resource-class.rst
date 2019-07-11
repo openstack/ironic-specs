@@ -255,4 +255,4 @@ extremely hard via release notes (and probably ops list emails).
 References
 ==========
 
-[0] https://review.openstack.org/#/c/312696
+[0] https://review.opendev.org/#/c/312696

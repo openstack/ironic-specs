@@ -79,7 +79,7 @@ Alternatives
 ------------
 
 Implement logs collecting mechanism in Ironic and IPA as it described in
-https://review.openstack.org/323511
+https://review.opendev.org/323511
 
 
 Data model impact

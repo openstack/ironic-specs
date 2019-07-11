@@ -188,6 +188,6 @@ Documentation Impact
 References
 ==========
 
-* [1] https://review.openstack.org/97150
-* [2] https://review.openstack.org/99235
-* [3] https://review.openstack.org/131272
+* [1] https://review.opendev.org/97150
+* [2] https://review.opendev.org/99235
+* [3] https://review.opendev.org/131272

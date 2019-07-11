@@ -268,7 +268,7 @@ outlined in 'Deployer's Impact' need to be documented.
 References
 ==========
 
-[1] https://review.openstack.org/#/c/592639
+[1] https://review.opendev.org/#/c/592639
 [2] CERN Hardware Manager: https://github.com/cernops/cern-ironic-hardware-manager/commit/7f6d892ec4848a09000ed1f28f3137bf8ba917f0
 [3] Patched Ironic Python Agent: https://github.com/cernops/ironic-python-agent/commit/bddac76c4d100af0103a6bc08b81dd71681a9c02
 [4] Patched Ironic: https://github.com/cernops/ironic/commit/581e65f1d8986ac3e859678cb9aadd5a5b06ba60

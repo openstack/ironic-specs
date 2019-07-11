@@ -186,7 +186,7 @@ Work Items
 Dependencies
 ============
 
-* Implement Zapping States - https://review.openstack.org/140826
+* Implement Zapping States - https://review.opendev.org/140826
 
 
 Testing

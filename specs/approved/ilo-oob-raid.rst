@@ -219,4 +219,4 @@ interface.
 References
 ==========
 
-[1] Ironic generic raid spec: https://review.openstack.org/173214
+[1] Ironic generic raid spec: https://review.opendev.org/173214

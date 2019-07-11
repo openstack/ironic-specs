@@ -352,4 +352,4 @@ References
 .. [#] https://wiki.openstack.org/wiki/Searchlight
 .. [#] https://github.com/openstack/ironic/blob/2c76da5f437c5fc2f4022e8705e74fed0a46bebb/ironic/drivers/modules/irmc/inspect.py#L177
 .. [#] https://github.com/openstack/ironic/blob/2c76da5f437c5fc2f4022e8705e74fed0a46bebb/ironic/drivers/modules/ilo/inspect.py#L56
-.. [#] https://review.openstack.org/#/c/321865/
+.. [#] https://review.opendev.org/#/c/321865/

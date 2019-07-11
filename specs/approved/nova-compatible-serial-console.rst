@@ -238,6 +238,6 @@ References
 ==========
 
 .. [#] http://linux.die.net/man/1/socat
-.. [#] https://review.openstack.org/#/c/293873/
+.. [#] https://review.opendev.org/#/c/293873/
 .. [#] https://blueprints.launchpad.net/nova/+spec/ironic-serial-console-support
-.. [#] https://review.openstack.org/#/c/188370/
+.. [#] https://review.opendev.org/#/c/188370/

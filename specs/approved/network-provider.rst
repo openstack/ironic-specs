@@ -316,4 +316,4 @@ Discussions on the topic include:
 * Logs from https://wiki.openstack.org/wiki/Meetings/Ironic-neutron
 
 * The spec for the rest of the API and data model changes, and ML2 integration
-  in general: https://review.openstack.org/#/c/188528
+  in general: https://review.opendev.org/#/c/188528

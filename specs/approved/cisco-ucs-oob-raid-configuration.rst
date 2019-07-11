@@ -164,4 +164,4 @@ Documentation Impact
 
 References
 ==========
-.. [1] New driver interface for RAID configuration: https://review.openstack.org/173214
+.. [1] New driver interface for RAID configuration: https://review.opendev.org/173214

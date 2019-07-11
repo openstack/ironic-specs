@@ -15,7 +15,7 @@ running, manual, destructive tasks an operator may want to perform either
 between workloads, or before the first workload has been assigned to a node.
 
 This feature had previously been called `"Zapping"
-<https://review.openstack.org/#/c/185122/>`_ and this specification copies
+<https://review.opendev.org/#/c/185122/>`_ and this specification copies
 a lot of the zapping specification. (Thank you Josh Gachnang!)
 
 
@@ -394,7 +394,7 @@ Work Items
 Dependencies
 ============
 
-* get_clean_steps API: https://review.openstack.org/#/c/159322
+* get_clean_steps API: https://review.opendev.org/#/c/159322
 
 
 Testing
@@ -436,11 +436,11 @@ Zapping related patches:
 *  Launchpad blueprint: https://blueprints.launchpad.net/ironic/+spec/implement-zapping-states
 
 * specification patches:
-    * https://review.openstack.org/#/c/185122/
-    * https://review.openstack.org/#/c/209207/
+    * https://review.opendev.org/#/c/185122/
+    * https://review.opendev.org/#/c/209207/
 
 * code patches:
-    * https://review.openstack.org/#/c/221949/
-    * https://review.openstack.org/#/c/221989/
-    * https://review.openstack.org/#/c/223295/
-    * https://review.openstack.org/#/c/223311/
+    * https://review.opendev.org/#/c/221949/
+    * https://review.opendev.org/#/c/221989/
+    * https://review.opendev.org/#/c/223295/
+    * https://review.opendev.org/#/c/223311/

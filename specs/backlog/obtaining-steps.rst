@@ -29,7 +29,7 @@ node and the ``ironic-python-agent`` process executing upon the node.
 .. Note::
    This document is present in the backlog as there are implementation issues
    to this feature. Please see Gerrit change
-   `606199 <https://review.openstack.org/#/c/606199/4>`_ for more information.
+   `606199 <https://review.opendev.org/#/c/606199/4>`_ for more information.
 
 Problem description
 ===================

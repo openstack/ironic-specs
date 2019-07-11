@@ -198,8 +198,8 @@ References
 * [3] https://github.com/openstack/os-client-config
 * [4] https://github.com/openstack/python-openstackclient
 * [5] Documentation on appdirs is found here: https://pypi.org/project/appdirs
-* [6] Original custom file cache solution: https://review.openstack.org/#/c/173674/1/
+* [6] Original custom file cache solution: https://review.opendev.org/#/c/173674/1/
 * [7] Current state of the implementation at the time of this spec being
-  raised: https://review.openstack.org/#/c/173674/19
+  raised: https://review.opendev.org/#/c/173674/19
 * [8] http://eavesdrop.openstack.org/irclogs/%23openstack-ironic/%23openstack-ironic.2015-05-11.log.html#t2015-05-11T19:38:04
-* [9] https://review.openstack.org/#/c/173674/9
+* [9] https://review.opendev.org/#/c/173674/9

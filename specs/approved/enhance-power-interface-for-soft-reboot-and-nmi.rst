@@ -465,7 +465,7 @@ References
 
 [2] http://linux.die.net/man/1/ipmitool
 
-[3] https://review.openstack.org/#/c/187176/
+[3] https://review.opendev.org/#/c/187176/
 
 [4] https://en.wikipedia.org/wiki/Communicating_sequential_processes
 
@@ -481,7 +481,7 @@ References
 
 [10] https://blueprints.launchpad.net/nova/+spec/soft-reboot-poweroff
 
-[11] https://review.openstack.org/#/c/229282/
+[11] https://review.opendev.org/#/c/229282/
 
 [12] http://governance.openstack.org/reference/tags/assert_follows-standard-deprecation.html
 
