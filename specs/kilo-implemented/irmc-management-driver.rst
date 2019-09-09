@@ -27,7 +27,7 @@ Proposed change
 ===============
 This module inherits ipmitool.IPMIManagement and overrides the
 following two functions for iRMC Drivers, namely pxe_irmc, iscsi_irmc,
-and agent_irmc [*]_, in order to make use of iRMC IPMI boot mode
+and agent_irmc [#]_, in order to make use of iRMC IPMI boot mode
 get/set capability and SCCI get sensor data.
 
 This module will be re-factored, when Ironic set/get boot mode I/F
@@ -50,7 +50,7 @@ is standardized in Ironic Management Interface.
   'sensor_method=ipmitool', this function just calls the parent class
   function, ipmitool.IPMIManagement.get_sensors_data() as default.
 
-.. [*] Driver consists of five elements.
+.. [#] Driver consists of five elements.
        In the initial implementation, iRMC driver supports three
        combinations out of all combinations.
 
