@@ -1,1 +1,0 @@
-../approved/virtual-bare-metal-cluster-manager.rst
