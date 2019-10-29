@@ -91,10 +91,41 @@ list functions. For those, we propose the following:
   ``baremetal:node:list_all`` and ``baremetal:node:list`` to
   ``rule:baremetal:node:get`` to ensure backwards compatibility.
 
-Note that this change does not imply any change to the allocations API. Right
-now, only users with full Ironic API access can take advantage of allocations,
-and that will not change with this spec.
+Allocation API changes
+----------------------
 
+`Allocation` objects represent a request to find and reserve a suitable node,
+and as such should be available for non-administrator users. For this purpose
+we will introduce an ``owner`` field for allocations and start distinguishing
+two types of allocations:
+
+**unrestricted** allocations
+    work the same as before. They can be created only by administrative users
+    and can have any ``owner`` set. Creating them is governed by the existing
+    policy ``baremetal:allocation:create``.
+**restricted** allocations
+    are created by non-administrative users and have ``owner`` matching the
+    project ID of a creating user. Creating them will be governed by a new
+    policy ``baremetal:allocation:create_restricted``.
+
+The two policies will be exclusive and work as follows:
+
+#. First, ``baremetal:allocation:create`` is checked. If it passes, then any
+   value of ``owner`` is accepted. If no ``owner`` is provided, the field is
+   left as ``None``.
+#. If the first check does not pass, ``baremetal:allocation:create_restricted``
+   is checked. The ``owner`` field must match the project ID of the user or be
+   empty (in which case it is set to the project ID of the user). HTTP
+   Forbidden is returned if:
+
+   #. The project ID of the user cannot be determined (i.e. restricted
+      allocations do not work in the standalone mode).
+   #. The requested non-empty owner does not match the project ID.
+
+#. Otherwise, creating the allocation fails.
+
+Finally, when processing an allocation with non-empty ``owner``, only nodes
+with a matching ``owner`` are considered.
 
 Alternatives
 ------------
@@ -196,6 +227,9 @@ Assignee(s)
 Primary assignees:
 * tzumainn - tzumainn@redhat.com
 * larsks - lars@redhat.com
+
+Other contributors:
+* dtantsur - dtantsur@redhat.com
 
 Work Items
 ----------
