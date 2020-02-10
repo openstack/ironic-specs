@@ -186,13 +186,16 @@ corresponding changes to python-ironicclient. If so, what does the user
 interface look like. If not, describe why there are REST API changes but
 no changes to the client.
 
-"ironic" CLI
-~~~~~~~~~~~~
-Changes, if any, to the "ironic" CLI.
-
 "openstack baremetal" CLI
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 Changes, if any, to the OpenStackClient plugin, "openstack baremetal" CLI.
+
+"openstacksdk"
+~~~~~~~~~~~~~~
+Changes, if any, to the `OpenStack SDK
+<https://docs.openstack.org/openstacksdk/latest/>`_, `baremetal
+<https://opendev.org/openstack/openstacksdk/src/branch/master/openstack/baremetal>`_
+methods.
 
 RPC API impact
 --------------
