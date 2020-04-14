@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/victoria-priorities
    priorities/ussuri-priorities
    priorities/train-priorities
    priorities/stein-priorities
