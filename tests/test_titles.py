@@ -110,6 +110,9 @@ class TestTitles(testtools.TestCase):
 
         (root, _) = os.path.splitext(os.path.basename(filename))
         for i, line in enumerate(raw.split("\n")):
+            if line.startswith('.. lint: norfe'):
+                return
+
             if STORYBOARD_URL in line:
                 return
 
