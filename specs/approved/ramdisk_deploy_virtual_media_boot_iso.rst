@@ -36,17 +36,13 @@ Proposed change
 * Allow a ``instance_info/boot_iso`` parameter to be leveraged to be
   the medium utilized for booting from an explicit ISO image which the
   conductor would support downloading, caching, and providing to the
-  baremetal machine.
+  baremetal machine. This change would be focused on the virtual media
+  boot interface code in relation to usage of Redfish.
 
 * Teach the code related to the pass-through to provide the same basic
   capability to append parameters to the command line through decomposition
   of the ISO, appending to ``grub2`` and ``isolinux`` configurations with
   the supplied values, and repackaging of the ISO file for deployment.
-
-* Optionally: Enable the glance image ``image_source`` code to support this
-  path for iso booting. This could potentially allow the OpenStack Nova
-  virt driver for ironic to enable booting of instances from ISO mediums,
-  however this is out of scope.
 
 Alternatives
 ------------
@@ -167,7 +163,8 @@ Work Items
 
 * Implement support to pass an explicit boot ISO into the ramdisk interface.
 * Implement support to inject configuration into the boot ISO.
-* Document this functionality for the ramdisk interface.
+* Document this functionality for the ramdisk interface covering how to
+  leverage this feature.
 
 Dependencies
 ============
