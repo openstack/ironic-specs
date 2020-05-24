@@ -83,7 +83,7 @@ add_module_names = False
 show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'native'
 
 # A list of ignored prefixes for module index sorting.
 modindex_common_prefix = ['ironic-specs.']
@@ -120,10 +120,6 @@ html_theme = 'openstackdocs'
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 #html_favicon = None
-
-# If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
-# using the given strftime format.
-html_last_updated_fmt = '%Y-%m-%d %H:%M'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
@@ -227,6 +223,7 @@ texinfo_documents = [
 #texinfo_show_urls = 'footnote'
 
 # openstackdocstheme options
-repository_name = 'openstack/ironic-specs'
-bug_project = 'ironic'
-bug_tag = ''
+openstackdocs_repo_name = 'openstack/ironic-specs'
+openstackdocs_pdf_link = True
+openstackdocs_auto_name = False
+openstackdocs_use_storyboard = True
