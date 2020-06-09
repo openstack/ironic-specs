@@ -235,26 +235,34 @@ separate steps.
    #. reboot the node, wait for heartbeat (when writing an image?)
    #. gather in-band deploy steps from the agent
 
-#. ``write_image`` [90]:
+#. ``write_image`` [80]:
 
    #. write image to disk synchronously (``iscsi`` deploy interface)
    #. in-band deploy step that does the equivalent of the
       ``standby.prepare_image`` IPA API and waits for completion of the write
       (``direct`` deploy interface)
 
-#. ``prepare_instance_boot`` [80]:
+#. ``prepare_instance_boot`` [60]:
 
-   #. prepare instance to boot
+   #. install bootloader (if needed)
+   #. configure the boot interface
 
-#. ``remove_provisioning_network`` [75]:
+#. ``tear_down_agent`` [40]:
 
    #. power off the node
    #. remove provisioning network
 
-#. ``boot_instance`` [70]:
+#. ``boot_instance`` [20]:
 
    #. configure tenant networks
    #. power on the node
+
+The useful priority ranges for inserting custom in-band steps are:
+
+* 99 to 81: preparation before writing the image (e.g. software RAID).
+* 79 to 61: modifications to the image before a bootloader is written
+  (e.g. GRUB defaults changes).
+* 59 to 41: modifications to the final instance (e.g. software configuration).
 
 deploy
 ^^^^^^
@@ -270,33 +278,33 @@ and reboot, however that can also be moved to the new steps.
 write_image
 ^^^^^^^^^^^
 
-*Priority: 90*
+*Priority: 80*
 
 For the ``iscsi`` interface, the ``continue_deploy`` method will be split into
 a ``write_image`` deploy step and the ``prepare_instance_boot``,
 ``remove_provisioning_network``, and ``boot_instance`` deploy steps.  This step
 will be skipped when booting from a volume.
 
-For the ``direct`` interface, this step will be executed in-band by IPA. It
-will be equivalent to executing the existing ``standby.prepare_image`` command
-via the agent API, and will block until the image has been written. This allows
-us to remove this special case of command status polling. There will need to be
-a transition period to support old IPA ramdisks that do not support in-band
-deploy steps. This will be inserted as an optional out-of-band deploy step when
-necessary (based on the IPA API version).
+For the ``direct`` interface, this step will start as an out-of-band one,
+will collect the necessary information, then switch into being executed in-band
+by IPA. It will be equivalent to executing the existing
+``standby.prepare_image`` command via the agent API, and will block until
+the image has been written. This allows us to remove this special case of
+command status polling. There will need to be a transition period to support
+old IPA ramdisks that do not support in-band deploy steps.
 
 prepare_instance_boot
 ^^^^^^^^^^^^^^^^^^^^^
 
-*Priority: 80*
+*Priority: 60*
 
 This will be largely equivalent to the ``prepare_instance_to_boot`` method of
 the ``AgentDeployMixin``.
 
-remove_provisioning_network
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tear_down_agent
+^^^^^^^^^^^^^^^
 
-*Priority: 75*
+*Priority: 40*
 
 In this step, the node will be powered off, and the provisioning networks
 removed.
@@ -304,7 +312,7 @@ removed.
 boot_instance
 ^^^^^^^^^^^^^
 
-*Priority: 70*
+*Priority: 20*
 
 In this step, the node will be added to the tenant networks and powered on.
 
