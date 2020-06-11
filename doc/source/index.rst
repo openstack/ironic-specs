@@ -68,6 +68,27 @@ Implemented specifications
 These specifications have been implemented and are grouped in the
 development cycles in which they were completed.
 
+Ussuri
+------
+
+15.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/15.0/*
+
+14.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/14.0/*
+
 Train
 -----
 
