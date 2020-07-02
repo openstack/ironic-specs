@@ -250,11 +250,14 @@ separate steps.
 #. ``tear_down_agent`` [40]:
 
    #. power off the node
+
+#. ``switch_to_tenant_network`` [30]:
+
    #. remove provisioning network
+   #. add tenant networks
 
 #. ``boot_instance`` [20]:
 
-   #. configure tenant networks
    #. power on the node
 
 The useful priority ranges for inserting custom in-band steps are:
@@ -282,8 +285,8 @@ write_image
 
 For the ``iscsi`` interface, the ``continue_deploy`` method will be split into
 a ``write_image`` deploy step and the ``prepare_instance_boot``,
-``remove_provisioning_network``, and ``boot_instance`` deploy steps.  This step
-will be skipped when booting from a volume.
+``tear_down_agent``, ``switch_to_tenant_network``, and ``boot_instance`` deploy
+steps.
 
 For the ``direct`` interface, this step will start as an out-of-band one,
 will collect the necessary information, then switch into being executed in-band
@@ -306,15 +309,23 @@ tear_down_agent
 
 *Priority: 40*
 
-In this step, the node will be powered off, and the provisioning networks
+In this step, the node will be powered off and ramdisk boot environment will be
 removed.
+
+switch_to_tenant_network
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+*Priority: 30*
+
+In this step, the node will be switched from the provisioning network to tenant
+networks.
 
 boot_instance
 ^^^^^^^^^^^^^
 
 *Priority: 20*
 
-In this step, the node will be added to the tenant networks and powered on.
+In this step, the node will be powered on.
 
 Agent heartbeat handler
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -340,8 +351,8 @@ steps, with some differences:
 * there is no equivalent of manual cleaning
 * IPA version mismatch will lead to termination of deployment
 
-In-band deploy steps must have a priority between 76 and 99 to ensure they
-execute after ``deploy`` and before ``remove_provisioning_network``.
+In-band deploy steps must have a priority between 41 and 99 to ensure they
+execute after ``deploy`` and before ``tear_down_agent``.
 
 In-band deploy steps will be driven through the agent's heartbeat mechanism.
 The first heartbeat will query the in-band steps, combine them with out-of-band
