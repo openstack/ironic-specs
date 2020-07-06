@@ -183,14 +183,20 @@ Support phases
 * Since this proposal significantly increases the number of branches in
   support, we'll tighten the rules around backports to named branches:
 
-  * The first 6 months or until the next named release (whatever comes later)
-    any bug fixes are acceptable.
+  * The first 12 months any bug fixes are acceptable. Low-risk features **may**
+    be accepted if they're believed to substantially improve the operator
+    or user experience.
 
-    Low-risk features **may** be accepted if they're believed to substantially
-    improve the operator or user experience.
-
-  * The last year and during the extended maintenance phase only high and
+  * The last 6 months and during the extended maintenance phase only high and
     critical bug fixes are accepted.
+
+  * If during the extended maintenance no changes merge to a branch within
+    6 months, this branch is considered abandoned and is closed for further
+    backports.
+
+    .. note::
+        This also applies when the changes are proposed but cannot merge
+        because of failing CI.
 
 * Bugfix branches (for deliverables that have them) are supported for 6 months.
   Only high and critical bug fixes are accepted during the whole support time.
