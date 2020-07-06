@@ -67,11 +67,13 @@ The following concepts are used throughout this document:
         intermediary release. This is done on purpose to make the wording of
         this document clearer.
 *stable branch*
-    a branch created from a release (named or intermediate) where bug fixes are
-    applied and periodically released as *stable releases*.
+    a branch created from a named release where bug fixes are applied and
+    periodically released as *stable releases*.
 *stable release*
-    is a release created as part of stable support of either a *named* or
-    *intermediate* release.
+    is a release created as part of stable support of a *named* release.
+*bugfix branch*
+    a branch created from an intermediate release that did NOT result in
+    a stable branch.
 
 Releasing
 ---------
@@ -87,16 +89,17 @@ Releasing
   between named releases. The former two happens always, the latter 4 can be
   skipped if a deliverable does not see notable changes within 2 months.
 
-* Two weeks of soft feature freeze is observed before every release. *Soft*
+* One week of soft feature freeze is observed before every release. *Soft*
   implies that feature can still merge if they are considered low-risk or
   critical for the scope of the upcoming release.
 
-  This leaves merge windows of roughly 6-8 weeks for most features. Plans for
+  This leaves merge windows of roughly 7-9 weeks for most features. Plans for
   them should be made during the feature freeze of the previous release.
 
 * Ironic deliverables follow SemVer_ with one clarification: *patch* releases
-  are always issued from a stable branch (see `Stable branches and upgrades`_).
-  Releases from master always receive a minor or major version bump.
+  are always issued from a stable or bugfix branch (see `Stable branches and
+  upgrades`_).  Releases from master always receive a minor or major version
+  bump.
 
   .. note::
     This limitation is required to be able to find a suitable version for a
@@ -105,8 +108,8 @@ Releasing
     support branch for 21.2.0), there is no SemVer version to use (21.2.0.1
     is still an option, of course, but may conflict with pbr).
 
-* Intermediary releases will target standalone users. OpenStack deployers will
-  be recommended to use named releases.
+* Intermediary (non-named) releases will target standalone users. OpenStack
+  deployers will be recommended to use named releases.
 
 Stable branches and upgrades
 ----------------------------
@@ -122,7 +125,17 @@ ironic-inspector), ironic-python-agent and bifrost:
   * A traditional ``stable/<code name>`` branch for releases that coincide with
     named ones.
 
-  * A ``stable/<major.minor>`` branch for other releases.
+  * A ``bugfix/<major.minor>`` branch for other releases.
+
+  The naming difference highlights the difference of intents:
+
+  * *Stable* branches are designed for long-term consumption by downstreams
+    (such as RDO) and for users to follow them.
+
+  * *Bugfix* branches are a technical measure to allow patch releases after a
+    certain release. Users and downstreams are not expected to follow them
+    over a long period of time and are recommended to update to the next
+    feature release as soon as it is out.
 
 * Three upgrade paths are supported and tested in the CI for each commit:
 
@@ -137,11 +150,6 @@ ironic-inspector), ironic-python-agent and bifrost:
 
      .. note:: Supporting this path is technically required to implement CI
                for the other two paths).
-
-.. note::
-   Implementing these changes may require the ironic deliverables to switch to
-   the *independent* release model. This will be determined in negotiations
-   with the OpenStack release team after the plan is accepted.
 
 .. note::
    Operating CI on the non-named branches may require pinning devstack, tempest
@@ -184,9 +192,13 @@ Support phases
   * The last year and during the extended maintenance phase only high and
     critical bug fixes are accepted.
 
-* Other stable branches (for deliverables that have them) are supported for
-  6 months or the next named release, whatever happens later. Only high and
-  critical bug fixes are accepted during the whole support time.
+* Bugfix branches (for deliverables that have them) are supported for 6 months.
+  Only high and critical bug fixes are accepted during the whole support time.
+
+  .. note::
+    It may mean that a stable branch created earlier will receive more fixes
+    than a bugfix branch created later. This is a reflection of the fact that
+    consumers are not expected to follow bugfix branches.
 
 * As before, high and critical bug fixes **should** be backported to all
   supported branches once merged to master.
@@ -200,10 +212,6 @@ example, we keep consuming upper-constraints of a corresponding branch.
 For intermediate releases we will consume upper-constraints from a future named
 branch. E.g. for Victoria we would consume
 https://releases.openstack.org/constraints/upper/victoria.
-
-.. note::
-   We need to work with the release team to ensure this redirect URL exists
-   in the beginning of a cycle.
 
 The inter-service dependencies for both named and intermediate releases must be
 expressed separately, both via microversioning or via documentation. We already
@@ -362,7 +370,7 @@ Work Items
   (may work out-of-box).
 
 * Update Bifrost to support installing components from latest published
-  releases (may be done already).
+  releases.
 
 Dependencies
 ============
