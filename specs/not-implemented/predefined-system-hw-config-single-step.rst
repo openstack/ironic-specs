@@ -1,0 +1,1 @@
+../approved/predefined-system-hw-config-single-step.rst
