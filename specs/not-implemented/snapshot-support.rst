@@ -1,0 +1,1 @@
+../approved/snapshot-support.rst
