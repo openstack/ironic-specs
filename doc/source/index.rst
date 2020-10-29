@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/wallaby-priorities
    priorities/victoria-priorities
    priorities/ussuri-priorities
    priorities/train-priorities
