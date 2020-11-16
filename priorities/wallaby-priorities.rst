@@ -257,7 +257,7 @@ Security Interface
 ------------------
 
 Recent interest in having an integration with `Keylime <https://keylime.dev/>`_
-has brought forth interest in resurecting the `security interface <https://review.opendev.org/576718>`_
+has brought forth interest in resurrecting the `security interface <https://review.opendev.org/576718>`_
 which was proposed some time ago to provide an integration point for Ironic
 to have the understanding and capability to take the appropriate action
 in the event a machine has been identified to no longer match the expected
@@ -276,5 +276,5 @@ is interpreted as Boot from URL. Luckily Redfish has defined a standard
 interface to assert the configuration via the BMC.
 
 At a minimum this cycle, we would like to make a step forward in attempting
-to support this funcitonality such that we can support it when vendors
+to support this functionality such that we can support it when vendors
 implement the feature outside of vendor OEM specific mechanisms.
