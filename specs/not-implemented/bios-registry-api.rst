@@ -1,0 +1,1 @@
+../approved/bios-registry-api.rst
