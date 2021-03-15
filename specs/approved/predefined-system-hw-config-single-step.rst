@@ -187,7 +187,7 @@ Sample of clean/deploy step configuration:
     "interface": "management",
     "step": "export_configuration",
     "args": {
-      "configuration_location": "https://server/edge_dell_emc-poweredge_r640"
+      "export_configuration_location": "https://server/edge_dell_emc-poweredge_r640"
     }
   }
 
@@ -235,7 +235,7 @@ Sample:
     "interface": "management",
     "step": "import_configuration",
     "args": {
-      "configuration_location": "https://server/edge_dell_emc-poweredge_r640"
+      "import_configuration_location": "https://server/edge_dell_emc-poweredge_r640"
     }
   }
 
@@ -482,29 +482,30 @@ New settings added:
 
 .. code-block::
 
-  [default]mold_storage
-  [default]mold_basic_auth
+  [molds]storage
+  [molds]user
+  [molds]password
 
-``[default]mold_storage`` used to define what storage backend used. By default
-it will be Swift with option to configure Web server. In future more options
-can be added.
+``[molds]storage`` used to define what storage backend used. By default it will
+be Swift with option to configure Web server. In future more options can be
+added.
 
-``[default]mold_basic_auth`` is used when Web server is configured as storage
-backend. The credentials are in format ``username:password``. Ironic will use
-this to encode it in Base64 and add as header to HTTP requests. By default it
-will be empty indicating that no authorization used.
+``[molds]user`` and ``[molds]password`` is used when Web server is configured
+as storage backend. Ironic will use this to encode it in Base64 and add as
+header to HTTP requests. By default they will be empty indicating that no
+authorization used.
 
 The workflow for getting stored configuration data:
 
 1. Given *configuration mold*'s full URL and used storage mechanism configured
-   in ``[default]mold_storage`` fetch data using appropriate credentials.
+   in ``[molds]storage`` fetch data using appropriate credentials.
 2. Handle any errors, including access permission errors. If errors
    encountered, a step fails.
 
 The workflow for storing the configuration data:
 
 1. Given *configuration mold*'s full URL and used storage mechanism configured
-   in ``[default]mold_storage`` store data using appropriate credentials.
+   in ``[molds]storage`` store data using appropriate credentials.
 2. Handle any errors, including access permission errors. If errors
    encountered, a step fails.
 
@@ -522,8 +523,8 @@ Web server support
 ++++++++++++++++++
 
 For web server authorization Basic authentication will be used from
-``[default]mold_basic_auth``. It is strongly advised to have TLS configured
-on the web server.
+``[molds]user`` and ``[molds]password``. It is strongly advised to have TLS
+configured on the web server.
 
 
 idrac-redfish implementation
@@ -686,12 +687,12 @@ backend encryption and TLS for web server.
 
 As cleaning/deploying is executed by ironic service account and not user that
 initiated clean or deploy, ironic service account needs access to used Swift
-containers provided by users. In multi-tenancy environment this could lead to
-accessing data not belonging to the tenant by, e.g., guessing or somehow
-finding out another tenant's URL and feeding that to ironic that has access to
-it while end-user does not. This needs to be addressed separately in future
-releases. There are possibly other use cases that are affected by this
-limitation and would benefit from addressing this.
+containers provided by users. In multi-tenant, end-user accessible Ironic API
+this could lead to accessing data not belonging to the tenant by, e.g.,
+guessing or somehow finding out another tenant's URL and feeding that to ironic
+that has access to it while end-user does not. This issue needs to be addressed
+separately in future releases. There are possibly other use cases that are
+affected by this limitation and would benefit from addressing this.
 
 Other end user impact
 ---------------------
@@ -702,8 +703,8 @@ items should be available after node's cleaning or deployment. If user do not
 need the re-usable configuration items anymore, then user should delete those
 themselves from the storage.
 
-This adds new configuration values to ``[default]`` section to control storage
-location. Default values are provided.
+This adds new configuration section ``[molds]`` to control storage location.
+Default values are provided.
 
 Scalability impact
 ------------------
