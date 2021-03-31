@@ -4,8 +4,8 @@
 OpenStack Ironic Project Plans
 ==============================
 
-Priorities
-==========
+Themes
+======
 
 During each PTG (before Pike - each design summit), we agree what the whole
 community wants to focus on for the upcoming release. This is the output of
@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/xena-themes
    priorities/wallaby-priorities
    priorities/victoria-priorities
    priorities/ussuri-priorities
