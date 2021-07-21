@@ -71,6 +71,78 @@ Implemented specifications
 These specifications have been implemented and are grouped in the
 development cycles in which they were completed.
 
+Xena
+----
+
+18.1
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/18.1/*
+
+18.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/18.0/*
+
+Wallaby
+-------
+
+17.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/17.0/*
+
+16.1
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/16.1/*
+
+Victoria
+--------
+
+16.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/16.0/*
+
+15.2
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/15.2/*
+
+15.1
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/15.1/*
+
 Ussuri
 ------
 
