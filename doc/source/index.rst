@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/yoga-themes
    priorities/xena-themes
    priorities/wallaby-priorities
    priorities/victoria-priorities
