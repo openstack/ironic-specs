@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/2023-1-workitems
    priorities/zed-themes
    priorities/yoga-themes
    priorities/xena-themes
