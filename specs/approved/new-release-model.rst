@@ -78,16 +78,18 @@ The following concepts are used throughout this document:
 Releasing
 ---------
 
-* Releases for all deliverables are created on a loose bi-monthly basis, i.e.
-  roughly every 2 months. Here *roughly* means that the team may decide to
-  release a few days earlier (if the desired scope is already implemented) or
-  later (if last minute merges are required).
+* Releases for all deliverables are evaluated on a loose bi-monthly basis,
+  i.e. roughly every 2 months. If there are significant valuable changes,
+  and a clear user interest in performing a release, we should do so. In
+  most cases, this means a downstream distributor of Ironic is going to
+  consume the release.
 
-  This gives 6 releases a year, 3 per each OpenStack cycle.
+  This gives up to 6 releases a year, 3 per each OpenStack cycle.
 
-* Two releases a year correspond to OpenStack named releases, other 4 happen
+* Two releases a year correspond to OpenStack named releases, the others happen
   between named releases. The former two happens always, the latter 4 can be
-  skipped if a deliverable does not see notable changes within 2 months.
+  skipped if there are no known consumers for that release or a deliverable
+  does not see notable changes within 2 months.
 
 * One week of soft feature freeze is observed before every release. *Soft*
   implies that feature can still merge if they are considered low-risk or
