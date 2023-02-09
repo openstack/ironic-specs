@@ -14,6 +14,11 @@ This proposal adds the ability to inspect/update hardware properties and
 auto-create ports for Cisco UCS B/C/M-servers managed by Cisco UCS Manager.
 It uses out-of-band H/W inspection utility provided by UcsSdk.
 
+.. NOTE::
+   This specification has been retired as the vendor specific UCS driers are
+   no longer available in Ironic. This was a result of the Open Source
+   UcsSdk library no longer being maintained.
+
 Problem description
 ===================
 

@@ -13,6 +13,12 @@ https://bugs.launchpad.net/ironic/+bug/1634635
 This proposal covers the addition of power and management interfaces for
 OpenBMC and the addition of driver to the IPA and PXE driver classes.
 
+.. NOTE::
+   This specification is no longer viewed as applicable as OpenBMC has support
+   for the Redfish API interface, and as such this is considered a superior
+   standards based interface for use. When this specificaiton was proposed,
+   These the Redfish API had not yet been implemented in OpenBMC.
+
 Problem description
 ===================
 
@@ -44,7 +50,6 @@ A hardware type, OpenBMCHardware, will be added. This hardware type will have
 OpenBMCPower in it's 'supported_power_interfaces' list. This hardware type
 will also have OpenBMCManagement in it's 'supported_management_interfaces'
 list.
-
 
 Alternatives
 ------------

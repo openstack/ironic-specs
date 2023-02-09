@@ -14,6 +14,11 @@ This adds petitboot boot driver for OpenPOWER servers. The OpenPOWER
 Foundation is a collaboration around Power Architecture products initiated by
 IBM.
 
+.. NOTE::
+   This specification has been retired as the IBM firmware maintainers
+   added support for the classical PXELinux file format. As such, this
+   specification is no longer needed.
+
 Problem description
 ===================
 

@@ -14,6 +14,13 @@ This blueprint proposes to implement out-of-band RAID configuration interface
 for Cisco UCS drivers. This implementation supports configuration of Cisco
 UCS Manager (UCSM) managed B/C/M-series servers.
 
+.. NOTE::
+   This specification has been retired as the vendor specific UCS driers are
+   no longer available in Ironic. This was a result of the Open Source
+   UcsSdk library no longer being maintained. Users may wish to explore use
+   of the ``redfish`` driver, but it is unknown to the community if the UCS
+   Redfish support has been extended to RAID support.
+
 Problem description
 ===================
 

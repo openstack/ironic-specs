@@ -422,6 +422,24 @@ Juno
 
    specs/approved/*
 
+
+Retired
+=======
+
+These specifications are ideas and features which are no longer applicable.
+They were either not implemented, no longer exist, and have generally been
+superceeded either through the evolution of the project's capabilities or
+the state in the marketplace. Each document listed below has been updated
+to indicate the context as to why it was moved to this list.
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/retired/*
+
+
+
 ==================
 Indices and tables
 ==================
