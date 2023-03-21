@@ -69,6 +69,8 @@ Discoverability.
   Since Inspector has its own documentation, API reference and client, it's
   harder to discover information about it.
 
+.. _inspector-glossary:
+
 Glossary
 --------
 
