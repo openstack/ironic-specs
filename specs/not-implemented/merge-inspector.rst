@@ -1,0 +1,1 @@
+../approved/merge-inspector.rst
