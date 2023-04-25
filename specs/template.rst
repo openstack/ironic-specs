@@ -8,9 +8,9 @@
 Title of the Spec
 =================
 
-Include the URL of your StoryBoard story (which should have an `rfe`` tag):
+Include the URL of your Launchpad bug (which should have an `rfe`` tag):
 
-https://storyboard.openstack.org/#!/story/XXXXXXX
+https://bugs.launchpad.net/ironic/+bug/XXXXXXX
 
 Introduction paragraph -- start here.
 
