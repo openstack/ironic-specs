@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/2023-2-workitems
    priorities/2023-1-workitems
    priorities/zed-themes
    priorities/yoga-themes
@@ -35,7 +36,7 @@ those discussions:
 Specifications
 ==============
 
-Specifications for the ironic project are available here. Specifications
+Specifications for the Ironic project are available here. Specifications
 begin life in the "approved" tree. They stay there (possibly beyond the
 development cycle in which they had been approved), and once implemented,
 are moved to the "implemented" tree for that development cycle.
