@@ -405,6 +405,8 @@ A new RPC call will be introduced for handling the inspection data:
 On receiving this call, the conductor will acquire an exclusive lock,
 double-check the provision state and launch a thread for further processing.
 
+See `PXE filter script`_ for further impact.
+
 Driver API impact
 -----------------
 
@@ -706,6 +708,34 @@ Operators that do not need PXE filtering, e.g. because they only use managed
 inspection or use a single PXE environment (without Neutron), can opt out of
 running ``ironic-pxe-filter``. This applies, for example, to Bifrost and
 Metal3.
+
+The only downside of this approach is knowing when inspection starts or
+finishes. Inspector learns it immediately and is able to update the filters
+without a further delay. The periodic task approach will result in a delay
+that is probably acceptable for real hardware but will be problematic for
+virtual machines.
+
+To overcome this limitation, the new executable will feature an RPC service
+when the RPC transport is *oslo.messaging*. This service will use a separate
+*topic* ``ironic.pxe_filter`` and will receive broadcast messages from
+the conductor handling inspection. The RPC call will be:
+
+.. code-block:: python
+
+  def update_pxe_filters(self, context, allow=None, deny=None):
+      """Update the PXE filter with the given addresses.
+
+      Modifies the allowlist and the denylist with the given addresses.
+      The state of addresses that are not mentioned does not change.
+
+      :param allow: MAC addresses to enable in the filters.
+      :param deny: MAC addresses to disable in the filters.
+      """
+
+No notifications will be done for JSON RPC transport. This will be documented
+as a known limitation. The futher work as part of the `cross-conductor RPC
+effort <https://review.opendev.org/c/openstack/ironic-specs/+/873662>`_ may
+eventually lift it.
 
 Developer impact
 ----------------
