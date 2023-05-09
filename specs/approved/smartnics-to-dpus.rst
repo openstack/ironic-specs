@@ -8,10 +8,9 @@
 The evolution of the Smart NICs to DPUs
 =======================================
 
+https://bugs.launchpad.net/ironic/+bug/2019043
 
-https://storyboard.openstack.org/#!/story/XXXXXXX
-
-The ideas behind "Smart NICs" has evolved as time has progressed.
+The ideas behind "Smart NICs" have evolved as time has progressed.
 
 And honestly it feels like we in the Ironic community helped drive some
 of that improvement in better, more secure directions. Hey! We said we
@@ -57,7 +56,7 @@ behavior of a Fibre Channel HBA.
 Composible Hardware
 ~~~~~~~~~~~~~~~~~~~
 
-The phrase "Composible Hardware" is unfortuantely overloaded. This is best
+The phrase "Composible Hardware" is unfortunately overloaded. This is best
 described as use of a centralized service to "compose" hardware for use by
 a workload. A good way to view this, at least in a classical sense is through
 an API or application constructing a cohesive functioning computer resource
@@ -89,8 +88,8 @@ Given the overall general purpose capabilities of DPUs and increased
 focus of specific computing workload offloads, we need to be careful
 to specifically delineate which use cases we're attempting to support,
 and also not try to assume one implies the other. In other words, DPUs do
-offer some interesting capabilities towards Compisible Hardware, however
-it is inhernetly not full configuration as the underlying host is still
+offer some interesting capabilities towards Composible Hardware, however
+it is inherently not full configuration as the underlying host is still
 a static entity.
 
 .. NOTE::
@@ -98,7 +97,7 @@ a static entity.
    cards are Graphics Processing Units. While there does not appear to be
    any explicit movement into supporting that specific offload, some vendors
    are working on highly specific processing cards such those as performing
-   protocol/signal translation. They may, or may not be able to have a
+   protocol/signal translation. They may, or may not be able to have
    an operating system or provisioned application.
 
 The problem
@@ -128,7 +127,7 @@ But to do so:
    requesting the BMC on the card to permit the overall host OS to
    Access the card's BMC. This is achievable with an IPMI raw command, but
    against the card's BMC.
-2) Then you would apply BMC firmware updates, to the card's BMC/
+2) Then you would apply BMC firmware updates, to the card's BMC
    Today this would boot IPA, and perform it from the host OS, which also
    means that we're going to need to interact with the overall host BMC,
    and boot the baremetal machine overall.
@@ -188,9 +187,14 @@ child devices.
   query filter to return nodes with parents as well.
 
 * Introduction of a new step field value, ``execute_on_child_nodes`` which
-  can be submitted, which includes a list of child nodes, or a value of
-  ``true`` which would result on the defined step to execute upon all child
-  nodes.
+  can be submitted. The default value is False. Steps which return CLEANWAIT,
+  i.e. steps which expect asynchronous return will not be permitted under
+  normal conditions, however this will be avaiable via a configuration option.
+
+* Introduction of a new step field value, ``limit_child_node_execution``,
+  which accepts a list of node UUIDs to allow filtering and constraint
+  of steps on some nodes. Sepcifically, this is largely separate from the
+  ``execute_on_child_nodes`` field due to JSON Schema restrictions.
 
 * Introduction of the ability to call a vendor passthrough interface
   as a step. In the case of some smartnics, they need the ability to
@@ -220,7 +224,8 @@ child devices.
   based upon their experiences.
 
 With these high level and workflow changes, it will be much easier for an
-operator to orchustrate management actions across an single
+operator to orchestrate management actions across an single node to extend
+further into distinct devices within the whole of the system.
 
 In this model, the same basic rules for child nodes would apply, they may have
 their own power supplies and their own power control, and thus have inherent
@@ -363,11 +368,6 @@ GET /v1/nodes/?include_children=True
 
 Returns a list of base nodes with all child nodes child nodes, useful for
 a big picture view of all things Ironic is responsible for.
-
-GET /v1/nodes/?is_child_node=True
-
-Returns a list of only nodes with a parent node defined.
-Standard /v1/nodes access contstraints and behaivors will still apply.
 
 GET /v1/nodes/
 
