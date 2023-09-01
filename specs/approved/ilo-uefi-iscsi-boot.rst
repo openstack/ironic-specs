@@ -29,11 +29,11 @@ Proposed change
 
 This change is based on the reference driver implementation guidelines
 proposed by `Boot from Volume - Reference Drivers`_ spec to support booting
-ironic nodes from a storage device that is hosted and/or controlled remotely. This
-change proposes two new methods for iLO drivers management interface; namely
-``set_iscsi_boot_target`` and ``clear_iscsi_boot_target``, which will facilitate
-setting and clearing iSCSI target information using iLO interfaces for UEFI
-iSCSI boot capable HPE Proliant servers.
+ironic nodes from a storage device that is hosted and/or controlled remotely.
+This change proposes two new methods for iLO drivers management interface;
+namely ``set_iscsi_boot_target`` and ``clear_iscsi_boot_target``, which will
+facilitate setting and clearing iSCSI target information using iLO interfaces
+for UEFI iSCSI boot capable HPE Proliant servers.
 
 The boot interface method ``prepare_instance()`` in ``ilo`` hardware type
 will check if the instance requested boot mode is 'UEFI' and given volume is
