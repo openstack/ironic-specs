@@ -1,1 +1,0 @@
-../approved/firmware-interface.rst
