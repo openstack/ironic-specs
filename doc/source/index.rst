@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/2024-1-workitems
    priorities/2023-2-workitems
    priorities/2023-1-workitems
    priorities/zed-themes
