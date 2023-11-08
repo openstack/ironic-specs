@@ -237,7 +237,7 @@ suggestions based on specified system support or vendor recommendations.
      - ``redfish`` (iLO 6 and newer)
 
 Purging UEFI boot records
-=========================
+-------------------------
 Stale EFI boot records can cause problems with booting or adding new records.
 Since Ironic manages a node it should be responsible for removing any existing
 boot record which resembles a disk or attached boot device (USB, CDROM, etc).
