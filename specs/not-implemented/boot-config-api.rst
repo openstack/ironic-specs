@@ -1,0 +1,1 @@
+../approved/boot-config-api.rst
