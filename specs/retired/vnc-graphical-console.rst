@@ -15,6 +15,18 @@ graphical console. This proposal presents the work required to create a new
 driver interface for accessing graphical console of a node.
 
 
+.. NOTE::
+   This specification has been retired. This was done based upon community
+   consensus on several aspects of the design. Primarily, in that the existing
+   console interface can serve both serial consoles and graphical consoles
+   without the overhead and operator confusion induced through yet another
+   different interface to set. From a secondary aspect, serial console use
+   and interaction has fallen from favor since this feature was designed,
+   specifically in part due to move to UEFI firmware and the overall modeling
+   of serial ports in modern hardware, as a primary output driven by CPU
+   interrupt triggering, which can have detrimental performance impacts on
+   running workloads.
+
 Problem description
 ===================
 
