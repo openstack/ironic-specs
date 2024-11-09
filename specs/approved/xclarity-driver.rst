@@ -126,7 +126,7 @@ Performance Impact
 Lenovo XClarity Administrator supports the management of up to 20 chassis with
 compute nodes and a similar number of rack servers. An operator with a large
 number of systems being managed by XClarity should expect reduced system
-performance. Performace considerations have been provided in references at the
+performance. Performance considerations have been provided in references at the
 end of this specification.
 
 Ramdisk impact

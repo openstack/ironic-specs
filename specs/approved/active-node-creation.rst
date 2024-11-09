@@ -110,7 +110,7 @@ REST API impact
 
 Addition of a new state verb of ``adopt`` that triggers a transition to
 ``ADOPTING`` state. This verb will be unavailable for clients invoking
-an insufficent API version.
+an insufficient API version.
 
 The API micro-version will need to be incremented as a result of this change.
 
@@ -182,7 +182,7 @@ Allows for an easier adoption by managers of pre-existing hardware fleets.
 There is the potential that a operator could define a hardware fleet with
 bare minimal configuration to initially add the node to ironic. The result
 of which means that an operator could conceivably and inadvertently act upon
-a node when insufficent information is defined. This risk will be documented
+a node when insufficient information is defined. This risk will be documented
 as part of the resulting documentation in order to help highlight the risk
 and help provide guidance on preventing such a possibility should a user
 be attempting to adopt an inventory that is already "cloudy".

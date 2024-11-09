@@ -49,7 +49,7 @@ These are best viewed as a "first generation" of DPU cards where an offload
 workload is able to be executed on a card, such as a Neutron agent connected
 to the message bus in order to bind ports to the physical machine.
 
-Some initial community and vendor discussions also centered around futher
+Some initial community and vendor discussions also centered around further
 potential use cases of providing storage attachments through, similar to the
 behavior of a Fibre Channel HBA.
 
@@ -65,7 +65,7 @@ virtualize the hardware interaction/modeling like we have with Virtual
 Machines.
 
 Aside from some limited hardware offerings from specific vendors, Composible
-Hardware largely hasn't been realized as initally pitched by the hardware
+Hardware largely hasn't been realized as initially pitched by the hardware
 manufacters.
 
 DPUs
@@ -167,7 +167,7 @@ evolve.
    of scope for their project. Such is sensible to stand-up a general purpose
    workload, but operating lifecycle and on-going management is an aspect
    where Ironic can help both operators who run a variety of workloads and
-   configurations, or need to perform more specific lifecyle operations.
+   configurations, or need to perform more specific lifecycle operations.
 
 Proposed change
 ===============
@@ -189,11 +189,11 @@ child devices.
 * Introduction of a new step field value, ``execute_on_child_nodes`` which
   can be submitted. The default value is False. Steps which return CLEANWAIT,
   i.e. steps which expect asynchronous return will not be permitted under
-  normal conditions, however this will be avaiable via a configuration option.
+  normal conditions, however this will be available via a configuration option.
 
 * Introduction of a new step field value, ``limit_child_node_execution``,
   which accepts a list of node UUIDs to allow filtering and constraint
-  of steps on some nodes. Sepcifically, this is largely separate from the
+  of steps on some nodes. Specifically, this is largely separate from the
   ``execute_on_child_nodes`` field due to JSON Schema restrictions.
 
 * Introduction of the ability to call a vendor passthrough interface
@@ -281,14 +281,14 @@ supporting xPU's in servers with external power supplies in the past, and have
 largely been unable to navigate a workable model, in large part because this
 model would generally require a single task.node to be able to execute with
 levels of interfaces with specific parameters. For example, to the system BMC
-for base line power management, and then to a SNMP PDU for the auxillary power.
-This model also doesn't necessarilly work because then we would inherently
+for base line power management, and then to a SNMP PDU for the auxiliary power.
+This model also doesn't necessarily work because then we would inherently
 have blocked ourselves from more general managmeent capabilities and access
 to on DPU card features such as "serial consoles" through it's own embedded
 BMC without substantial refactoring and re-doing the data model.
 
 There is also the possibility that nesting access controls/modeling may not
-be appropriate. You don't necessarilly want to offer an baremetal tenant in a
+be appropriate. You don't necessarily want to offer an baremetal tenant in a
 BMaaS who has lessee access to Ironic, the ability to get to a serial console
 which kind of points us to the proposed solution in order to provide
 capabilities to handle the inherently complex nature of modeling which can
@@ -303,7 +303,7 @@ Chasssis and a Node.
 
 Chassis was originally intended to allow the articulation of entire Racks
 or Blade Chassis in Ironic's data model, in part to allow relationship and
-resoruce tracking more in lines with a Configuration Management Data Base
+resource tracking more in lines with a Configuration Management Data Base
 (CMDB) or Asset Inventory. However, Chassis never gained much traction because
 those systems are often required and decoupled in enterprise environments.
 
@@ -316,7 +316,7 @@ chassis replaced but the DPU is just moved to the new chassis.
 But the inherent one to many modeling which can exist with DPUs ultimately
 means that the modeling is in reverse from what is implemented for usage.
 Nodes would need to be Chassises, but then how do users schedule/deploy
-"instances", much less perform targetted lifecycle operations against part
+"instances", much less perform targeted lifecycle operations against part
 of the machine which is independent, and can be moved to another chassis.
 
 Overall, this could result in an area where we may make less progress
@@ -372,7 +372,7 @@ a big picture view of all things Ironic is responsible for.
 GET /v1/nodes/
 
 The view will by default return only nodes where the ``parent_node`` field
-is null. Older API clients will still recieve this default behavior change.
+is null. Older API clients will still receive this default behavior change.
 
 GET /v1/nodes/<node_ident>/children
 
@@ -406,7 +406,7 @@ Client (CLI) impact
 "openstack baremetal" CLI
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``baremetal`` command line interface will need to recieve parameters
+The ``baremetal`` command line interface will need to receive parameters
 to query child nodes, and query the child nodes of a specific node.
 
 "openstacksdk"
@@ -462,7 +462,7 @@ Scalability impact
 This change does propose an overall relationship and ability which may result
 far more nodes to be managed in ironic's database. It may also be that for
 child devices, a power synchronization loop may *not* be needed, or can be
-far less frequent. These are ultimately items we need to discuss furhter,
+far less frequent. These are ultimately items we need to discuss further,
 and consider some additional controls if we determine the need so operators
 may not feel any need nor impact to their deployments due to the increase in
 rows int the "nodes" table.
@@ -477,7 +477,7 @@ Performance Impact
 ------------------
 
 No direct negative impact is anticipated. The most direct impact will be the
-database and some periodics which we have already covered in the preceeding
+database and some periodics which we have already covered in the preceding
 section. Some overall performance may be avoided by also updating some of
 the periodics to not possibly match any child node, the logical case is
 going to be things like RAID periodics, which would just never apply and

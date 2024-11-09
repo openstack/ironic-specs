@@ -73,7 +73,7 @@ Alternatives
 * Each time modify conductor when we need a periodic task. That requires a
   consensus on how to make it in a generic way.
 
-* Just use ``LoopingCall``. I believe that this approach is less controlable
+* Just use ``LoopingCall``. I believe that this approach is less controllable
   (in terms of how many threads we run, how many requests we make to e.g. DRAC
   BMC etc) and leads to code duplication.
 

@@ -225,7 +225,7 @@ herd situation. In essence, the database could not keep up. We need to try
 and be smart to prevent some of these situations from happening, or at least
 minimize the impact as many operators now also launch services using
 Kubernetes, which can result in all services coming online at the same
-moment, an aspect which aggrevates a thundering herd.
+moment, an aspect which aggravates a thundering herd.
 
 It should be noted, not all of this is intended to be feature work, as some
 of the work product will end up being backported to the Wallaby release which
@@ -256,7 +256,7 @@ in a human parsable way has long been under discussion and been a desired
 feature. It is time we make it happen.
 
 This work was started during the Wallaby development cycle but we did not have
-the capcity to move it forward last cycle. This cycle we ought to finish it.
+the capacity to move it forward last cycle. This cycle we ought to finish it.
 
 Finishing anaconda deployment
 -----------------------------
@@ -315,7 +315,7 @@ may choose to deploy.
 Ultimately having support for integration helps ensure a greater level
 of operational security by helping operators identify and isolate
 machines which have had malicious actions taken on them and also
-potentialy help increase the level of security of the deployment
+potentially help increase the level of security of the deployment
 process by helping identify if a malicious actor has attempted to
 modify a running ramdisk's contents.
 
@@ -394,7 +394,7 @@ the "just want to be able to reuse my machine safely" group of operators.
 
 This may result in some changes to how Secure Erase/Format operations are
 handled, as well as additional portions of data to be removed from disks to
-aid in re-use. Specifically for operators with Ceph.
+aid in reuse. Specifically for operators with Ceph.
 
 iSCSI deployment removal
 ------------------------

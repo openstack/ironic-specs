@@ -88,7 +88,7 @@ Inspection data
 
 Inventory
   In the broad sense - synonym to inspection data. In the narrower sense -
-  hardward inventory_ as defined by IPA and returned by its hardware managers.
+  hardware inventory_ as defined by IPA and returned by its hardware managers.
 
 Inspection collectors
   IPA plugin responsible for collecting inspection data on the ramdisk side.
@@ -499,7 +499,7 @@ configuration`_):
   the ``valid_interfaces`` collection with a new boolean interface field
   ``is_added``.
 
-The list of available optoinal hooks (adapted from existing Inspector hooks):
+The list of available optional hooks (adapted from existing Inspector hooks):
 
 ``accelerators``
   Sets the ``accelerators`` property based on the available accelerator devices
@@ -691,7 +691,7 @@ The new ``[auto_discovery]`` section will have these options:
 
 .. note::
    Inspector has several options to tune the freshly created nodes. I believe
-   that this complex logic should rather be implementated with inspection
+   that this complex logic should rather be implemented with inspection
    rules. The follow-up inspection rules spec will have some additions to make
    it easier.
 
@@ -733,7 +733,7 @@ the conductor handling inspection. The RPC call will be:
       """
 
 No notifications will be done for JSON RPC transport. This will be documented
-as a known limitation. The futher work as part of the `cross-conductor RPC
+as a known limitation. The further work as part of the `cross-conductor RPC
 effort <https://review.opendev.org/c/openstack/ironic-specs/+/873662>`_ may
 eventually lift it.
 

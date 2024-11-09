@@ -27,7 +27,7 @@ experience as compared to serial console.
 
 Horizon's VNC console is not supported for the ironic
 nodes provisioned by Nova. This spec intents to extend that to
-grapical console via the novnc proxy.
+graphical console via the novnc proxy.
 
 The end user will be able to get workable vnc console url from baremetal
 server:
@@ -57,7 +57,7 @@ Alternatives
 
 * We can configure kvm access including access to the bios via the
   serial proxy and shell in a box for nova provisioned ironic baremetal
-  intances. This would require exposing credentials.
+  instances. This would require exposing credentials.
 
 * Use out-of-band KVM access provided by administrator without Ironic support.
 

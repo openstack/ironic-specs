@@ -247,7 +247,7 @@ appropriate management of a baremetal node.
 
 The Redfish Forum has an `interop validator utility <https://github.com/DMTF/Redfish-Interop-Validator>`_
 mechanism to allow BMC vendors to validate their implementation of the
-Redfish API against the profile that represents compatability with Ironic.
+Redfish API against the profile that represents compatibility with Ironic.
 
 This work will also enable consumers of hardware to leverage the profile
 to make sure the hardware they intend to buy works with Ironic or even

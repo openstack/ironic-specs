@@ -53,7 +53,7 @@ Proposed change
 ===============
 
 Nova's Ironic virt driver will generate a config drive image, gzip
-and base64 enconde it and pass to the Ironic service as part of the
+and base64 encode it and pass to the Ironic service as part of the
 setting provision state call. This is discussed in more detail in this
 nova spec.[0]
 

@@ -112,7 +112,7 @@ A new feature is no longer added to the "ironic" CLI.
 "openstack baremetal" CLI
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A new subcommnad will be added::
+A new subcommand will be added::
 
   openstack baremetal node power show [--supported] <node>
 

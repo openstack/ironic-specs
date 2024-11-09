@@ -227,7 +227,7 @@ None.
 Implementation
 ==============
 
-An inital proof-of-concept is available from [2][3][4].
+An initial proof-of-concept is available from [2][3][4].
 
 Assignee(s)
 -----------

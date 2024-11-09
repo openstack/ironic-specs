@@ -106,7 +106,7 @@ database is used as backend (the only option in this spec):
 Deallocation: database backend
 ------------------------------
 
-The deallocation process will in one transation:
+The deallocation process will in one transaction:
 
 * unset node's ``instance_uuid``,
 * unset node's ``allocation_id``,

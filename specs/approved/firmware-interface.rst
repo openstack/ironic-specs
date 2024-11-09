@@ -64,7 +64,7 @@ Proposed change
 .. note:: This spec describes the out of band interface. An in-band
           interface is planned to be implemented later, it can be called
           `AgentFirmware`, changes on IPA-level APIs will have to be defined.
-          Other implementations can support going trough this interface to
+          Other implementations can support going through this interface to
           execute the necessary in-band steps.
 
 

@@ -72,7 +72,7 @@ Deploy Steps
 As a general theme of work for the Train Cycle, the Ironic project community
 wishes to break the monolithic deployment step into multiple deployment steps
 which will further enable operators to easily create more complex
-declaritive deployments. This work also includes the the ability to trigger
+declarative deployments. This work also includes the the ability to trigger
 steps through the agent, something that is not presently possible today.
 
 Faster Deployments
@@ -112,7 +112,7 @@ Redfish Virtual Media
 
 One of the most powerful features we can offer to operators with distributed
 and edge ironic nodes is to offer booting the ramdisk via a generic
-Redfish Virtual Media boot interface. This will enable greater comptability
+Redfish Virtual Media boot interface. This will enable greater compatibility
 and once completed in-gate testing of virtual media relate scenarios in CI.
 
 More information can be found in
@@ -152,13 +152,13 @@ node power state. At larger scales, this is inefficient and results
 in the power state nova having on record from being out of state
 from ironic as the source of truth.
 
-Conversely, nova presently assumes that it is always authorative
+Conversely, nova presently assumes that it is always authoritative
 in regards to power states. This work will allow ironic to inform
 nova of the new power state such that nova does not attempt to
 reset the power state.
 
 While this is largely an effort in the nova project, we need to be
-aware and attempt to support this work to move foward.
+aware and attempt to support this work to move forward.
 The nova-spec document can be found in review as
 `change 636132 <https://review.opendev.org/#/c/636132/>`_.
 

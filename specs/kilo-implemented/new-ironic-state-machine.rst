@@ -98,7 +98,7 @@ New state machine::
                       ^                   +
                       |                   |R:active
                       +                   v
-            [DELET*/AVAILABLE]         [DEPLOY*/ACTIVE]
+            [DELETE*/AVAILABLE]         [DEPLOY*/ACTIVE]
                       ^                   +  ^
                       |R:delete           |  |R:rebuild
                       |                   v  +

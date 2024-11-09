@@ -85,7 +85,7 @@ be truncated to 1000 characters.
 
 ``conductor`` is the hostname of the conductor who recorded the entry.
 
-``user`` is the requestor for the operation from the context, for the Identify
+``user`` is the requester for the operation from the context, for the Identify
 service it's a string with fixed length.
 
 

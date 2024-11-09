@@ -36,7 +36,7 @@ The goals can be summarized as:
   facilitated by a modified networking-generic-switch or similar plugin.
 * Provide a mechanism to configure L2 networks to be provided to a host
   from a DPU.
-* Provide a mechanism to accomodate highly isolated network management
+* Provide a mechanism to accommodate highly isolated network management
   interfaces where operators restrict access such that *only* Ironic
   is able to connect to the remote endpoint.
 * Provide a tool to apply and clean-up configuration, *not* track
@@ -114,7 +114,7 @@ and perform attachment of interfaces based upon the provided information.
    progorative" soft of item.
 
 MVP would likely exclude locking, but be modeled as a single worker service
-or container which does not maintain state, largely simplfies the problem to
+or container which does not maintain state, largely simplifies the problem to
 "who is logged into what" to make concurrent changes, which has been the
 historical driver for locking.
 
@@ -263,7 +263,7 @@ The closest alternative would be a ``standalone Neutron`` coupled with some
 sort of extended/proxy RPC model, which is fine, but that really does not
 address the underlying challenge of the attach/detach functionality
 being needed by Infrastructure Operators. It also introduces modeling which
-might not be suitable for bulk infrastucture operators as they would need
+might not be suitable for bulk infrastructure operators as they would need
 to think and operate a cloud model, as opposed to the physical infrasructure
 model. Plus operating Neutron would require a database to be managed,
 increasing operational complexity, and state would also need to still
@@ -295,7 +295,7 @@ REST API impact
 ---------------
 
 With a MVP, we do not anticipate any REST API changes to Ironic itself
-with the very minor exception of the loosing of a Regular Expression
+with the very minor exception of the losing of a Regular Expression
 around what Ironic accepts for VIF attachment requests. This was agreed
 upon by the Ironic community quite some time ago and just never performed.
 
@@ -398,7 +398,7 @@ Performance Impact
 ------------------
 
 This proposal is intentionally designed to be limited and isolated
-to minimze risk and reduce deployment complexity. It is also intentionally
+to minimize risk and reduce deployment complexity. It is also intentionally
 modeled as a tool to "do something", and that "something" happens to be
 configuration in area where device locking is necessary. This realistically
 means that the only content written to disk is going to be lock files.
@@ -464,7 +464,7 @@ Past initial prototyping, the following may apply order:
   can take place.
 * Add support to networking-baremetal for it to proxy the request
   through to this service for port binding requests in Neutron.
-* Design a new model, likely superceeding VIFS, but vifs could just also be
+* Design a new model, likely superseding VIFS, but vifs could just also be
   an internal network ID moving forward. This would likely be required for
   formal adoption of the functionality by Metal3, but standalone users could
   move to leverage this immediately once implemented.
@@ -496,7 +496,7 @@ Upgrades and Backwards Compatibility
 This functionality is anticipated to be "net new" for Ironic and exposed
 to end users through a dedicated ``network_interface`` module which could
 be selected by users at a point in the future. As such no upgrade or backwards
-compatability issues are anticipated.
+compatibility issues are anticipated.
 
 Documentation Impact
 ====================

@@ -88,13 +88,13 @@ unless ``nova-compute`` or some other API consumer were to request the
 ``shard`` to be updated on a node.
 
 .. NOTE::
-   The overall process consumers use today is to retreive everything and
+   The overall process consumers use today is to retrieve everything and
    then limit the scope of work based upon contents of the result set.
    This results in a large overhead of work and increased looping latency
    which also can encourage race conditions. Both ``nova-compute``
    and the ``networking-baremetal`` ML2 plugin operate in this way with
    different patterns of use. The advantage of the the proposed solution
-   is to enabel the scope limiting/grouping into managable chunks.
+   is to enable the scope limiting/grouping into manageable chunks.
 
 In terms of access controls, we would also add a new RBAC policy to
 restrict changes such that the system itself or a appropriately scoped
@@ -137,7 +137,7 @@ specific project ID value fields.
 Why not Conductor Group?
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is important to stress similiarity wise, this *is* similar to conductor
+It is important to stress similarity wise, this *is* similar to conductor
 groups, however conductor groups were primarily purposed to model the physical
 constraints and structure of the baremetal infrastructure.
 
@@ -355,7 +355,7 @@ model.
    supplied ``shard`` value to match.
    Example: nova-manage ironic-reassign <shard-key> <compute-hostname>
 
-   Programattically, this would retrieve a list of nodes matching the key from
+   Programmatically, this would retrieve a list of nodes matching the key from
    Ironic, and then change the associated ComputeNode and Instance tables host
    fields to be the supplied compute hostname, to match an existing nova
    compute service.
@@ -382,13 +382,13 @@ model.
    responsible for, and would eventually match the shard key.
 
 This would facilitate an ability to perform a rolling, yet isolated outage
-impact as the new nova-compute configuraiton is coming online, and also allows
+impact as the new nova-compute configuration is coming online, and also allows
 for a flow which should be able to be automated for larger operators.
 
 The manageability, say if one needs to change a ``shard`` or rebalance
 shards, is not yet clear. The current discussion in the Nova project is that
 rebalance/reassociation will only be permitted *IF* the compute service
-has been "forced down" which is an irreversable action
+has been "forced down" which is an irreversible action
 
 Ramdisk impact
 --------------
@@ -428,7 +428,7 @@ Other deployer impact
 ---------------------
 
 It *is* recognized that operators *may* wish to auto-assign or auto-shard
-the node set programatically. The agreed upon limitation amongst Ironic
+the node set programmatically. The agreed upon limitation amongst Ironic
 contributors is that we (Ironic) would not automatically create *new*
 shards in the future. Creation of new shards would be driven by the operator
 by setting a new shard key on any given node.
@@ -487,7 +487,7 @@ Testing
 =======
 
 Unit testing is expected for all the basic components and operations
-added ot Ironic to support this funcitonality.
+added to Ironic to support this functionality.
 
 We may be able to add some tempest testing for the API field and access
 interactions.
@@ -496,7 +496,7 @@ Upgrades and Backwards Compatibility
 ====================================
 
 To be determined. We anticipate that the standard upgrade process would apply
-and that there would not realistically be an explicit downgrade compatability
+and that there would not realistically be an explicit downgrade compatibility
 process, but this capability and functionality is largely for external
 consumption, and details there are yet to be determined.
 

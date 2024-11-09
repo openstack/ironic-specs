@@ -35,7 +35,7 @@ list of supported boot devices to return.
 
 This change would be backwards compatible, using inspect to determine if
 a specific driver as implemented the "task" parameter or not, and showing
-a deprecation warning if "task" paramater has not been implemented.
+a deprecation warning if "task" parameter has not been implemented.
 
 This deprecation of get_suported_boot_devices() without task parameter will
 be done in the next release, after which get_supported_boot_devices() without
@@ -138,7 +138,7 @@ None
 Developer impact
 ----------------
 All in-tree driver and unit tests will be amended to include the new "task"
-parameter. Out of tree drivers will see a depracation warning until they
+parameter. Out of tree drivers will see a deprecation warning until they
 implement the new "task" parameter.
 
 
@@ -156,7 +156,7 @@ Work Items
   * Add "task" to get_supported_devices_list() in base driver
   * Add new management property definition to check if
     driver supports task parameter or not.
-  * Update all in tree drivers adding task paramater
+  * Update all in tree drivers adding task parameter
   * Update all unit tests affected by change
 
 Dependencies

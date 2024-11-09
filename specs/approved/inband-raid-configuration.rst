@@ -57,7 +57,7 @@ Following are the changes required:
   clean step completes, the conductor resumes the cleaning and goes on to the
   next clean step if any. A new mechanism - the
   ``agent_base_vendor.post_clean_step_hook`` decorator, will be added. This
-  allows a driver implementor to specify a function to be invoked after
+  allows a driver implementer to specify a function to be invoked after
   successful completion of an in-band clean step (and before the next clean
   step is started). The decorated function would take two arguments: the task
   and the command status (of the clean step) returned by the agent ramdisk.

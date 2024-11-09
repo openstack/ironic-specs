@@ -42,7 +42,7 @@ Each item in the table includes:
      - Category
      - Champions
 
-   * - `SQLAlchemy 2.0 Compatability`_
+   * - `SQLAlchemy 2.0 Compatibility`_
      - Maintenance
      - TheJulia
 
@@ -73,7 +73,7 @@ Each item in the table includes:
 Goals Details
 =============
 
-SQLAlchemy 2.0 Compatability
+SQLAlchemy 2.0 Compatibility
 ----------------------------
 Our DB layer is currently using SQLAlchemy 1.4 or older, and relies heavily on
 autocommit behaviors. Additionally as part of the migration to 2.0, SQLAlchemy
@@ -113,7 +113,7 @@ Remove default use of MD5
 The MD5 hashing algorithm is still supported in Ironic for image hashing.
 This is not ideal as MD5 is broken. This work will be a breaking change;
 forbidding use of MD5 hashes by default. Operators who wish to
-continue using MD5 for API compatability reasons will be able to re-enable
+continue using MD5 for API compatibility reasons will be able to re-enable
 it via config.
 
 Merging Inspector into Ironic
@@ -126,7 +126,7 @@ well, as Ironic Inspector also needs to be updated to work with SQLAlchemy 2.0.
 Active Steps
 ------------
 Ironic uses steps to perform actions on a node during deployment or cleaning.
-We'd like to extend this concept of steps to allow for maintainence on actively
+We'd like to extend this concept of steps to allow for maintenance on actively
 deployed nodes. This new Active Steps feature will allow operators to perform a
 firmware update -- or any other automated action on a provisioned, ACTIVE node.
 

@@ -66,10 +66,10 @@ The main differences will be:
     specified in the manual clean request; false if it is optional.
 
 * add clean steps to drivers that will only be used by manual cleaning. The
-  mechanism for doing this exists already. Driver implementors only need to
+  mechanism for doing this exists already. Driver implementers only need to
   use the @clean_step decorator with a default cleaning priority of 0. This
   will ensure the step isn't run as part of the automated cleaning. The
-  implementor can specify whether the step is abortable, and should also
+  implementer can specify whether the step is abortable, and should also
   include any arguments that can be passed to the clean step.
 
 * operators will be able to get a list of possible steps via an API. The

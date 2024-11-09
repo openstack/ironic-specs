@@ -139,7 +139,7 @@ Deployers will have a finer granularity in selecting the disk device
 to be used for the deployment.
 
 .. note::
-    When specifing device size as a hint operator needs to make sure that
+    When specifying device size as a hint operator needs to make sure that
     the value doesn't conflict with the local_gb properties of the node.
     This is going to be documented as part of this spec.
 

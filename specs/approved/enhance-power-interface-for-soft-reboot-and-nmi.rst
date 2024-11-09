@@ -326,7 +326,7 @@ PowerInterface base and ManagementInterface base are enhanced by
 adding a new method respectively as described in the section "Proposed
 change".
 And these enhancements keep API backward compatible.
-Therefor it doesn't have any risk to break out of tree drivers.
+Therefore it doesn't have any risk to break out of tree drivers.
 
 
 Nova driver impact
@@ -338,7 +338,7 @@ And "nova reboot" command has a option '--hard' to indicate hard reboot.
 However the default behavior of "nova reboot" to an Ironic instance
 is hard reboot, and --hard option is meaningless to the Ironic instance.
 
-Therefor Ironic Nova driver needs to be update to unify the behavior
+Therefore Ironic Nova driver needs to be update to unify the behavior
 between virtual machine instance and bare-metal instance.
 
 This problem is reported as a bug [6]. How to fix this problem is

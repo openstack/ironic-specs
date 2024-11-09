@@ -80,7 +80,7 @@ Addition of a ``hold`` provision state verb and ``holding`` state.
 .. Note::
    During a specific planning and discussion meeting to determine the path
    for a feature such as this, the ironic community reached a consensus on
-   the call that a holding state would be useful, and could likey be
+   the call that a holding state would be useful, and could likely be
    implemented aside from the API functionality proposed in this backlog
    specification.
 

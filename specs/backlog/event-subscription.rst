@@ -141,7 +141,7 @@ event subscriptions.
 
 * ``GET /v1/nodes/<node_ident>/management/subscriptions/subscription_bmc_id``
 
-  Retrieves a sbuscription. Returns a JSON object representing the choosen
+  Retrieves a sbuscription. Returns a JSON object representing the chosen
   subscription (``subscription_bmc_id``).
 
   Error codes:
@@ -272,7 +272,7 @@ None.
 Security impact
 ---------------
 
-It is recomended to use https.
+It is recommended to use https.
 
 Other end user impact
 ---------------------
@@ -319,7 +319,7 @@ Redfish Implementation Details
 
 The actual support for EventDestination in sushy is based on schema [2]_,
 since HW vendors are still working on adding support for newer versions where
-the propertie ``EventTypes`` is deprecated. Based on this the Ironic API
+the property ``EventTypes`` is deprecated. Based on this the Ironic API
 will only accept the following redfish properties to create a subscription:
 
 * Destination - Required

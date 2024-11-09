@@ -146,7 +146,7 @@ While the community is interested in supporting HTTPClient based booting,
 we currently have a few steps to surpass first. Namely the iPXE/PXE interface
 split and improved UEFI testing.
 
-The nature of this work is to enable an explict HTTP booting scenario where
+The nature of this work is to enable an explicit HTTP booting scenario where
 the booting node does not leverage PXE.
 The story can be found at `story 2003934 <https://storyboard.openstack.org/#!/story/2003934>`_.
 

@@ -26,7 +26,7 @@ site-specific customizations:
   following a certain pattern or by fetching them from a CMDB.
 
 * Validation logic. Some operators want to fail inspection if the nodes do not
-  fullfil certain criteria. In the context of auto-discovery, such a validation
+  fulfill certain criteria. In the context of auto-discovery, such a validation
   may be used to prevent unexpected machines from getting enrolled.
 
 These requests can be covered by inspection hooks. But, as explained in
@@ -485,7 +485,7 @@ The new section ``[inspection_rules]`` will have these options:
 
 ``built_in``
   An optional path to a YAML file with built-in inspection rules. Loaded on
-  service start and thus not modifyable via SIGHUP.
+  service start and thus not modifiable via SIGHUP.
 
 ``default_scope``
   The default value for ``scope`` for all rules where this field is not set
@@ -511,7 +511,7 @@ One option will be added to the ``[auto_discovery]`` section:
 
 ``inspection_scope``
   The default value of inspection scope for nodes enrolled via auto-discovery.
-  Simplifies targetting such nodes with inspection rules.
+  Simplifies targeting such nodes with inspection rules.
 
 Developer impact
 ----------------
@@ -576,7 +576,7 @@ Upgrades and Backwards Compatibility
 ====================================
 
 Existing rules will not be automatically migrated from Inspector to Ironic
-since the convertion may not be always trivial (e.g. around variable
+since the conversion may not be always trivial (e.g. around variable
 interpolation or loops).
 
 Documentation Impact

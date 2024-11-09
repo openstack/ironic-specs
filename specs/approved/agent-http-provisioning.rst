@@ -284,7 +284,7 @@ Work Items
 
 * Promote instance cache to be a global cache, usable for other interfaces.
 * Implement the proposed work for ``direct`` deploy interface, includes image
-  caching, checksum recalculating, symlink mangement, etc.
+  caching, checksum recalculating, symlink management, etc.
 * Update documents.
 
 Dependencies

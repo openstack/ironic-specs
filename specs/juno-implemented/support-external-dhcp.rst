@@ -40,7 +40,7 @@ configuration options.
 
 The two initial provider implementations will be "neutron" and "none".
 
-Neutron functioality that does not relate to DHCP (ie. updating a port's MAC
+Neutron functionality that does not relate to DHCP (ie. updating a port's MAC
 address) will not be moved.
 
 Alternatives

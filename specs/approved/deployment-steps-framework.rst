@@ -209,7 +209,7 @@ described above.
 
 "openstack baremetal" CLI
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-Responses will inclde the change described above.
+Responses will include the change described above.
 
 RPC API impact
 --------------

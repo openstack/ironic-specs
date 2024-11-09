@@ -80,7 +80,7 @@ where a retired node would receive another instance. Otherwise, 'retired' set
 to True shall not interfere with cleaning or rebuilding.
 
 Nodes with 'retired' set to True cannot move from manageable to available
-(to prevent accidental re-use): the "provide" verb is blocked. In order to
+(to prevent accidental reuse): the "provide" verb is blocked. In order to
 move these nodes to available, the 'retired' field needs to be set to False
 first.
 

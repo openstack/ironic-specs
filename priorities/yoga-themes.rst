@@ -120,7 +120,7 @@ Start Merging Ironic Inspector in Ironic
 Based on the PTG discussions, we will provide a new home for introspection
 rules using a `new format
 <https://owlet.today/posts/miniscript-and-future-of-introspection-rules/>`_
-(still need to be discused with the community), we also want to add the
+(still need to be discussed with the community), we also want to add the
 `ability to generate ironic-inspector iPXE scripts
 <https://storyboard.openstack.org/#!/story/2009294>`_.
 
