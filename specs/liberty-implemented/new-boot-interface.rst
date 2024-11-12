@@ -33,7 +33,7 @@ Proposed change
 ===============
 
 * A new ``BootInterface`` needs to be added.  The interface will recommend the
-  following methods for the implementor::
+  following methods for the implementer::
 
    @six.add_metaclass(abc.ABCMeta)
    class BootInterface(object):

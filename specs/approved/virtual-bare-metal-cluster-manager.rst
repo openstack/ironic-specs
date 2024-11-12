@@ -151,7 +151,7 @@ Multi-Stage Process
 
         * Open vSwitch (containerised?)
 
-        * Virtualisation tookit (e.g. Libvirt/QEMU/KVM)
+        * Virtualisation toolkit (e.g. Libvirt/QEMU/KVM)
 
         * Virtual platform management toolkit: Virtual BMC for IPMI at the
           moment. Scope for extension to include other tools in future (e.g.

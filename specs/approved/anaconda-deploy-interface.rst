@@ -456,7 +456,7 @@ Security impact
 
 The ``heartbeat`` method implemented by the driver has to be
 unauthenticated so that anaconda can POST to the status API without a token.
-An attacker could potentially cause targetted denial of service attack by
+An attacker could potentially cause targeted denial of service attack by
 sending invalid/incorrect status to Ironic nodes since the API is
 unauthenticated. This issue is mitigated by mandatory agent token verification.
 

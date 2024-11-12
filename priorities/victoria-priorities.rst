@@ -119,7 +119,7 @@ rely upon stable APIs and interfaces, at least in most cases.
 
 While we would all love to see all of the features, we should be delivering
 in a model which conforms to `Sem-Ver <http://semver.org>`_ and not force
-artificial major version changes to match a cycle boundry and to create a
+artificial major version changes to match a cycle boundary and to create a
 branch point.
 
 Having said this, it is time for us to move to an
@@ -236,7 +236,7 @@ For standalone use cases to flourish, we must support another authentication
 mechanism. The simplest, is rather simple. Just HTTP Basic Authentication.
 
 Maybe we won't just stop there, but "noauth" is simply not acceptable with
-edge infrastucture management.
+edge infrastructure management.
 
 DHCP-less Deployments
 ---------------------

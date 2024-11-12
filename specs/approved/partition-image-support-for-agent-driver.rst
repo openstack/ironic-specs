@@ -39,7 +39,7 @@ Proposed change
 
 * Post deploy, agent driver prepares the config for subsequent boot, either
   using pxe or vmedia as defined by the driver. Both agent_ipmitool and
-  agent_ilo driver should support deploy with parition images.
+  agent_ilo driver should support deploy with partition images.
 
 * Factor out the partitioning code from ironic into a different library
   and use it in both IPA and ironic code base.

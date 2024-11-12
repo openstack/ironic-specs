@@ -186,7 +186,7 @@ A new method is added to the deploy driver interface:
         :param callback_url: a URL to use to call to the ramdisk
         :return: None
         """
-        LOG.warning('Got hearbeat message from node %(node)s, but the driver '
+        LOG.warning('Got heartbeat message from node %(node)s, but the driver '
                     '%(driver)s does not support heartbeating',
                     {'node': task.node.uuid, 'driver': task.node.driver})
 

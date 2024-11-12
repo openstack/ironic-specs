@@ -105,7 +105,7 @@ Remove default use of MD5
 The MD5 hashing algorithm is still supported in Ironic for image hashing.
 This is not ideal as MD5 is broken. This work will be a breaking change;
 forbidding use of MD5 hashes by default. Operators who wish to
-continue using MD5 for API compatability reasons will be able to re-enable
+continue using MD5 for API compatibility reasons will be able to re-enable
 it via config.
 
 Merging Inspector into Ironic
@@ -145,7 +145,7 @@ non-disruptive conductor shutdowns and restarts.
 
 FIPS Compatibility jobs in CI
 -----------------------------
-FIPS compatability is a `cross-project goal <https://governance.openstack.org/tc/goals/selected/fips.html>`_
+FIPS compatibility is a `cross-project goal <https://governance.openstack.org/tc/goals/selected/fips.html>`_
 in OpenStack. We hope to have CI jobs added to identify areas in Ironic that
 are not FIPS compatible. No major incompatibilities are anticipated, but we may
 need to update some hashlib.md5() calls and other minor changes.

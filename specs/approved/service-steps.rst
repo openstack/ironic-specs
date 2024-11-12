@@ -70,7 +70,7 @@ in the same line of ``clean steps``, then the node state will return to the
 **servicing** state, heartbeat, and upon all steps completed, the node will
 automatically return to the **active** state.
 
-To achive this, we will also need to:
+To achieve this, we will also need to:
 
 * Add an additional ``service_step`` field to the Node object. Similar to clean
   steps, a ``service_steps`` entry would also be utilized in the node
@@ -104,7 +104,7 @@ explicit steps into the step process.
   set of steps have been received.
 
 * ``pause`` - This step would pause the step execution for a user defined
-  period of time. Think of this as "sleep". In all liklihood, this step is
+  period of time. Think of this as "sleep". In all likelihood, this step is
   likely to be constrained with a maximum sleep period of the heartbeat
   window.
 
@@ -128,7 +128,7 @@ step name in progress, allowing the next step to proceed upon next heartbeat.
 
 .. NOTE:: Ironic *might* need a step which enables the agent token to be
    removed to allow the agent to be restarted or rebooted. This is not
-   anticipated to be a feature, but shouldn't be controversal if deemed
+   anticipated to be a feature, but shouldn't be controversial if deemed
    needed soon afterwards.
 
 Alternatives
@@ -168,7 +168,7 @@ New states will be added to the state machine:
 | State               | Description                                           |
 +---------------------+-------------------------------------------------------+
 | states.SERVICING    | Modifying "unstable" state indicating a lock is held  |
-|                     | and action is occuring.                               |
+|                     | and action is occurring.                              |
 +---------------------+-------------------------------------------------------+
 | states.SERVICEWAIT  | An intermediate unstable state where Ironic is        |
 |                     | waiting for an action such as a `heartbeat`           |
@@ -291,7 +291,7 @@ The act of removing a node from the service state is anticipated to use the
 ``do_provision_action`` RPC method, but the API may need to validate the
 running RPC version before making the call.
 
-Because of this addition, both sevices will need to be upgraded before this
+Because of this addition, both services will need to be upgraded before this
 feature can be utilized.
 
 Driver API impact
@@ -300,7 +300,7 @@ Driver API impact
 Decorators will need to be added/modified to enable the steps to be
 appropriately validated and invoked when the feature is needed. No other
 driver API changes are anticipated. It should be noted this is not a breaking
-change, we only note it because it will need to be performed on relevent
+change, we only note it because it will need to be performed on relevant
 actions/steps.
 
 Nova driver impact
@@ -323,7 +323,7 @@ Ramdisk impact
 
 A ``get_service_steps`` and ``execute_service_step`` methods are anticipated
 as being needed to support this functionality in the agent. A lack of these
-agent side comands are not to be considered faults.
+agent side commands are not to be considered faults.
 
 It is expected that we would likely want the agent to just to continue to
 heartbeat while waiting for work to do, which is not breaking for older
@@ -426,7 +426,7 @@ scenario will exercuse one of the ``pause``, ``wait``, or ``hold`` steps.
 Upgrades and Backwards Compatibility
 ====================================
 
-No additional upgrade or compatability issues are anticipated aside from
+No additional upgrade or compatibility issues are anticipated aside from
 what has already been noted and explored in this document.
 
 Documentation Impact

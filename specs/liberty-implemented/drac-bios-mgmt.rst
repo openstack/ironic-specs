@@ -88,7 +88,7 @@ Four new API calls:
   * 200 if the set of proposed new parameters passed validation and
     was accepted for further processing.
 
-  * 204 if the set of proposed new paramters passed validation, but
+  * 204 if the set of proposed new parameters passed validation, but
     did not actually change the BIOS configuration.
 
   * 409 if the set of proposed new parameters contains a parameter
@@ -119,7 +119,7 @@ Four new API calls:
 
   * 200 if the proposed changes were successfully dequeued.
 
-  * 204 if there were no proposed chages to dequeue
+  * 204 if there were no proposed changes to dequeue
 
   * 403 if the proposed changes are already in the process of being
     committed.

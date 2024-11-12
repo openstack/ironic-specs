@@ -146,8 +146,8 @@ for sensors in Juno.
 
 
 The proposal is to drop the ipmi component string from the meter name so that
-meter names become provider indepenent.  Transforming the above to the proposed
-meter naming would result in the following meter names in Ceilometer.
+meter names become provider independent.  Transforming the above to the
+proposed meter naming would result in the following meter names in Ceilometer.
 
 ::
 

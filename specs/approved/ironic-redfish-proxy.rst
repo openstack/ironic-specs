@@ -139,7 +139,7 @@ otherwise expect to provide, which poses a potential problem.
 
 We intend to solve this problem through the use of application credentials,
 which specify the user, project, and domain they are scoped to. Since each
-application credential posesses a UUID, we can use this identifier in place of
+application credential possesses a UUID, we can use this identifier in place of
 all the information that would otherwise be required by Keystone. [APPCREDS]_
 This approach is also beneficial from a security standpoint, as it reduces the
 number of times raw user credentials are handled directly.
@@ -847,7 +847,7 @@ currently being implemented as a separate WSGI service, it shall require at
 minimum its own port to be ran on. This can be useful if one wishes to have
 the Redfish proxy service bound to a different port or a different host IP
 from the Ironic API; however, it will require a new endpoint to be added via
-Keystone (if using Keystone), and may potentially require extra nework
+Keystone (if using Keystone), and may potentially require extra network
 configuration on the part of the system administrator.
 
 Developer impact

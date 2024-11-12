@@ -131,7 +131,7 @@ done. All callbacks will be stored in a simple dictionary keyed by node UUID.
 strings, each of which is going to be the corresponding driver interface and
 event handler's method name, so that we know which method of the event handler
 of a specific driver interface to trigger when an action is asynchronous and
-we receieve the event. If an unexpected event is received, we'll be ignoring
+we receive the event. If an unexpected event is received, we'll be ignoring
 it (and logging that an unexpected event appeared in the API).
 
 Third-party driver interface methods can be also adding things they want to
@@ -166,7 +166,7 @@ the port's ``internal_info['network_status']``, and then
 ``process_event`` is triggered. On the conductor side,
 ``process_event`` will be doing the event name to event handler method
 translation via ``NETWORK_HANDLER_TO_EVENT_MAP``, and calling the event
-handler. Conductor will also be dealing with state machine transistions.
+handler. Conductor will also be dealing with state machine transitions.
 
 The event handler will be looking at the status of the ironic resources, for
 example, in case of network events, we want to save the neutron port status in
@@ -313,7 +313,7 @@ Other end user impact
 ---------------------
 
 The neutron notifier needs to be configured. It needs the keystone admin
-credentials and (optionally, if not procided will be discovered from keystone
+credentials and (optionally, if not provided will be discovered from keystone
 endpoint catalog) the ironic API address to send events to.
 
 Scalability impact

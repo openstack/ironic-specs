@@ -12,7 +12,7 @@ https://storyboard.openstack.org/#!/story/1596107
 
 This spec proposes adding a new node field to reflect any faults detected
 by the system. For nodes put into maintenance mode due to power-sync
-failures, this proposes a mechanims to try to recover the nodes from
+failures, this proposes a mechanisms to try to recover the nodes from
 the failure.
 
 Problem description

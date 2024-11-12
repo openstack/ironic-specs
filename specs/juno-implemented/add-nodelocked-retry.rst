@@ -112,7 +112,7 @@ Scalability impact
 
 This does have the possibility to negatively impact scalability. A spawned
 worker thread within the conductor could potentially take longer to
-process the work if a NodeLocked expection is thrown. This impact can be
+process the work if a NodeLocked exception is thrown. This impact can be
 mitigated by increasing the number of workers in the pool (the
 workers_pool_size option).
 

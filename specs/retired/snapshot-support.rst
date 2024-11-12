@@ -100,7 +100,7 @@ guarded by microversions.
   to a location where the snapshot image should be stored.
 
   If the ``image_ref`` is an UUID, it refers to the UUID of an image in the
-  Image serivce, the image should be precreated before snapshot request and
+  Image service, the image should be precreated before snapshot request and
   acts as a holder for receiving image data. When integrated with Compute
   service, the ``image_id`` is an argument passed to the driver interface
   ``snapshot()``.

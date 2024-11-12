@@ -11,7 +11,7 @@ Allow a ramdisk deploy user to specify their boot ISO
 https://storyboard.openstack.org/#!/story/2007633
 
 With support for virtual media, there are cases where an operator may
-wish to boot a machine with a specific virutal media image to facilitate
+wish to boot a machine with a specific virtual media image to facilitate
 the deployment of a machine or even just the completion of an action like
 firmware upgrades.
 
@@ -116,7 +116,7 @@ None
 Scalability impact
 ------------------
 
-The distinct possibiliy exists, if a user requests multiple concurrent
+The distinct possibility exists, if a user requests multiple concurrent
 deployments, that configuration injection could consume a large amount
 of disk space.
 
@@ -174,7 +174,7 @@ Dependencies
 Testing
 =======
 
-Unit tests should be sufficent for ensuring this functionality is not broken.
+Unit tests should be sufficient for ensuring this functionality is not broken.
 
 A tempest test may also be viable, but we may wish to partner with the Metal3
 community on integration testing, as ultimately this is essentially just an

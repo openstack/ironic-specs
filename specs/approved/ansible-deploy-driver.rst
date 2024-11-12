@@ -111,7 +111,7 @@ Control of cleaning steps is through Ansible tags
 and auxiliary clean steps file.
 The playbooks for actions can be set per-node, as is cleaning steps file.
 
-The dreploy interface tries to re-use as much code from ironic as possible,
+The dreploy interface tries to reuse as much code from ironic as possible,
 and interface-wise is quite similar to the ``direct`` deploy interface.
 
 Currently this interface supports two modes for continuing deployment

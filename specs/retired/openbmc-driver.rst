@@ -16,7 +16,7 @@ OpenBMC and the addition of driver to the IPA and PXE driver classes.
 .. NOTE::
    This specification is no longer viewed as applicable as OpenBMC has support
    for the Redfish API interface, and as such this is considered a superior
-   standards based interface for use. When this specificaiton was proposed,
+   standards based interface for use. When this specification was proposed,
    These the Redfish API had not yet been implemented in OpenBMC.
 
 Problem description

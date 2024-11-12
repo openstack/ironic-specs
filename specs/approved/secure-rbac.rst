@@ -50,7 +50,7 @@ Role definitions:
           scope. These are accounts which Create/Delete $things,
           and in keystone default configuration, this role implies
           the ``member`` role. In an Ironic context, we can think of this user
-          as the infrastucture administrator who is adding their baremetal
+          as the infrastructure administrator who is adding their baremetal
           machines into Ironic.
 * member - This is a user which can act upon things. They may be able to read
            and write with-in objects, but cannot create/delete new objects
@@ -132,7 +132,7 @@ appropriately navigated.
 In summary, the purpose of this specification is to make changes in
 *ironic* and *ironic-inspector* to be consistent and future compatible
 with the rest of the OpenStack community. This will further enable
-infrastucture operators where they can leverage the prior community
+infrastructure operators where they can leverage the prior community
 policy work in the OpenStack community to override the policy defaults
 the community reaches.
 
@@ -156,7 +156,7 @@ We will do this by:
    removed at a later point in time.
 3) Implementing explicit testing to ensure scopes are handled as we expect.
 4) Creating an integration test job leveraging the ``oslo.policy`` setting
-   to enforce scope restriction to help ensure cross-service compatability
+   to enforce scope restriction to help ensure cross-service compatibility
    and potentially having to alter some cross-service interactions to ensure
    requests are appropriately modeled. It should be expected that this may
    make visible any number of possible issues which will need to be addressed.
@@ -194,7 +194,7 @@ enforcement.
 .. note::
    Adjacent/integrated projects/services, for example is the interaction
    between Nova, Neutron, Cinder, Glance, Swift, and Ironic. Services do
-   convey context on behalf of the original requestor for a period of time,
+   convey context on behalf of the original requester for a period of time,
    and can make access control decisions based up on this. Ironic has
    previously had to address these sorts of issues in the Neutron
    and Cinder integrations.
@@ -358,7 +358,7 @@ or lessee are populated.
 .. TODO:: Follow-up with Nova regarding rights passed through on context.
 
 .. NOTE::
-   The primary focus of this specification is targetted at the Wallaby
+   The primary focus of this specification is targeted at the Wallaby
    development cycle where the System scope is most beneficial to
    support. Given time constraints and cross-project mechanics
    we will likely see additional work to refine scope interactions
@@ -477,7 +477,7 @@ apply. See `Node object field restrictions`_ for details with a Node object.
 +------------------------------------+----------------------------------------+
 | /v1/deploy_templates               | No, `system` scope only at this time.  |
 |                                    | as the table/data structure is not     |
-|                                    | modeled for compatability.             |
+|                                    | modeled for compatibility.             |
 +------------------------------------+----------------------------------------+
 | /v1/chassis                        | No, `system` scope only.               |
 +------------------------------------+----------------------------------------+
@@ -493,7 +493,7 @@ apply. See `Node object field restrictions`_ for details with a Node object.
           project scoped access, however one important item to stress
           is that the ``owner`` may be viewed as the ultimate ``manager``
           of a physical node, and the ``system``, or ``ironic`` itself
-          just provides the management infrastucture. This is a valid case
+          just provides the management infrastructure. This is a valid case
           and thus it may be reasonable that we settle on permitting owner
           far more access rights than node lesses in a project scope.
 
@@ -569,8 +569,8 @@ Node object field restrictions
   from changing the field value.
 * description - Read-Write
 * conductor - Returns None as it provides insight into the running
-  infrastucture configuration and state, i.e. System visible is the
-  onlly appropriate state.
+  infrastructure configuration and state, i.e. System visible is the
+  only appropriate state.
 * allocation_uuid - Read Only
 
 Special areas:
@@ -678,7 +678,7 @@ to logic in the API services.
 Other deployer impact
 ---------------------
 
-Cloud infrastucture operators are anticipated to possibly need to adjust
+Cloud infrastructure operators are anticipated to possibly need to adjust
 ``oslo_policy`` settings to enable or disable these new policies. This may
 include cloud operators continuing to use older or other more restrictive
 policies to improve operational security.
@@ -729,7 +729,7 @@ Phases
 The initial phase for deployment is scoped for the eqiuvalent of the existing
 project admin scoped authentication for system scoped use.
 
-The next phase, persumably spanning a major release would then cover the
+The next phase, presumably spanning a major release would then cover the
 project scoped access rights and changes.
 
 Dependencies

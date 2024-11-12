@@ -297,7 +297,7 @@ specified as a glance meta-property ``boot_iso`` for the image to be deployed.
 Utilities will be provided in diskimage-builder for creating the deploy ISO.
 
 This method of deploy doesn't require an extra service (like tftp service
-incase of pxe driver) to be running on the conductor node.
+in case of pxe driver) to be running on the conductor node.
 
 Developer impact
 ----------------

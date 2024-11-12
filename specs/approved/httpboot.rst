@@ -30,17 +30,17 @@ is no longer a constraint of late 2023.
 
 Implementing both would be relatively easy and very beneficial for the
 operator ecosystem, while also allowing for the navigation of the security
-and NAT incompatability issues which exist with TFTP.
+and NAT incompatibility issues which exist with TFTP.
 
 Problem description
 ===================
 
-Infrastructure operators need reliable, and realtively secure means of
+Infrastructure operators need reliable, and relatively secure means of
 conveying bootloaders and initial artifacts to remote machines.
 
 Ironic's historical answer has been to utilize virtual media.
 
-But not all hardware supports virutal media, and emulating a block device
+But not all hardware supports virtual media, and emulating a block device
 is not exactly the simplest thing once you boot an operating system. A helpful
 aspect with UEFI and the evolution of systems is now we have facilities in
 Baseboard management controllers and even UEFI base firmware support
@@ -59,7 +59,7 @@ BMC Path
 --------
 
 * Update sushy-tools to support mapping cals to utilize a HTTP next boot
-  URL to the virutal media driver code. Functionally this is similar, as
+  URL to the virtual media driver code. Functionally this is similar, as
   there appears to be no means to inject the hint to boot from the URL
   into libvirt.
 * Update sushy to support requesting to boot a node from a HTTP URL.
@@ -212,7 +212,7 @@ Work Items
 * Add support to pxe_utils logic to generate a URL boot response
   payload, and set that based upon a driver feature/capability flag.
 * Compose lots of documentation.
-* Create tempest suite to execise both modes of boot operations.
+* Create tempest suite to exercise both modes of boot operations.
 
 Dependencies
 ============

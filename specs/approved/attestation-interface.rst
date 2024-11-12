@@ -335,7 +335,7 @@ these variables as ``driver_info\keylime_agent_uuid``,
 receive these credentials cleaning will fail.
 
 The allowlist and excludelist will be sent to the verifier by calling the
-keylime_tenant cli programatically. Once the verifier has received the
+keylime_tenant cli programmatically. Once the verifier has received the
 allowlist and excludelist, attestation will begin. The verifier will
 periodically poll the Keylime agent for IMA measurements and compare them
 with the allowlist and excludelist to determine if the node has been tampered

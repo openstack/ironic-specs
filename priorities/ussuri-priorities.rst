@@ -90,7 +90,7 @@ visibility and awareness to this topic as well as ensuring we set
 expectations and communicate ideal architectures.
 
 * Implement some lightweight stress and performance testing
-* Documentation oriented to scaleing
+* Documentation oriented to scaling
 
 It will be important to work with the `Bare Metal SIG`_ on this topic.
 
@@ -133,7 +133,7 @@ topic has arisen from the Telecom world seeking to represent the state of the
 node more accurately with-in ironic as to represent if a machine is in a fault
 state or questionable state under-going investigation.
 
-With that being said, we did not make progess on this issue in the past cycle
+With that being said, we did not make progress on this issue in the past cycle
 due to a fundamental disagreements in perception. The Project Teams Gathering
 in Shanghai provided a forum for discussion where we realized that these are
 actually similar but separate issues. One is for a separate logic path in what

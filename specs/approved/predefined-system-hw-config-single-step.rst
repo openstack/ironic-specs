@@ -321,7 +321,7 @@ The workflow of configuration import and export consists of parts:
 Format of configuration data
 ----------------------------
 
-The format to store the re-usable configuration is in JSON format and consists
+The format to store the reusable configuration is in JSON format and consists
 of 3 sections:
 
 * ``bios`` – ``reset`` to indicate if reset is necessary before applying
@@ -613,7 +613,7 @@ However, comparing deploy templates to the proposed solution currently:
 * No functionality to get the configuration from already configured system,
   user has to construct the initial configuration file themselves by hand or
   a script. To make it easier, can use cached BIOS and RAID settings from a
-  node that was deployed, but this re-use is still not built in ironic.
+  node that was deployed, but this reuse is still not built in ironic.
 * Depending on vendor's capabilities each step may require reboot to finish.
   For example, iDRAC BIOS configuration apply needs reboot to take effect and
   deem the step to be finished. For now ironic cannot line up several steps
@@ -700,7 +700,7 @@ Other end user impact
 The configuration items can accumulate in the storage as there is no default
 timeout or logic that deletes them after a while because these configuration
 items should be available after node's cleaning or deployment. If user do not
-need the re-usable configuration items anymore, then user should delete those
+need the reusable configuration items anymore, then user should delete those
 themselves from the storage.
 
 This adds new configuration section ``[molds]`` to control storage location.
