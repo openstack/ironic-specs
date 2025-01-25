@@ -33,7 +33,7 @@ repos:
     hooks:
       - id: sphinx-lint
         args: [--enable=default-role]
-        files: ^doc/|releasenotes|api-ref
+        files: ^doc/|releasenotes|api-ref|priorities|specs
   - repo: https://github.com/PyCQA/doc8
     rev: v1.1.2
     hooks:
