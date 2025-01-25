@@ -50,7 +50,7 @@ Proposed change
   the current invocations to manager_utils.node_set_boot_device().
 
 * Implementation of ``get_sensors_data()`` is not in scope of current spec.
-  It is proposed as part of the following blueprint-
+  It is proposed as part of the following blueprint:
   https://blueprints.launchpad.net/ironic/+spec/send-ilo-health-metrics-to-ceilometer
 
 

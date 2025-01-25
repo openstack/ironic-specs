@@ -166,8 +166,8 @@ the new Ironic can handle.  For example, the client supports microversions
 
   * The client makes a connection to Ironic, supplying 1.6 as the requested
     microversion.
-  * Ironic responds with a 406 Not Acceptable, along with the -Min- and -Max-
-    headers that it can support (in this case 1.8 and 1.15)
+  * Ironic responds with a 406 Not Acceptable, along with the -Min- and
+    -Max- headers that it can support (in this case 1.8 and 1.15)
   * As the client does not support a version supported by Ironic, it cannot
     continue and reports such to the user.
   * (An alternative path would be for the client to try and proceed using a
@@ -183,8 +183,8 @@ the new Ironic can handle.  For example, the client supports microversions
 
   * The client makes a connection to Ironic, supplying 1.10 as the requested
     microversion.
-  * Ironic responds with a 406 Not Acceptable, along with the -Min- and -Max-
-    headers that it can support (in this case 1.1 and 1.5)
+  * Ironic responds with a 406 Not Acceptable, along with the -Min- and
+    -Max- headers that it can support (in this case 1.1 and 1.5)
   * The client reports this error to the user
   * (An alternative path would be for the client to try and proceed using a
     version acceptable to Ironic. Note that in this case the client should be
@@ -205,8 +205,8 @@ versions 1.1 to 1.10.
   * The client makes a connection to Ironic, supplying 1.15 as the
     microversion since this is the latest microversion that the client
     supports.
-  * Ironic responds with a 406 Not Acceptable, along with the -Min- and -Max-
-    headers that it can support (in this case 1.1 and 1.10)
+  * Ironic responds with a 406 Not Acceptable, along with the -Min- and
+    -Max- headers that it can support (in this case 1.1 and 1.10)
   * The client should transparently proceed, having negotiated that both
     client and server will use v1.10. The client should also cache this
     microversion, so that subsequent attempts do not need to renegotiate
@@ -221,8 +221,8 @@ specific version to use to communicate with Ironic.
     should use
   * The client makes a connection to Ironic, supplying 1.15 as the
     microversion
-  * Ironic responds with a 406 Not Acceptable, along with the -Min- and -Max-
-    headers that it can support (in this case 1.1 and 1.10)
+  * Ironic responds with a 406 Not Acceptable, along with the -Min- and
+    -Max- headers that it can support (in this case 1.1 and 1.10)
   * The client reports this to the user and exits
 
 Use Case 8: New Client/New Ironic: Compatible Version

@@ -133,7 +133,7 @@ HTTP 400 (BadRequest) and so on.
 RPC API impact
 --------------
 
-* A new parameter `http_method` will be added to the vendor_passthru()
+* A new parameter ``http_method`` will be added to the vendor_passthru()
   and driver_vendor_passthru() methods in the RPC API.
 
 * The return value from the vendor_passthru() and driver_vendor_passthru()
@@ -145,7 +145,7 @@ RPC API impact
 * Two new RPC methods will be added to the RPC API:
   get_vendor_routes(<node id>) and get_driver_routes(<driver name>)
   which will return the list of available methods for that specific node
-  or driver and will be used by the `ironic-api` services to expose this
+  or driver and will be used by the ``ironic-api`` services to expose this
   information via the REST API.
 
 Driver API impact

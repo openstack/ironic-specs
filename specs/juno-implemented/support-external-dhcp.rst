@@ -30,9 +30,9 @@ server. These include:
 Proposed change
 ===============
 
-Ironic should have a configuration option `dhcp_provider` that specifies which
-provider to use.  All DHCP providers will implement a DHCP provider interface,
-which exposes a method to update a port's DHCP attributes.
+Ironic should have a configuration option ``dhcp_provider`` that specifies
+which provider to use.  All DHCP providers will implement a DHCP provider
+interface, which exposes a method to update a port's DHCP attributes.
 
 Drivers will no longer call the DHCP provider directly, but instead request a
 DHCP provider from a factory, which will return the provider specified in the
@@ -46,11 +46,11 @@ address) will not be moved.
 Alternatives
 ------------
 
-It would be simpler in the short term to have a boolean `use_neutron_for_dhcp`
-config that would tell Ironic to either use Neutron or do nothing.  This would
-duplicate the initial functionality of the proposed change.  However, new DHCP
-providers would be difficult to add, and there would also be more work for the
-deploy driver.
+It would be simpler in the short term to have a boolean
+``use_neutron_for_dhcp`` config that would tell Ironic to either use Neutron
+or do nothing.  This would duplicate the initial functionality of the proposed
+change.  However, new DHCP providers would be difficult to add, and there
+would also be more work for the deploy driver.
 
 Data model impact
 -----------------
@@ -96,11 +96,11 @@ None.
 Other deployer impact
 ---------------------
 
-A config option `dhcp_provider` will be added that starts with two options,
+A config option ``dhcp_provider`` will be added that starts with two options,
 "neutron" and "none".
 
-There will be no immediate impact on deployers, as `dhcp_provider` will default
-to "neutron", which does not change behavior.
+There will be no immediate impact on deployers, as ``dhcp_provider`` will
+default to "neutron", which does not change behavior.
 
 However, deployers that wish to use an external DHCP provider must set the
 config option and also deploy a DHCP service.
@@ -127,7 +127,7 @@ Other contributors:
 Work Items
 ----------
 
-* Add `dhcp_provider` config option.
+* Add ``dhcp_provider`` config option.
 
 * Move Neutron API behind a DHCP provider interface.
 

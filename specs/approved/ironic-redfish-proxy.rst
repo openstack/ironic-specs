@@ -340,8 +340,8 @@ Sessions
     the SessionService and Session objects are configured.
 
     * If the underlying Ironic system is using HTTP basic auth, the
-      SessionService will report itself to be disabled, and all Session-
-      related functionality will be non-functional.
+      SessionService will report itself to be disabled, and all
+      Session-related functionality will be non-functional.
 
   * Normal response code: 200 OK
   * Error response codes: 404 Not Found, 500 Internal Server Error

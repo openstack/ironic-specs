@@ -45,10 +45,11 @@ with other options that could allow optimal performance.
 Proposed change
 ===============
 
-This spec proposes the `pxe_oneview` and `agent_oneview` drivers, implementing
-the Power, Management and, in the case of the Agent driver, Vendor interfaces.
+This spec proposes the ``pxe_oneview`` and ``agent_oneview`` drivers,
+implementing the Power, Management and, in the case of the Agent driver, Vendor
+interfaces.
 
-The driver uses `python-oneviewclient` in order to handle the communication
+The driver uses ``python-oneviewclient`` in order to handle the communication
 between the driver and OneView for, e.g., getting information about a resource,
 turning a server hardware on and off, and handling the configuration of a
 server profile.
@@ -82,13 +83,13 @@ The driver implements:
 - oneview.vendor.AgentVendorInterface
 
 Power Interface:
-    The `*_oneview` driver's Power Interface controls and synchronizes the
+    The ``*_oneview`` driver's Power Interface controls and synchronizes the
     power state of the nodes using OneView's REST API. The validate() method on
     this interface will check the required parameters and if the node already
     has a server profile associated.
 
 Management Interface:
-    The `*_oneview` driver's Management Interface allows the user to get and
+    The ``*_oneview`` driver's Management Interface allows the user to get and
     set the boot-order of a server hardware by modifying the server profile
     assigned to the server hardware. If no server profile is assigned yet
     to an instance, an exception will be thrown since the boot order of a
@@ -97,14 +98,14 @@ Management Interface:
     parameters and if the node already has a server profile associated.
 
 Agent Vendor Interface:
-    The `agent_oneview` interface modifies the way `reboot_to_instance` method
-    sets the boot device since OneView doesn't allow such a change with the
-    machine powered on.
+    The ``agent_oneview`` interface modifies the way ``reboot_to_instance``
+    method sets the boot device since OneView doesn't allow such a change with
+    the machine powered on.
 
 This driver reuses PXEBoot for boot and ISCSIDeploy/AgentDeploy for deploy.
 
-To be deployed using the `*_oneview` driver, the node's Server Profile MUST be
-applied to the server hardware the node represents. This Server Profile MUST
+To be deployed using the ``*_oneview`` driver, the node's Server Profile MUST
+be applied to the server hardware the node represents. This Server Profile MUST
 connect the 1st NIC of the node to Ironic's provision network.
 
 Alternatives
@@ -165,7 +166,7 @@ None
 
 Scalability impact
 ------------------
-The driver gets some data using `python-oneviewclient` through OneView's REST
+The driver gets some data using ``python-oneviewclient`` through OneView's REST
 API which is an external service. The calls are simple, but considering a large
 amount of Server Hardware items a small increase in network traffic can happen.
 
@@ -210,8 +211,8 @@ Other contributors:
 Work Items
 ----------
 
-- Implement new `iscsi_pxe_oneview` and `agent_pxe_oneview` drivers.
-- Implement unit-test cases for `*_oneview` driver.
+- Implement new ``iscsi_pxe_oneview`` and ``agent_pxe_oneview`` drivers.
+- Implement unit-test cases for ``*_oneview`` driver.
 - Write configuration documents.
 
 Dependencies
@@ -230,9 +231,9 @@ None
 
 Documentation Impact
 ====================
-The required parameters on the node and `[oneview]` section of `ironic.conf`
-will be included in the documentation to instruct operators how to use Ironic
-with OneView.
+The required parameters on the node and ``[oneview]`` section of
+``ironic.conf`` will be included in the documentation to instruct operators
+how to use Ironic with OneView.
 
 References
 ==========

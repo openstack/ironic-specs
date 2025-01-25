@@ -30,7 +30,7 @@ Proposed change
 
 * Nova Ironic driver should read the specified boot option
   ``capabilities:boot_option`` flavor key which should be passed
-  through `node.instance_info` field by Nova Ironic driver.
+  through ``node.instance_info`` field by Nova Ironic driver.
 
 * Ironic will then pass this information to the deploy ramdisk via kernel
   cmdline in the PXE template, set the boot device to HDD persistently and
@@ -91,7 +91,7 @@ Nova driver impact
 ------------------
 
 Nova Ironic driver need to pass down the ``capabilities:boot_option`` from
-Nova flavor to Ironic `node.instance_info` field.
+Nova flavor to Ironic ``node.instance_info`` field.
 
 Security impact
 ---------------
@@ -150,8 +150,8 @@ Other contributors:
 Work Items
 ----------
 
-* Implement the code in Ironic that will check for the `boot_option`
-  parameter in the `node.instance_info` field. If set to "local" we have to:
+* Implement the code in Ironic that will check for the ``boot_option``
+  parameter in the ``node.instance_info`` field. If set to "local" we have to:
 
   - Pass the information down to the deploy ramdisk via the kernel
     cmdline in the PXE configuration file.

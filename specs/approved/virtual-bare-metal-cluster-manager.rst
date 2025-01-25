@@ -79,7 +79,7 @@ We propose to add a new tool for managing virtual bare metal clusters, named
 
 * Orchestration of tools used to emulate Baseboard Management Controllers
   (BMCs), e.g. `virtual BMC <https://github.com/openstack/virtualbmc>`__ and
-  `sushy-tools <https://github.com/openstack/sushy-tools>`.
+  `sushy-tools <https://github.com/openstack/sushy-tools>`_.
 
 * Creation and deletion of virtual networks representing bare metal networks
 

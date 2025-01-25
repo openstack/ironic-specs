@@ -39,10 +39,10 @@ Proposed change
 
 Ironic should have a pluggable "network provider" that can handle switching
 nodes between different networks. This provider should be able to be selected
-per Ironic node object. A new `network_provider` field will be added to the
+per Ironic node object. A new ``network_provider`` field will be added to the
 node object to define which network provider to use for that node. There should
 also be a configuration option for the default network provider, defaulting to
-'none' for now. The default value for `node.network_provider` will be NULL,
+'none' for now. The default value for ``node.network_provider`` will be NULL,
 meaning use the configuration option. Both the node field and the configuration
 option may be set to 'none' or 'neutron', mapping to the no-op provider and
 the Neutron provider, respectively.
@@ -133,7 +133,7 @@ is clearly not viable for many real-world use cases.
 Data model impact
 -----------------
 
-A `network_provider` field will be added to the Node object.
+A ``network_provider`` field will be added to the Node object.
 
 State Machine Impact
 --------------------
@@ -160,8 +160,8 @@ None.
 Driver API impact
 -----------------
 
-This adds a new interface, `NetworkProvider`. This interface is *not* a part of
-Ironic's driver composition system, to be clear. This interface will define
+This adds a new interface, ``NetworkProvider``. This interface is *not* a part
+of Ironic's driver composition system, to be clear. This interface will define
 the following methods::
 
     def add_provisioning_network(self, task):
@@ -230,7 +230,7 @@ Two new configuration options will be added:
 * ``CONF.provisioning_network`` specifies the ID of the provisioning network.
 
 * ``CONF.default_network_provider`` specifies the default network provider to
-  use for nodes with `node.network_provider` set to NULL.
+  use for nodes with ``node.network_provider`` set to NULL.
 
 A new database column (Node.network_provider) is also added, and so deploying
 this change will require a database migration to be ran.

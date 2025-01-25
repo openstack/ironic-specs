@@ -106,8 +106,8 @@ Attestation Interface
 ---------------------
 
 The addition of a ``attestation_interface`` field in the ``nodes`` table,
-which maps to a `task.node.driver.attestation` interface, along with the other
-standard configuration parameters and defaults behavior that exists with
+which maps to a ``task.node.driver.attestation`` interface, along with the
+other standard configuration parameters and defaults behavior that exists with
 the driver composition model.
 
 Accordingly the ``attestation_interface`` would be returned on the node object

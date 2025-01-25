@@ -145,14 +145,14 @@ Data model impact
 -----------------
 
 The discovered properties will be stored as part of the 'properties'
-field of the node. It will add two fields to the `nodes` table:
+field of the node. It will add two fields to the ``nodes`` table:
 
-1.  `last_inspected`: It will be updated with time (when last inspection
+1.  ``last_inspected``: It will be updated with time (when last inspection
     finished).
 
-2.  `inspection_started_at`: It will store the start time of
+2.  ``inspection_started_at``: It will store the start time of
     invocation of inspection. This will be required to
-    calculate the `inspection_timeout`.
+    calculate the ``inspection_timeout``.
     It shall be cleared out after inspection finishes or timeout.
 
 Ironic CLI impact
@@ -292,7 +292,7 @@ Work Items
 * Adding new method inspect_hardware to class InspectInterface.
 
 * Add new elements ``last_inspected`` and ``inspection_started_at`` to
-  the `nodes` table. Ironic cli will be changed to show these fields
+  the ``nodes`` table. Ironic cli will be changed to show these fields
   while running ``ironic node-show``.
 
 * The node.last_inspected  will be updated with the last discovered time.

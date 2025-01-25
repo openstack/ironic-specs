@@ -145,7 +145,7 @@ Work Items
 * Stop accepting new features for the bash ramdisk (code reviews and
   spec review).
 
-* In the Mitaka release cycle remove the element from `diskimage-builder`
+* In the Mitaka release cycle remove the element from ``diskimage-builder``
   and the code that supports the bash ramdisk in Ironic.
 
 Dependencies

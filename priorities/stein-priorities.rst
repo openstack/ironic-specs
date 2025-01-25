@@ -153,7 +153,7 @@ The story can be found at `story 2003934 <https://storyboard.openstack.org/#!/st
 Nova conductor_group awareness
 ------------------------------
 
-This work is exclusively in the ironic virt driver in the `openstack/nova`
+This work is exclusively in the ironic virt driver in the ``openstack/nova``
 repository. This would enable us to define a ``conductor_group`` to which
 the nova-compute process leverages for the view of baremetal nodes it is
 responsible for.

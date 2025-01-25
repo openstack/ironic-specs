@@ -26,7 +26,7 @@ firmware by doing upgrade or downgrade.
 
 Currently in Ironic we have support to update the firmware, the operator can
 achieve this by invoking manual cleaning on the node by enabling the clean
-step `update_firmware`; the problem is that it requires knowledge about the
+step ``update_firmware``; the problem is that it requires knowledge about the
 clean step name and parameters.
 
 * As an operator I want to install specific versions of firmware in my
@@ -40,8 +40,8 @@ Proposed change
 * After a node is enrolled and the basic hardware information is available,
   an operator can define a Firmware Update config.
 
-* The work to be done here is similar to what we did for `BIOSInterface`
-  and `RAIDInterface`. A new interface `FirmwareInterface` will be created
+* The work to be done here is similar to what we did for ``BIOSInterface``
+  and ``RAIDInterface``. A new interface ``FirmwareInterface`` will be created
   that allows retrieving current installed firmware version of the hardware
   components in a node and also update their firmware.
 
@@ -49,21 +49,21 @@ Proposed change
   component on the node will be collected out-of-band and should be available
   after we enroll the node via verify step.
 
-* A new clean step `update` will be created for the `FirmwareInterface`, it
+* A new clean step ``update`` will be created for the ``FirmwareInterface``, it
   will be used to update the firmware of each hardware component on the node.
 
-* A new database table `firmware_information` will be created if it doesn't
+* A new database table ``firmware_information`` will be created if it doesn't
   exist. It will contain the information about the current firmware version of
   each hardware component on a node, the information is updated in case the
-  clean step `update` is called.
+  clean step ``update`` is called.
 
 * We intend this to start only on the redfish interface, all others will
-  default to `no-firmware`. If other hardware vendors wish to implement it,
+  default to ``no-firmware``. If other hardware vendors wish to implement it,
   they are welcome to.
 
 .. note:: This spec describes the out of band interface. An in-band
           interface is planned to be implemented later, it can be called
-          `AgentFirmware`, changes on IPA-level APIs will have to be defined.
+          ``AgentFirmware``, changes on IPA-level APIs will have to be defined.
           Other implementations can support going through this interface to
           execute the necessary in-band steps.
 
@@ -71,18 +71,18 @@ Proposed change
 Alternatives
 ------------
 
-We can use the current `update_firmware` clean step via manual cleaning [0]_,
+We can use the current ``update_firmware`` clean step via manual cleaning [0]_,
 but the downside is that we don't know which hardware components are
 upgradable and what their present firmware versions are on the node.
 
 Data model impact
 -----------------
 
-* New object `ironic.objects.firmware.Firmware`  will be created.
+* New object ``ironic.objects.firmware.Firmware`` will be created.
 
-* A new field `firmware_interface` will be added to the `Node` object.
+* A new field ``firmware_interface`` will be added to the ``Node`` object.
 
-* A new table `firmware_information` will be created, it will store
+* A new table ``firmware_information`` will be created, it will store
   the firmware information of each hardware component of a Node.
 
   * Table description:
@@ -126,9 +126,9 @@ None
 REST API impact
 ---------------
 
-A new step is proposed to be implemented on the `FirmwareInterface`:
+A new step is proposed to be implemented on the ``FirmwareInterface``:
 
-* `firmware.update`: it will trigger the firmware update for each component
+* ``firmware.update``: it will trigger the firmware update for each component
   that is specified. For example::
 
     {
@@ -206,7 +206,7 @@ openstackSDK will be updated
 RPC API impact
 --------------
 
-* None - we already have `do_node_clean`
+* None - we already have ``do_node_clean``
 
 Driver API impact
 -----------------
@@ -215,8 +215,8 @@ A new interface ``FirmwareInterface`` will be available for drivers
 to allow them to implement the firmware update. The following methods will
 be available:
 
-* `update(settings)` - This is the step responsible to update the
-  firmware of the components in the node. The `settings` parameter is a list
+* ``update(settings)`` - This is the step responsible to update the
+  firmware of the components in the node. The ``settings`` parameter is a list
   of dictionaries
 
 .. code-block:: json
@@ -225,10 +225,10 @@ be available:
    {"component": "bios", "url":"<url_new_bios_fw>"}]
 
 
-* `cache_firmware_information()` - this method will be called to update the
-  firmware information in the `firmware_information` database table. It will
+* ``cache_firmware_information()`` - this method will be called to update the
+  firmware information in the ``firmware_information`` database table. It will
   store the Firmware information for a node, or update the information in case
-  the `update` step was called.
+  the ``update`` step was called.
 
 
 Nova driver impact
@@ -267,10 +267,10 @@ Performance Impact
 Other deployer impact
 ---------------------
 
-* New config options in `ironic.conf`
+* New config options in ``ironic.conf``
 
-  - `enabled_firmware_interfaces`: a list of enabled firmware interfaces.
-  - `default_firmware_interface`: default firmware interface to be used.
+  - ``enabled_firmware_interfaces``: a list of enabled firmware interfaces.
+  - ``default_firmware_interface``: default firmware interface to be used.
 
 * Operators can use the new steps as part of manual cleaning tasks.
 
@@ -278,7 +278,7 @@ Other deployer impact
 Developer impact
 ----------------
 
-* Developers may implement the `FirmwareInterface` for respective drivers.
+* Developers may implement the ``FirmwareInterface`` for respective drivers.
 
 
 Implementation
@@ -299,9 +299,9 @@ Work Items
 
 * Add the firmware_interface field in the Node object
 * Create the Firmware object
-* Create the `FirmwareInterface` structure. Includes the redfish
+* Create the ``FirmwareInterface`` structure. Includes the redfish
   implementation
-* Implement `no-firmware` and `fake` for the `FirmwareInterface`
+* Implement ``no-firmware`` and ``fake`` for the ``FirmwareInterface``
 * Create REST API
 * Implement OSC baremetal CLI changes
 
@@ -321,7 +321,7 @@ Testing
 Upgrades and Backwards Compatibility
 ====================================
 
-* Raise errors when there is no `FirmwareInterface` support in driver.
+* Raise errors when there is no ``FirmwareInterface`` support in driver.
 
 Documentation Impact
 ====================

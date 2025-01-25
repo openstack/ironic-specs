@@ -154,8 +154,8 @@ Cross-conductor communication
 -----------------------------
 Many conductor management actions taken on a node are written with assuming
 a single conductor will perform them. This is not great for availability or
-maintenance scenarios. We will be looking to implement some form of cross-
-conductor communication to permit conductors to hand off work when being
+maintenance scenarios. We will be looking to implement some form of
+cross-conductor communication to permit conductors to hand off work when being
 shut off.
 
 For more information, see

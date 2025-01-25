@@ -59,8 +59,8 @@ initial proposed hint list is:
 * hctl (STRING): Host:Channel:Target:Lun for SCSI
 * size (INT): size of the device in GB
 
-The hints should live in the `properties` attribute of the Node resource,
-the key would be `root_device` and the value a dictionary so operators
+The hints should live in the ``properties`` attribute of the Node resource,
+the key would be ``root_device`` and the value a dictionary so operators
 could combine one or more hints. For example::
 
  node.properties['root_device'] = {'wwn': '0x4000cca77fc4dba1'}
@@ -94,7 +94,7 @@ None
 REST API impact
 ---------------
 
-As we want to use a dictionary as a value on the `properties` attribute
+As we want to use a dictionary as a value on the ``properties`` attribute
 the `bug 1398350`_ needs to be fixed.
 
 RPC API impact

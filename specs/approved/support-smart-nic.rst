@@ -166,7 +166,7 @@ The enhancements for Neutron OVS L2 agent captured in [1]_, [2]_ and [3]_.
 
 * Network Interface
 
-  Extend the base `network_interface` with need_power_on -
+  Extend the base ``network_interface`` with need_power_on -
   return true if any ironic port attached to the node is a smart nic
 
   Extend the ironic.common.neutron add_ports_to_network/
@@ -189,7 +189,7 @@ The enhancements for Neutron OVS L2 agent captured in [1]_, [2]_ and [3]_.
 
   - Introduce a new vnic_type for ``smart-nic``.
   - Update the Neutron ml2 OVS to bind smart-nic vnic_type with
-    `binding:profile` smart NIC config.
+    ``binding:profile`` smart NIC config.
 
 * Neutron OVS agent changes:
 
@@ -375,7 +375,7 @@ Work Items
 ----------
 
 * Update the Neutron network interface to populate the Smart NIC config from
-  the ironic port to the Neutron port `binding:profile` attribute.
+  the ironic port to the Neutron port ``binding:profilei`` attribute.
 * Update the network_interface and common.neutron as described above
 * Update deployment interfaces as described above
 * Documentation updates.

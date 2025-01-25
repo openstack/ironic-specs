@@ -89,7 +89,7 @@ will be removed from the ironic source tree. Driver test systems that miss any
 of the milestones may be subject to immediate removal from the source tree.
 
 Driver test systems will be required to initially run a test similar to the
-`gate-tempest-dsvm-ironic-pxe_ipa` test, with the only difference being
+``gate-tempest-dsvm-ironic-pxe_ipa`` test, with the only difference being
 changes to drivers loaded, etc, to make ironic work with the driver under
 test.
 

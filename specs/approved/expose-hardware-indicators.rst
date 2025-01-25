@@ -319,7 +319,7 @@ The new RPC calls are introduced:
 Driver API impact
 -----------------
 
-Optional indicator API methods is added to `ManagementInterface`:
+Optional indicator API methods is added to ``ManagementInterface``:
 
 * Listing the indicators
 

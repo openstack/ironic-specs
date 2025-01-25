@@ -77,8 +77,9 @@ interfaces. Like the hardware type, they are named ``idrac``. They rely on
 
 Operators also have the option to use the generic, vendor-independent
 ``redfish`` hardware type with Dell EMC bare metal servers that have an iDRAC
-that supports the Redfish protocol. ``redfish``'s supported OOB protocol-
-dependent interface implementations use the Redfish protocol to interact with
+that supports the Redfish protocol. ``redfish``'s supported OOB
+protocol-dependent interface implementations use the Redfish protocol to
+interact with
 the BMC. Those implement the ``bios``, ``inspect``, ``management``, and
 ``power`` hardware interfaces. Again, like the hardware type, they are named
 ``redfish``. They rely on `sushy`_'s Redfish client. Importantly, while some
@@ -256,9 +257,9 @@ Alternatives
   WS-Man and ``redfish`` hardware type for Redfish. However, that would not
   promote and accelerate the use of Redfish among operators with Dell EMC
   bare metal servers today, because ``redfish`` does not offer everything
-  ``idrac`` does. That also would not support resolving Dell EMC vendor-
-  specific incompatibilities with the generic, vendor-independent ``redfish``
-  hardware type nor using Redfish to introduce vendor value added.
+  ``idrac`` does. That also would not support resolving Dell EMC
+  vendor-specific incompatibilities with the generic, vendor-independent
+  ``redfish`` hardware type nor using Redfish to introduce vendor value added.
 
 * We could let the ``redfish`` interface implementations use Redfish OEM
   extensions to address vendor-specific incompatibilities and introduce vendor

@@ -157,7 +157,7 @@ Scenario 4 - Boot via Host Bus Adapter (HBA) to volume with image deployment
       boot to what is expected to be the LUN offered as the boot volume.
     - Node is configured with the ``node.properties['capabilities']``
       setting of ``hba_boot`` set to a value of ``true``.
-    - Node is configured with the ``node.instance_info['force_deployment']
+    - Node is configured with the ``node.instance_info['force_deployment']``
       parameter set to ``true``.
 
   Requirements:
@@ -371,7 +371,7 @@ ironic.
 Data model impact
 -----------------
 
-A `storage_interface` field will be added to the node object which will
+A ``storage_interface`` field will be added to the node object which will
 be mapped to the appropriate storage driver.
 
 State Machine Impact
@@ -415,7 +415,7 @@ features defined by the deploy and boot driver classes, known as capabilities,
 that allow for other driver components to become aware of what functionality
 is present in a neighboring driver interface/composition.
 
-The second change is the introduction of a new `storage_interface` that will
+The second change is the introduction of a new ``storage_interface`` that will
 be mapped to a selectable storage driver of the available storage drivers.
 
 Within this storage interface, new methods will be defined to support

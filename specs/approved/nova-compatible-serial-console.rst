@@ -10,8 +10,8 @@ Nova-compatible Serial Console
 
 https://bugs.launchpad.net/ironic/+bug/1553083
 
-This implements console interfaces using "socat" which provides nova-
-compatible serial console capability.
+This implements console interfaces using "socat" which provides
+nova-compatible serial console capability.
 
 Problem description
 ===================

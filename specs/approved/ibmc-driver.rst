@@ -169,7 +169,7 @@ None
 
 Documentation Impact
 ====================
-* Updating Ironic documentation section `Enabling Drivers`
+* Updating Ironic documentation section ``Enabling Drivers``
   with iBMC related instructions.
 
 References

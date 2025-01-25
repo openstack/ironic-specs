@@ -102,7 +102,7 @@ Metric names follow this convention (optional parts indicated by []):
 
 ``[global_prefix.][host_name.]prefix.metric_name``
 
-If `--metrics-agent-prepend-host-reverse` is set, then ``host.example.com``
+If ``--metrics-agent-prepend-host-reverse`` is set, then ``host.example.com``
 becomes ``com.example.host`` to assist with hierarchical data
 representation.
 

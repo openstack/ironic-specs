@@ -35,21 +35,21 @@ to host boot ISO and floppy images for these drivers.
   instance) and floppy images (as required by both agent_ilo and iscsi_ilo for
   passing parameters to deploy ramdisk) during deploy process,
   will be hosted on swift or http web server as per the config variable under
-  `[ilo]` in ironic.conf::
+  ``[ilo]`` in ironic.conf::
 
     use_http_web_server_for_images=True
 
-  The default value would be `False` and will default to use swift.
+  The default value would be ``False`` and will default to use swift.
 
 * User needs to manually configure the webserver, and add the config options
-  in ironic.conf under `deploy` as::
+  in ironic.conf under ``[deploy]`` as::
 
     http_server_root = /opt/stack/ironic/data/httpboot
     http_server_url = http://10.10.1.30/httpboot
 
-  Since the same config variables exists under `[pxe]` and are required by
+  Since the same config variables exists under ``[pxe]`` and are required by
   ilo drivers to be able to run standalone, we can deprecate the same in
-  `[pxe]` and move it under `[deploy]`. The above values to the config
+  ``[pxe]`` and move it under ``[deploy]``. The above values to the config
   variables are just an example. They will continue to have the default
   value as the current config variables ``http_url`` and ``http_root``.
 
@@ -129,14 +129,14 @@ Other deployer impact
 The http web server configuration is out of scope of ironic but it should be
 configured on every conductor node.
 User needs to manually configure the web server, and add the config options
-in ironic.conf under `deploy` as::
+in ironic.conf under ``[deploy]`` as::
 
     http_server_root = /opt/stack/ironic/data/httpboot
     http_server_url = http://10.10.1.30/httpboot
 
-Since the same config variables exists under `[pxe]` and is required by
-ilo drivers to be able to run standalone, we can deprecate the same in `[pxe]`
-and move it under `[deploy]`.
+Since the same config variables exists under ``[pxe]`` and is required by
+ilo drivers to be able to run standalone, we can deprecate the same in
+``[pxe]`` and move it under ``[deploy]``.
 
 Developer impact
 ----------------
@@ -155,7 +155,7 @@ Primary assignee:
 Work Items
 ----------
 
-* To modify ipxe to use config variables from `[deploy]` section.
+* To modify ipxe to use config variables from ``[deploy]`` section.
 
 * To enable support for using webserver in ilo drivers.
 

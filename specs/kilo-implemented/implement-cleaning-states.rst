@@ -56,20 +56,20 @@ Proposed change
   their deployment. For example, some operators may want to disable cleaning
   on every request and only clean occasionally via ZAPPING.
 
-* Add a decorator `@clean_step(priority)` to decorate steps that
+* Add a decorator ``@clean_step(priority)`` to decorate steps that
   should be run as a part of CLEANING. priority is the order in which the
   step will be run. The function with the highest priority will run first,
   followed by the one with the second highest priority, etc. If priority is
   set to 0, the step will not be executed. The argument should be a config
-  option, e.g. `priority=CONF.$interface.$stepname_priority` to
+  option, e.g. ``priority=CONF.$interface.$stepname_priority`` to
   give the operator more control over the order steps run in (if at all).
 
-* Add a new function `get_clean_steps()` to the base Interface classes. The
+* Add a new function ``get_clean_steps()`` to the base Interface classes. The
   base implementation will get a list of functions decorated with
-  `@clean_step`, determine which are enabled, and then return a list of
+  ``@clean_step``, determine which are enabled, and then return a list of
   dictionaries representing each step, sorted by priority.
 
-* The return value of `get_clean_steps()` will be a list of dicts
+* The return value of ``get_clean_steps()`` will be a list of dicts
   with the 3 keys: step, priority and interface, described below:
 
       * 'step': 'function_name',
@@ -80,11 +80,11 @@ Proposed change
 
   Only steps with a priority greater than 0 (enabled steps) will be returned.
 
-* Add a new function `execute_clean_step(clean_step)` to the base Interfaces,
-  which takes one of the dictionaries returned by `get_clean_steps()` as an
+* Add a new function ``execute_clean_step(clean_step)`` to the base Interfaces,
+  which takes one of the dictionaries returned by ``get_clean_steps()`` as an
   arg, and execute the specified step.
 
-* Create a new function in the conductor: `clean(task)` to run all
+* Create a new function in the conductor: ``clean(task)`` to run all
   enabled clean steps. It will get a list of all enabled
   steps and execute them by priority. The conductor will track the current
   step in a new field on the node called clean_step.
@@ -177,7 +177,7 @@ REST API impact
 * An API endpoint should be added to allow operators to see currently
   enabled clean steps and their ordering. This will be a GET endpoint
   at /nodes/<uuid>/cleaning/steps and will return the exact
-  data noted above for `get_clean_steps()`, as a JSON document and ordered
+  data noted above for ``get_clean_steps()``, as a JSON document and ordered
   by priority.
 
 * GET requests to the node's API
@@ -201,8 +201,8 @@ Driver API impact
 -----------------
 
 
-* The BaseDriver will have a `get_clean_steps()` and
-  `execute_clean_steps()` functions added and implemented.
+* The BaseDriver will have a ``get_clean_steps()`` and
+  ``execute_clean_steps()`` functions added and implemented.
 
   ..
 

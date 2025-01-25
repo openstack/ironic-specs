@@ -37,10 +37,10 @@ List of changes required:
 
   + ``erase_devices`` - This will erase all disks on the baremetal node.
 
-    - `erase_devices` will call proliantutils library method `do_disk_erase`
-      to perform the operation in iLO. User can also choose between different
-      erase pattern (ex. block, overwrite, crypto, zero) to perform the disk
-      erase operation.
+    - ``erase_devices`` will call proliantutils library method
+      ``do_disk_erase`` to perform the operation in iLO. User can also choose
+      between different erase pattern (ex. block, overwrite, crypto, zero) to
+      perform the disk erase operation.
 
     - The reboot is required to initiate the disk erase. The actual disk
       erase operation would take time based on disk type and size.

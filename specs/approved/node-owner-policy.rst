@@ -94,7 +94,7 @@ list functions. For those, we propose the following:
 Allocation API changes
 ----------------------
 
-`Allocation` objects represent a request to find and reserve a suitable node,
+``Allocation`` objects represent a request to find and reserve a suitable node,
 and as such should be available for non-administrator users. For this purpose
 we will introduce an ``owner`` field for allocations and start distinguishing
 two types of allocations:

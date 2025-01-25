@@ -64,7 +64,7 @@ Deploying a node without DHCP involves solving three crucial problems:
 
 Virtual media capability of contemporary BMCs coupled with virtual media boot
 support implemented in some ironic hardware types (e.g.
-`redfish-virtual-media`) fully solves problem (1). The rest of this spec is
+``redfish-virtual-media``) fully solves problem (1). The rest of this spec is
 dedicated to pondering items (2) and (3).
 
 Gathering node configuration
@@ -95,16 +95,16 @@ configuring ironic ramdisk networking without DHCP. This spec proposes:
 Provisioning node configuration
 -------------------------------
 
-This spec proposes burning the contents of `config-drive` containing Nova
+This spec proposes burning the contents of ``config-drive`` containing Nova
 metadata into the ISO image the node has been booted from in provisioning
-and state. If no `config-drive` information is supplied to Ironic by
+and state. If no ``config-drive`` information is supplied to Ironic by
 the operator, ironic will create one.
 
 To facilitate network configuration processing and application, this spec
-proposes reusing `network-data.json` [8]_ Nova metadata format, for
+proposes reusing ``network-data.json`` [8]_ Nova metadata format, for
 Ironic-managed node network configuration.
 
-Example `network-data.json` file:
+Example ``network-data.json`` file:
 
 .. code-block:: json
 
@@ -172,18 +172,18 @@ Example `network-data.json` file:
         ]
     }
 
-This spec anticipates associating the content of `network_data.json`
-document with ironic node object by introducing a new `network_data` field
-to the node object to contain `network_data.json` information for ironic
+This spec anticipates associating the content of ``network_data.json``
+document with ironic node object by introducing a new ``network_data`` field
+to the node object to contain ``network_data.json`` information for ironic
 ramdisk booting.
 
 On the ramdisk side, this spec proposes using Glean [12]_ for consuming
 and applying network configuration to the operating system running ironic
-ramdisk. The main consideration here is that, unlike `cloud-init`, `Glean`
-is lean, and readily supports a subset of `cloud-init` features.
+ramdisk. The main consideration here is that, unlike ``cloud-init``, ``Glean``
+is lean, and readily supports a subset of ``cloud-init`` features.
 
 Alternative ramdisk implementations can choose other ways of bootstrapping
-OS networking based on `network_data.json` information.
+OS networking based on ``network_data.json`` information.
 
 To summarize - in the area of provisioning node network configuration this spec
 proposes:
@@ -191,24 +191,25 @@ proposes:
 * Reusing Nova metadata representation for provisioning network configuration
   via ramdisk image.
 
-* Adding a new field to ironic node object: `network_data` to use for ramdisk
+* Adding a new field to ironic node object: ``network_data`` to use for ramdisk
   bootstrapping.
 
   The contents of this field should be validated by ironic conductor API
-  against `Glean` JSON schema and some ad-hoc checks the implementers deem
+  against ``Glean`` JSON schema and some ad-hoc checks the implementers deem
   reasonable.
 
-  Having `Glean` schema effectively hardwired into ironic conductor API will
+  Having ``Glean`` schema effectively hardwired into ironic conductor API will
   not allow for an easy extension or addition of other network configuration
   formats.
 
-* Creating a new `config-drive` to have it including `network-data.json` file.
+* Creating a new ``config-drive`` to have it including ``network-data.json``
+  file.
 
-* Writing the contents of `config-drive` image into the root of the ISO file
+* Writing the contents of ``config-drive`` image into the root of the ISO file
   system (along with ramdisk and kernel blobs), then making a bootable ISO
   image.
 
-* Including `Glean` dependency to ramdisk image for managed OS bootstrapping.
+* Including ``Glean`` dependency to ramdisk image for managed OS bootstrapping.
 
 However, Ironic rescue operation, at least in its current implementation, will
 only work if user and provisioning networks are the same network.
@@ -229,90 +230,90 @@ Stand-alone ironic
 ~~~~~~~~~~~~~~~~~~
 
 1. Operator supplies deploy ramdisk network configuration, in form of
-   `network-data.json` contents, via `network_data` field of ironic
-   node being deployed. The contents of `network_data.json` must comply to
-   the JSON schema of `network_data.json` that `Glean` can consume.
+   ``network-data.json`` contents, via ``network_data`` field of ironic
+   node being deployed. The contents of ``network_data.json`` must comply to
+   the JSON schema of ``network_data.json`` that ``Glean`` can consume.
 
-2. Ironic conductor validates supplied `network-data.json` against `Glean`
+2. Ironic conductor validates supplied ``network-data.json`` against ``Glean``
    schema (that is supplied to ironic API program via configuration) and
-   fails early if validation fails. `Glean` schema will not allow any
-   properties of `network_data.json` that can't be applied to the OS by
-   `Glean` even if these properties are valid as Nova metadata.
+   fails early if validation fails. ``Glean`` schema will not allow any
+   properties of ``network_data.json`` that can't be applied to the OS by
+   ``Glean`` even if these properties are valid as Nova metadata.
 
-3. Ironic builds a new `config-drive` image and places `network-data.json`
-   file, with contents taken from `network_data` field, at a conventional
-   location within `config-drive` image.
+3. Ironic builds a new ``config-drive`` image and places ``network-data.json``
+   file, with contents taken from ``network_data`` field, at a conventional
+   location within ``config-drive`` image.
 
-4. To boot deploy ramdisk, ironic builds bootable ISO out of `deploy_kernel`
-   and `deploy_ramdisk` also writing `config-drive` contents into the root
+4. To boot deploy ramdisk, ironic builds bootable ISO out of ``deploy_kernel``
+   and ``deploy_ramdisk`` also writing ``config-drive`` contents into the root
    of boot ISO image.
 
-   `Glean` running inside ramdisk will try to mount virtual CD drive(s), in
-   search for a filesystem labeled `config-2`, read `network_data.json` and
+   ``Glean`` running inside ramdisk will try to mount virtual CD drive(s), in
+   search for a filesystem labeled ``config-2``, read ``network_data.json`` and
    apply network configuration to the OS.
 
 Ironic within OpenStack
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Prior to booting ramdisk, unless operator-supplied network configuration
-   already exists in `network_data` ironic node field, ironic gathers network
+   already exists in ``network_data`` ironic node field, ironic gathers network
    configuration for each ironic port/portgroup, associated with the node
    being deployed, by talking with Neutron. Then ironic builds network
-   configuration for ramdisk operating system in form of a `network-data.json`
-   file.
+   configuration for ramdisk operating system in form of a
+   ``network-data.json`` file.
 
-2. Ironic builds a new `config-drive` image and places `network-data.json`
-   file, as build at step (1), at a pre-defined location within `config-drive`
-   image.
+2. Ironic builds a new ``config-drive`` image and places ``network-data.json``
+   file, as build at step (1), at a pre-defined location within
+   ``config-drive`` image.
 
-3. To boot deploy ramdisk, ironic builds bootable ISO out of `deploy_kernel`
-   and `deploy_ramdisk` also writing `config-drive` contents into the root
+3. To boot deploy ramdisk, ironic builds bootable ISO out of ``deploy_kernel``
+   and ``deploy_ramdisk`` also writing ``config-drive`` contents into the root
    of boot ISO image.
 
-   `Glean` running inside ramdisk will try to mount virtual CD drive(s), in
-   search for a filesystem labeled `config-2`, read `network_data.json` and
+   ``Glean`` running inside ramdisk will try to mount virtual CD drive(s), in
+   search for a filesystem labeled ``config-2``, read ``network_data.json`` and
    apply network configuration to the ramdisk operating system.
 
 Alternatives
 ------------
 
-Alternatively to associating the entire and consistent `network_data.json`
-JSON document with ironic node object, `network_data.json` can be
+Alternatively to associating the entire and consistent ``network_data.json``
+JSON document with ironic node object, ``network_data.json`` can be
 tied to ironic port object. However, experimental implementation revealed
 certain difficulties stemming from port-centric design, so consensus
-has been reached to bind `network_data.json` to ironic node object.
+has been reached to bind ``network_data.json`` to ironic node object.
 
-Alternatively to make ironic gathering and building `network-data.json` [8]_,
+Alternatively to make ironic gathering and building ``network-data.json`` [8]_,
 ironic could just directly request Nova metadata service [10]_ to produce
 necessary file by instance ID. However, this will not work for non-deploy
 operations (such as node cleaning) because Nova is not involved.
 
-Alternatively to relying on Nova metadata and `Glean` as its consumer in
-ramdisk, we could leverage `os-net-config`'s feature of taking its compressed
+Alternatively to relying on Nova metadata and ``Glean`` as its consumer in
+ramdisk, we could leverage ``os-net-config``'s feature of taking its compressed
 configuration from kernel parameters. On the flip side, the size of kernel
-cmdline is severely limited (256+ bytes). Also, `os-net-config` feels like
-a TripleO-specific tool in comparison with `cloud-init`, which, besides
+cmdline is severely limited (256+ bytes). Also, ``os-net-config`` feels like
+a TripleO-specific tool in comparison with ``cloud-init``, which, besides
 being a mainstream way of bootstrapping instances in the cloud, understands
 OpenStack network configuration metadata.
 
 Alternatively to having operator supplying ramdisk network configuration
-as a `network_data.json` file, Ironic can also accept the entire
-`config-drive`. That would make it looking similar to instance booting (e.g.
+as a ``network_data.json`` file, Ironic can also accept the entire
+``config-drive``. That would make it looking similar to instance booting (e.g.
 Ironic provision state API) and would allow for passing more files to ramdisk
 in the future.
 
-Alternatively to wiring `Glean` schema validation into Ironic conductor,
-operator can be asked to validate their `network_data.json` data with some
+Alternatively to wiring ``Glean`` schema validation into Ironic conductor,
+operator can be asked to validate their ``network_data.json`` data with some
 external tool prior to submitting it to Ironic. This would relax ironic
-conductor dependency on `Glean` input requirements changes and ease
-`network_data.json` reuse for bootstrapping both ramdisk and instance.
+conductor dependency on ``Glean`` input requirements changes and ease
+``network_data.json`` reuse for bootstrapping both ramdisk and instance.
 
 Data model impact
 -----------------
 
-Add a new, user manageable, field `network_data` to ironic node object
+Add a new, user manageable, field ``network_data`` to ironic node object
 conveying ramdisk network configuration information to ironic. If set,
-the contents of this new field should be a well-formed `network-data.json`
+the contents of this new field should be a well-formed ``network-data.json``
 document describing network configuration of the node running ramdisk.
 
 State Machine Impact
@@ -355,26 +356,26 @@ None
 Driver API impact
 -----------------
 
-* Extend ironic base NetworkInterface with `get_node_network_config` API
+* Extend ironic base NetworkInterface with ``get_node_network_config`` API
   call providing network configuration for the node being managed. Ironic will
   burn the output of this API call to the boot image served over virtual media.
 
-* Implement `get_node_network_config` network interface call for non-Neutron
-  networks providing `network_data.json` from `network_data` field of ironic
-  object (if present). The operator could then implement their own IPAM (e.g.
-  for stand-alone ironic use-case).
+* Implement ``get_node_network_config`` network interface call for non-Neutron
+  networks providing ``network_data.json`` from ``network_data`` field of
+  ironic object (if present). The operator could then implement their own IPAM
+  (e.g. for stand-alone ironic use-case).
 
-* Implement `get_node_network_config` network interface call for Neutron
-  networks generating `network_data.json` based on Neutron port and subnet
+* Implement ``get_node_network_config`` network interface call for Neutron
+  networks generating ``network_data.json`` based on Neutron port and subnet
   information [9]_.
 
 * Make virtual media boot interfaces in ironic generating config-drive with
-  `network_data.json` in it if `network_data.json` is not already passed
+  ``network_data.json`` in it if ``network_data.json`` is not already passed
   to ironic with the config-drive.
 
 * Make virtual media boot interfaces in ironic writing config-drive contents
   into root of bootable ISO image it generates on every node boot. Filesystem
-  on this bootable ISO should be labeled `config-2` if it contains
+  on this bootable ISO should be labeled ``config-2`` if it contains
   config-drive files.
 
 Nova driver impact
@@ -385,12 +386,12 @@ None
 Ramdisk impact
 --------------
 
-* Diskimage-builder tool should install `Glean` into ramdisk and invoke
+* Diskimage-builder tool should install ``Glean`` into ramdisk and invoke
   on boot.
 
-  On top of that, the `dhcp-all-interfaces` DIB element might not be used
-  anymore because `Glean` will run DHCP on all not explicitly configured
-  (via `config-drive`) interfaces [13]_.
+  On top of that, the ``dhcp-all-interfaces`` DIB element might not be used
+  anymore because ``Glean`` will run DHCP on all not explicitly configured
+  (via ``config-drive``) interfaces [13]_.
 
 Security impact
 ---------------
@@ -437,39 +438,39 @@ Other contributors:
 Work Items
 ----------
 
-* Document `Glean` requirements, with regards to `network_data.json`, in
+* Document ``Glean`` requirements, with regards to ``network_data.json``, in
   form of machine-readable JSON schema.
 
 * Update ironic node model to include optional, user-specified
-  `network_data` fields carrying ramdisk network configuration
-  in form of `network_data.json` JSON document.
+  ``network_data`` fields carrying ramdisk network configuration
+  in form of ``network_data.json`` JSON document.
 
-* Update REST API endpoints to support new `network_data` field
+* Update REST API endpoints to support new ``network_data`` field
 
-* Support new `network_data` fields in baremetal CLI (`openstack
-  baremetal node ...`)
+* Support new ``network_data`` fields in baremetal CLI (``openstack
+  baremetal node ...``)
 
-* Extend ironic base NetworkInterface with the `get_node_network_config` API
+* Extend ironic base NetworkInterface with the ``get_node_network_config`` API
   call providing network configuration for the node being managed.
 
-* Implement `get_node_network_config` network interface call for non-Neutron
-  networks providing `network_data.json` from `network_data` field of
+* Implement ``get_node_network_config`` network interface call for non-Neutron
+  networks providing ``network_data.json`` from ``network_data`` field of
   ironic node object (if present).
 
-* Implement `get_node_network_config` network interface call for Neutron
-  networks generating `network_data.json` based on Neutron port and subnet
+* Implement ``get_node_network_config`` network interface call for Neutron
+  networks generating ``network_data.json`` based on Neutron port and subnet
   information [9]_.
 
-* Make virtual media boot interfaces in ironic generating `config-drive` with
-  `network_data.json` on it.
+* Make virtual media boot interfaces in ironic generating ``config-drive`` with
+  ``network_data.json`` on it.
 
 * Make virtual media boot interfaces in ironic writing config-drive files into
   the root file system of the bootable ISO image it generates on every node
-  boot. The file system should be labeled as `config-2` for `Glean`
+  boot. The file system should be labeled as ``config-2`` for ``Glean``
   to find and use it.
 
-* Update ramdisk bootstrapping code to invoke `Glean` on system boot
-  making use of `network-data.json` file if present on the `config-drive`.
+* Update ramdisk bootstrapping code to invoke ``Glean`` on system boot
+  making use of ``network-data.json`` file if present on the ``config-drive``.
 
 * Update diskimage-builder tool to control the inclusion and the options of
   the new static network configuration processing features.
@@ -479,14 +480,14 @@ Work Items
 Dependencies
 ============
 
-Ramdisk will start depending on `Glean` for processing `network-data.json`
+Ramdisk will start depending on ``Glean`` for processing ``network-data.json``
 document.
 
 Testing
 =======
 
 Tempest test of the ironic node deployment using operator-supplied and
-Neutron-originated `network_data.json`.
+Neutron-originated ``network_data.json``.
 
 Upgrades and Backwards Compatibility
 ====================================

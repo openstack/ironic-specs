@@ -200,7 +200,7 @@ The workflow of configuration export consists of 3 parts:
    see `Storage of configuration data`_)
 
 
-Usage of `export_configuration` is not mandatory. If the configuration is
+Usage of ``export_configuration`` is not mandatory. If the configuration is
 acquired previously or in another way, user can also upload it to storage
 directly.
 
@@ -674,8 +674,8 @@ Security impact
 ---------------
 
 JSON will be used as user input. It will be validated, sanitized, and treated
-as text. Common storage utils will use Python's `json.loads` when retrieving
-and `json.dumps` when storing data. If there is additional validation and
+as text. Common storage utils will use Python's ``json.loads`` when retrieving
+and ``json.dumps`` when storing data. If there is additional validation and
 clean up necessary for vendor specific implementation, for example, OEM
 section, then that needs to be added to driver's implementation.
 

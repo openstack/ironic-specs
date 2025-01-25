@@ -49,7 +49,7 @@ Proposed change
 Overview
 --------
 
-This RFE proposes a new top level ReST API `subscriptions` that will allow
+This RFE proposes a new top level ReST API ``subscriptions`` that will allow
 listing, creating and deleting subscriptions for nodes.
 
 Subscriptions workflow
@@ -162,7 +162,7 @@ event subscriptions.
 
   Requests the creation of a subscription.
 
-  * Required: `destination`.
+  * Required: ``destination``.
 
 
   HTTP codes:
@@ -238,7 +238,7 @@ The following new RPC calls will be added:
 Driver API impact
 -----------------
 
-The `ManagementInterface` will be updated with the following functions:
+The ``ManagementInterface`` will be updated with the following functions:
 
 .. code-block:: python
 
@@ -279,10 +279,10 @@ Other end user impact
 
 The user won't be able to choose the ``EventTypes`` for the subscription,
 since the option is deprecated in Redfish EventDestination v1_5_0.
-We will be using `Alert` by default for the ``EventTypes``.
+We will be using ``Alert`` by default for the ``EventTypes``.
 
 The user won't be able to choose the ``Protocol`` for the subscription,
-by default it will be `Redfish` following the schema for EventDestination.
+by default it will be ``Redfish`` following the schema for EventDestination.
 
 Scalability impact
 ------------------
@@ -324,8 +324,8 @@ will only accept the following redfish properties to create a subscription:
 
 * Destination - Required
 
-By default we are considering ``Protocol`` as `Redfish`, ``EventTypes`` as
-`["Alert"]` and ``Context`` as `""`.
+By default we are considering ``Protocol`` as ``Redfish``, ``EventTypes`` as
+``["Alert"]`` and ``Context`` as ``""``.
 
 When vendors have the support for newer EventDestination new fields will be
 added to the Ironic API.

@@ -171,7 +171,7 @@ New states will be added to the state machine:
 |                     | and action is occurring.                              |
 +---------------------+-------------------------------------------------------+
 | states.SERVICEWAIT  | An intermediate unstable state where Ironic is        |
-|                     | waiting for an action such as a `heartbeat`           |
+|                     | waiting for an action such as a ``heartbeat``         |
 |                     | from the agent to begin.                              |
 |                     | begin.                                                |
 +---------------------+-------------------------------------------------------+

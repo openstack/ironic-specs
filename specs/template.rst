@@ -8,7 +8,7 @@
 Title of the Spec
 =================
 
-Include the URL of your Launchpad bug (which should have an `rfe`` tag):
+Include the URL of your Launchpad bug (which should have an ``rfe`` tag):
 
 https://bugs.launchpad.net/ironic/+bug/XXXXXXX
 
@@ -41,16 +41,16 @@ Some notes about using this template:
 * If you are unsure whether this proposal is aligned with the project's
   mission and scope, you are encouraged to submit a minimal spec to get
   feedback early, before investing the effort in a complete specification.
-  Do this by filling in the `Problem description` and `Proposed change`
+  Do this by filling in the ``Problem description`` and ``Proposed change``
   sections and delete the rest of the template. This will fail unit tests,
   but will still get attention from the review team.
 
 * If you do not wish to submit a complete spec (for example, you do not plan
   to complete the spec during this cycle but would like to document the idea)
-  you can submit a short spec. It must contain at least the `Problem
-  description` and `Proposed change` sections, and may optionally contain any
-  other valid sections. Propose this to the `specs/backlog` directory. This
-  must follow all other rules of a regular spec (eg, it still requires a
+  you can submit a short spec. It must contain at least the ``Problem
+  description`` and ``Proposed change`` sections, and may optionally contain
+  any other valid sections. Propose this to the ``specs/backlog`` directory.
+  This must follow all other rules of a regular spec (eg, it still requires a
   blueprint, good RST formatting, etc).
 
 

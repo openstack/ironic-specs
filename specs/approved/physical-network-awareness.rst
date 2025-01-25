@@ -342,8 +342,8 @@ Work Items
 - Modify the openstack baremetal CLI to support the ``physical_network`` field.
 - Modify the ironic ``VIFPortIDMixin`` plugin with the new port mapping
   algorithm.
-- Modify the ironic ``NeutronNetwork`` network driver to be physical network-
-  aware when creating neutron ports for cleaning and provisioning.
+- Modify the ironic ``NeutronNetwork`` network driver to be physical
+  network-aware when creating neutron ports for cleaning and provisioning.
 - Modify the ironic network drivers to add the physical network to neutron
   ports' binding profiles.
 - Add support for multiple (virtual) physical networks to DevStack.

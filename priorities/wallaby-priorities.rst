@@ -168,7 +168,7 @@ The concept of adding support to record the important events and surface them
 in a human parsable way has long been under discussion and been a desired
 feature. It is time we make it happen.
 
-`Node history <https://review.opendev.org/652811>` is presently in the
+`Node history <https://review.opendev.org/652811>`_ is presently in the
 review process with strong support from the Project Teams Gathering.
 
 Anaconda deployment

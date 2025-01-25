@@ -154,7 +154,7 @@ None.
 Nova driver impact
 ------------------
 
-Immediately, we'll pass the `resource_class` field back up to the resource
+Immediately, we'll pass the ``resource_class`` field back up to the resource
 tracker, so that nova can put these resources in the placement database in
 Newton. There will be a small patch that bumps the API version we're using
 and passes the field back in the resource_dict. This will need a release

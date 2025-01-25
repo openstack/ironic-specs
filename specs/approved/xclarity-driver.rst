@@ -193,7 +193,7 @@ None
 
 Documentation Impact
 ====================
-* Updating Ironic documentation section `Enabling Drivers`
+* Updating Ironic documentation section ``Enabling Drivers``
   with XClarity related instructions.
 
 References

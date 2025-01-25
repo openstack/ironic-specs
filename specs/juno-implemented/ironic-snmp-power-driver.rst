@@ -106,15 +106,15 @@ The advantages of an SNMP-based approach are:
 Options exist for turning symbolic representation of MIB objects into a
 MIB-independent OID form.
 
-* The Net-SNMP package comes with the `snmptranslate` command-line tool
+* The Net-SNMP package comes with the ``snmptranslate`` command-line tool
   which can turn any MIB object into OID.
 * libsmi includes a tool called smidump can be used to convert MIB definitions
   into Python dictionaries with some hierarchical structure.
 * The `PySMI <https://pypi.python.org/pypi/pysmi>`_ pure-Python package is
   able to parse MIB files into either JSON document or a Python module which
-  PySNMP can readily consume. The PySMI package comes with the `mibdump.py`
+  PySNMP can readily consume. The PySMI package comes with the ``mibdump.py``
   tool which can be used at the command line for MIB conversion similar
-  to what `snmptranslate` does.
+  to what ``snmptranslate`` does.
 * Current PySNMP has PySMI as a dependency so PySNMP would invoke PySMI
   automatically to parse a MIB whenever needed.
 

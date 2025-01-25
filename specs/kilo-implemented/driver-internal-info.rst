@@ -23,10 +23,10 @@ persistent, so we need to save this locally.
 Proposed change
 ===============
 
-* Add a new internal attribute `driver_internal_info` in nodes table,
+* Add a new internal attribute ``driver_internal_info`` in nodes table,
   which cannot modify by Admin/user by calling node.update API
 
-* Modify node.update to clear `driver_internal_info` when update driver via
+* Modify node.update to clear ``driver_internal_info`` when update driver via
   node.update API.
 
 Alternatives
@@ -37,13 +37,13 @@ Saving these infos in a new table named driver_interal_info.
 Data model impact
 -----------------
 
-Add a new internal attribute `driver_internal_info` in `node` table. This
+Add a new internal attribute ``driver_internal_info`` in ``node`` table. This
 field is a json dict.
 
 REST API impact
 ---------------
 
-The `driver_internal_info` field should be added to the node details API.
+The ``driver_internal_info`` field should be added to the node details API.
 
 RPC API impact
 --------------
@@ -94,7 +94,7 @@ Primary assignee:
 Work Items
 ----------
 
-* Add `driver_internal_info` to the nodes table with a migration.
+* Add ``driver_internal_info`` to the nodes table with a migration.
 * Update object Node.
 * Support clean a node's driver_internal_infos when it changes its driver.
 * Update some drivers with this feature.

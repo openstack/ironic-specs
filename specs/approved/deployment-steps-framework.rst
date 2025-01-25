@@ -366,7 +366,7 @@ Upgrades and Backwards Compatibility
   * if the agent heartbeats and driver_internal_info['deploy_steps'] is empty,
     proceed the old way (similar to cold upgrade)
   * a new conductor will not use the deploy steps mechanism if it is pinned to
-    the old release (via `pin_release_version` configuration option).
+    the old release (via ``pin_release_version`` configuration option).
     if a deployment is started by a conductor using deploy steps (new code),
     it means that it is unpinned, and all the conductors are using the new
     code, so the deployment can continue on any conductor that supports the

@@ -57,8 +57,8 @@ List of changes required:
     the bare metal node.
 
     - Since a reboot is required for changes to get reflected, this function
-      will be decorated with additional argument `reboot_required` with
-      value set to `True`.
+      will be decorated with additional argument ``reboot_required`` with
+      value set to ``True``.
 
     - It will create an IloClient object from proliantutils library to do
       operations on the iLO. This will make call to delete_raid_configuration
@@ -68,8 +68,8 @@ List of changes required:
     the bare metal node.
 
     - Since a reboot is required for changes to get reflected, this function
-      will be decorated with additional argument `reboot_required` with
-      value set to `True`.
+      will be decorated with additional argument ``reboot_required`` with
+      value set to ``True``.
 
     - It will create an IloClient object from proliantutils library to do
       operations on the iLO. This will make call to create_raid_configuration

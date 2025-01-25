@@ -88,13 +88,13 @@ Proposed change
 
   .. note::
     Ironic should allow users to set IP and/or MAC address hardcorded into
-    `connector_id` field because we can't put any assumptions on the storage
+    ``connector_id`` field because we can't put any assumptions on the storage
     network. It might be a Neutron network, or it might be a network that the
     OpenStack part of the deployment doesn't know about at all. It depends on
     deployment.
 
   .. note::
-     `extra` field is text in the database but a dictionary (JSON-encoded
+     ``extra`` field is text in the database but a dictionary (JSON-encoded
      dict) in the object
 
 * Add a new table named ``volume_targets`` with the below fields:
@@ -152,11 +152,11 @@ Proposed change
      just like it does for instance_info.
 
   .. note::
-     `properties` and `extra` are text in the database but a dictionary
+     ``properties`` and ``extra`` are text in the database but a dictionary
      (JSON-encoded dict) in the object
 
   .. note::
-     The contents of the `properties` field depend on volume type. Reference
+     The contents of the ``properties`` field depend on volume type. Reference
      information should be added in Bare Metal API document:
 
      For iSCSI example::
@@ -198,8 +198,8 @@ Proposed change
         "access_mode": "rw",
         "target_wwn": ["XXXX"]}
 
-     REST API masks credential information such as `auth_username` and
-     `auth_password` in iSCSI and iSCSI multipath examples in order to avoid
+     REST API masks credential information such as ``auth_username`` and
+     ``auth_password`` in iSCSI and iSCSI multipath examples in order to avoid
      security risk.
 
 * Add REST APIs end points to get/set values on them. For details see REST API

@@ -35,10 +35,10 @@ Current chassis object is kind of an alternative for grouping nodes.
 Data model impact
 -----------------
 
-A new `ironic.objects.tags.NodeTagList` object would be added to the
+A new ``ironic.objects.tags.NodeTagList`` object would be added to the
 object model.
 
-The `ironic.objects.tags.NodeTagList` field in the python object model
+The ``ironic.objects.tags.NodeTagList`` field in the python object model
 will be populated on-demand (i.e. not eager-loaded).
 
 A tag should be defined as a Unicode string no longer than 255 characters
@@ -167,7 +167,7 @@ Primary assignee:
 Work Items
 ----------
 
-* Add `node_tags` table with a migration.
+* Add ``node_tags`` table with a migration.
 * Add DB API layer for CRUD operations on node tags.
 * Added DB API layer for node tag-list filtering support.
 * Add NodeTag, NodeTagList objects and a new tags field to Node object.

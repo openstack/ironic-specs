@@ -98,7 +98,7 @@ Scope definitions:
             This is tracked and associated using the ``project_id`` value.
 
 Additional information can be found in the
-`Keystone administration - tokens <https://docs.openstack.org/keystone/latest/admin/tokens-overview.html#authorization-scopes>`
+`Keystone administration - tokens <https://docs.openstack.org/keystone/latest/admin/tokens-overview.html#authorization-scopes>`_
 documentation and the `Keystone contributor - services <https://docs.openstack.org/keystone/latest/contributor/services.html#authorization-scopes>`_
 documentation.
 
@@ -144,8 +144,8 @@ At a high level, the desire is to:
 a) Have greater consistency through the adoption of standard roles.
 b) Implement the ability to move to the standard scope based
    restriction where the new standardized roles would apply.
-c) Move services, such as ironic from the concept of `admin projects`
-   to a `system scope`.
+c) Move services, such as ironic from the concept of ``admin projects``
+   to a ``system scope``.
 
 We will do this by:
 
@@ -227,17 +227,17 @@ reached within the community. The end name definition may be something
 similar, but that is an implementation naming decision,
 not higher level design decision.
 
-* `is_node_owner` - When the API consumer's project ID value is populated in
-                    the Ironic node object's ``owner`` field. This represents
-                    that they are the authoritative
-                    `owner <https://specs.openstack.org/openstack/ironic-specs/specs/approved/node-owner-policy.html>`_
-                    of the baremetal node.
-* `is_node_lessee` - When the API consumer's project ID value is populated in
-                     the Ironic node object's ``lessee`` field. This is
-                     considered the current or assigned user of the node.
-                     See the
-                     `Allow Leasable Nodes <https://specs.openstack.org/openstack/ironic-specs/specs/15.0/node-lessee.html>`_
-                     specification for additional details.
+* ``is_node_owner`` - When the API consumer's project ID value is populated in
+                     the Ironic node object's ``owner`` field. This represents
+                     that they are the authoritative
+                     `owner <https://specs.openstack.org/openstack/ironic-specs/specs/approved/node-owner-policy.html>`_
+                     of the baremetal node.
+* ``is_node_lessee`` - When the API consumer's project ID value is populated in
+                      the Ironic node object's ``lessee`` field. This is
+                      considered the current or assigned user of the node.
+                      See the
+                      `Allow Leasable Nodes <https://specs.openstack.org/openstack/ironic-specs/specs/15.0/node-lessee.html>`_
+                      specification for additional details.
 
 .. NOTE::
    It is important to stress, that the table below are general guidelines.
@@ -251,14 +251,15 @@ not higher level design decision.
 |             | as the existing      | equivalent access to the API as       |
 |             | "baremetal_admin"    | ``system`` scoped ``member`` with a   |
 |             | role.                | filtered view matching                |
-|             |                      | `is_node_owner`.                      |
+|             |                      | ``is_node_owner``.                    |
 |             |                      | ``owner`` field updates are blocked.  |
 |             |                      | Some sensitive fields may be redacted |
 |             |                      | or be restricted from update.         |
 +-------------+----------------------+---------------------------------------+
 | member      | New concept for a    | Project members will be able to use   |
-|             | *do-er* user or      | a baremetal node if `is_node_lessee`  |
-|             | service account.     | or `is_node_owner`                    |
+|             | *do-er* user or      | a baremetal node if                   |
+|             |                      | ``is_node_lessee`` or                 |
+|             | service account.     | ``is_node_owner``                     |
 |             |                      | is matched and perform field/state    |
 |             | Can't add or delete  | updates on individual nodes with the  |
 |             | nodes, but can       | exception of the ``owner`` and        |
@@ -269,7 +270,8 @@ not higher level design decision.
 | reader      | Effectively the same | This is a read-only user concept      |
 |             | as the existing      | where a project ``reader`` would be   |
 |             | "baremetal_observer" | able to view a node if                |
-|             |                      | `is_node_owner` or `is_node_lessee`   |
+|             |                      | ``is_node_owner`` or                  |
+|             |                      | ``is_node_lessee``                    |
 |             |                      | applies. This role is expected to     |
 |             |                      | still have a restricted view, which   |
 |             |                      | will likely vary based on which type  |
@@ -283,8 +285,8 @@ not higher level design decision.
 
 .. note:: Some role/scope combinations may be combined in discussions and
    communication in a {scope}-{role} format. This is effectively the persona
-   being defined. Such as `system-admin` for a system wide scope or
-   `project-admin` for a user who is a project administrator.
+   being defined. Such as ``system-admin`` for a system wide scope or
+   ``project-admin`` for a user who is a project administrator.
 
 .. note:: Field restriction are likely to be controlled by additional policy
    rules, which MAY cascade in structure where if full general update access
@@ -373,7 +375,7 @@ Project Scope
 
 The Project scoped restrictions in the secure RBAC model are dramatically
 different, however precedent already exists with the addition of the
-`is_node_owner` and `is_node_lessee` logic which would apply to project
+``is_node_owner`` and ``is_node_lessee`` logic which would apply to project
 scoped interactions.
 
 API consumers seeking to ``GET`` resources in the project scope would only be
@@ -464,22 +466,22 @@ apply. See `Node object field restrictions`_ for details with a Node object.
 +------------------------------------+----------------------------------------+
 | /v1/nodes/{uuid}/volume/targets    | Filtered view, read-only.              |
 +------------------------------------+----------------------------------------+
-| /v1/drivers                        | No, `system` scope only.               |
+| /v1/drivers                        | No, ``system`` scope only.             |
 +------------------------------------+----------------------------------------+
 | /v1/nodes/{uuid}/bios              | Yes, Filtered view based on access     |
 |                                    | rights to the underlying node.         |
 +------------------------------------+----------------------------------------+
-| /v1/conductors                     | No, `system` scope only.               |
+| /v1/conductors                     | No, ``system`` scope only.             |
 +------------------------------------+----------------------------------------+
 | /v1/allocations                    | Project scoped, however the access     |
 |                                    | model is geared towards owners using   |
 |                                    | this endpoint.                         |
 +------------------------------------+----------------------------------------+
-| /v1/deploy_templates               | No, `system` scope only at this time.  |
-|                                    | as the table/data structure is not     |
-|                                    | modeled for compatibility.             |
+| /v1/deploy_templates               | No, ``system`` scope only at this      |
+|                                    | time. As the table/data structure is   |
+|                                    | not modeled for compatibility.         |
 +------------------------------------+----------------------------------------+
-| /v1/chassis                        | No, `system` scope only.               |
+| /v1/chassis                        | No, ``system`` scope only.             |
 +------------------------------------+----------------------------------------+
 | /v1/lookup                         | No, Agent reserved endpoint.           |
 +------------------------------------+----------------------------------------+

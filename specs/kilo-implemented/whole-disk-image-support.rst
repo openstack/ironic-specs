@@ -110,8 +110,8 @@ None
 Other deployer impact
 ---------------------
 
-For those using disk-image-builder to build images, currently, the `vm` element
-should help in building of whole-disk-images.
+For those using disk-image-builder to build images, currently, the ``vm``
+element should help in building of whole-disk-images.
 
 Developer impact
 ----------------

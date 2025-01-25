@@ -165,7 +165,7 @@ an attempt to make things better.
 Drop privileged operations from Ironic
 --------------------------------------
 
-Given the memory impact that the `oslo.privsep` could cause we decided
+Given the memory impact that the ``oslo.privsep`` could cause we decided
 to drop privileged operations from Ironic, the work will be trackted
 in the `Story 2009704 <https://storyboard.openstack.org/#!/story/2009704>`_.
 

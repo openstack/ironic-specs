@@ -92,7 +92,7 @@ work diverged and work from both ends to converge on a single driver.
 Data model impact
 -----------------
 
-* Two fields will exist on the `driver_info` field: "agent_url" and
+* Two fields will exist on the ``driver_info`` field: "agent_url" and
   "agent_last_heartbeat".
 
 REST API impact
@@ -153,7 +153,7 @@ Heartbeat method:
   will take action on this node; perhaps attempt a reboot or put the node into
   maintenance mode. As part of the heartbeat request, the agent provides its
   endpoint URL, where Ironic can issue requests to the agent. Ironic stores the
-  time of the heartbeat and the agent's URL in `Node.driver_info`.
+  time of the heartbeat and the agent's URL in ``Node.driver_info``.
 
 * Method type: POST
 

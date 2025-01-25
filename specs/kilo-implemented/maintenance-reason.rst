@@ -21,7 +21,7 @@ Ironic has the ability to mark a node in "maintenance" mode, to be ignored
 for the purposes of scheduling and verifying state. However:
 
 * When Ironic automatically puts a node into maintenance mode, it sets the
-  reason in the `last_error` field, which may get overwritten by other
+  reason in the ``last_error`` field, which may get overwritten by other
   tasks later.
 
 * When an operator manually puts a node into maintenance mode, they have no
@@ -34,7 +34,7 @@ Proposed change
 
 The following should be enough to solve this problem:
 
-* A `maintenance_reason` field should be added to the nodes table, as the
+* A ``maintenance_reason`` field should be added to the nodes table, as the
   canonical place to store the reason the node was put into maintenance mode.
   This should be an internal attribute not directly editable by calling
   the node.update API.
@@ -62,7 +62,7 @@ work to put the reason in the other system.
 Data model impact
 -----------------
 
-This will add a `maintenance_reason` field to the `node` table, with an
+This will add a ``maintenance_reason`` field to the ``node`` table, with an
 accompanying database migration. This field will default to NULL, which will
 also be the value when there is no reason, or when maintenance reason is
 cleared via the new API.
@@ -116,7 +116,7 @@ One new endpoint will be added, with two methods:
 
   * Response body is empty if successful.
 
-The `maintenance_reason` field should be added to the node details API.
+The ``maintenance_reason`` field should be added to the node details API.
 
 RPC API impact
 --------------
@@ -197,9 +197,9 @@ Other contributors:
 Work Items
 ----------
 
-* Add `maintenance_reason` to the nodes table with a migration.
+* Add ``maintenance_reason`` to the nodes table with a migration.
 
-* Set `maintenance_reason` when automatically setting maintenance mode.
+* Set ``maintenance_reason`` when automatically setting maintenance mode.
 
 * Add the new API endpoints.
 

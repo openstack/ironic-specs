@@ -58,8 +58,8 @@ by a specific set of projects. The remainder of the hosts are for general use.
 If a user has a dedicated pool of resources, they have the ability to pick if
 they create an instance in their dedicated pool or in the general pool. Other
 users are only able to build in the general pool. One way to bisect the nodes
-like this is assigning traits such as `CUSTOM_IRONIC_NODE_PROJECT_B` and
-`CUSTOM_IRONIC_NODE_GENERAL_USE` to the appropriate ironic nodes. Then there
+like this is assigning traits such as ``CUSTOM_IRONIC_NODE_PROJECT_B`` and
+``CUSTOM_IRONIC_NODE_GENERAL_USE`` to the appropriate ironic nodes. Then there
 is a public flavor to target the general pool of hosts, and a private project
 specific flavor that targets their dedicated pool. By taking this approach it
 is easy to add additional pools of nodes for other sets of projects. It is
@@ -79,16 +79,17 @@ be set in the same way.
 
 When provisioning a node, the Ironic virt driver in Nova will now send
 additional flavor extra_specs to Ironic. Currently only extra_specs starting
-with `capabilities` are set in instance_info. After the above spec, the ironic
-virt driver will also include the flavor extra specs that define what traits
-have been requested, storing them `instance_info['traits']`.
+with ``capabilities`` are set in instance_info. After the above spec, the
+ironic virt driver will also include the flavor extra specs that define what
+traits have been requested, storing them ``instance_info['traits']``.
 
 .. note::
     Note there is no change to how capabilities are used as part of this spec.
 
-Ironic needs to validate that `instance_info['traits']` is consistent with the
+Ironic needs to validate that ``instance_info['traits']`` is consistent with
+the
 list of traits currently associated with Ironic node, i.e. we must check that
-`instance_info['traits']` only includes traits that are already in the list
+``instance_info['traits']`` only includes traits that are already in the list
 of traits set on the Ironic node. This is particularly useful in preventing
 strange behaviour due to races between the update of an Ironic node's trait
 list and getting that list copied into the Placement API by the Ironic virt
@@ -173,20 +174,21 @@ No impact.
 REST API impact
 ---------------
 
-The placement API defines a set of standard traits in the `os-traits` library.
+The placement API defines a set of standard traits in the ``os-traits``
+library.
 Any traits that are not defined in that library must start with the prefix of
-`CUSTOM_`. Any trait set in Ironic must follow these rules, else the ironic
+``CUSTOM_``. Any trait set in Ironic must follow these rules, else the ironic
 Nova virt driver will be unable to add the traits in Placement. For similar
 reasons there is a limit of 50 traits on any node, to match the limit in
 Placement. A request to add a badly formatted trait should get a response with
 the status code 400.
 
 Note at no point does Ironic talk to the Placement API. The above validation
-depends only on access to the python library `os-traits`. As such, this
+depends only on access to the python library ``os-traits``. As such, this
 validation poses little restriction on how traits can be used in standalone
 Ironic to assign arbitrary traits on particular Ironic nodes. Any non-standard
 traits simply need to have a prefix of ``CUSTOM_`` added. For more details on
-`os-traits` please see: https://docs.openstack.org/os-traits/latest
+``os-traits`` please see: https://docs.openstack.org/os-traits/latest
 
 For convenience, it will be possible to get the full list of nodes and the
 traits associated with each node by extending the existing API in the following

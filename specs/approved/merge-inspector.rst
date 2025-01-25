@@ -241,8 +241,8 @@ nodes.
 State Machine Impact
 --------------------
 
-The only expected change is a possibility of transition from `INSPECT WAIT`
-to `INSPECTING`, which is arguably missing by mistake.
+The only expected change is a possibility of transition from ``INSPECT WAIT``
+to ``INSPECTING``, which is arguably missing by mistake.
 
 REST API impact
 ---------------
