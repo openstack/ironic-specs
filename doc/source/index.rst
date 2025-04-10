@@ -15,6 +15,7 @@ those discussions:
    :glob:
    :maxdepth: 1
 
+   priorities/2025-2-workitems
    priorities/2025-1-workitems
    priorities/2024-2-workitems
    priorities/2024-1-workitems
