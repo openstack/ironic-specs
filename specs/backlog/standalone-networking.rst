@@ -132,7 +132,55 @@ without modification.
 
 State Machine Impact
 --------------------
-None
+The mechanism implemented by this feature depends on switch port details being
+collected via LLDP discovery.  For this to occur, the switch ports of the node
+must be enabled prior to enrollment so that LLDP information can be collected
+during the initial inspection operation.  This poses three concerns.
+
+1. The switch ports must be enabled prior to the initial enrollment of the node
+and must be configured on a VLAN that is capable of running the initial
+inspection for the node.  That is, the VLAN must be routable back to the API
+endpoint.
+
+2. To ensure that the enrollment process is repeatable for nodes that are
+deprovisioned and later re-enrolled we must ensure that switch ports are
+set back to the VLAN described above in (1) whenever not in use.  We refer to
+this VLAN as the "idle" VLAN, and we ensure that the standalone experimental
+driver always falls back to this VLAN when removing any other network from the
+port configuration.
+
+3. Since the "idle" VLAN is potentially different than the final VLAN of the
+primary interface of the node, any static network configuration data provided
+when enrolling the host may not be valid or appropriate to use on the during
+the inspection process.
+
+To address these concerns two changes to the node state machine should be
+considered for which two additional configuration options are proposed:
+
+  1. Restoration of Idle Network
+
+  If the "idle" network VLAN is configured then it is restored onto the switch
+  port whenever a network is removed from the port.
+
+  This ensures that bare metal hardware can be seamlessly re-enrolled and
+  re-provisioned by maintaining the "idle" VLAN configuration on switch
+  ports, enabling LLDP information collection during subsequent inspections.
+
+  2. Inspection Network Configuration
+
+  A new configuration option inspector.force_dhcp modifies the inspection
+  process behavior:
+
+  - Inspection State: During managed inspection, when enabled, this option
+    ensures that static network data is ignored.  The ramdisk will instead
+    rely on DHCP on all interfaces to acquire network configuration.
+  - Network Discovery: Automatically enables LLDP collection across all
+    interfaces to ensure comprehensive network topology discovery
+
+These changes do not introduce new provisioning states but enhance the
+existing state transitions to better support standalone networking scenarios
+where complete network topology discovery and consistent switch port
+configuration are critical for automated bare metal lifecycle management.
 
 REST API impact
 ---------------
@@ -325,14 +373,17 @@ RPC API impact
 |                              |    "port_name": "xxx",                      |
 |                              |    "description": "xxx",                    |
 |                              |    "mode": "[access|trunk]",                |
-|                              |    "default_vlan": n,                       |
+|                              |    "native_vlan": n,                        |
 |                              |    "allowed_vlans": [x, y, z],              |
 |                              |    "portchannel_name": "xxx"}               |
 +------------------------------+---------------------------------------------+
 | reset_port                   | .. code-block::                             |
 |                              |                                             |
 |                              |   {"switch_id": "xx:xx:xx:xx:xx:xx",        |
-|                              |    "port_name": "xxx"}                      |
+|                              |    "port_name": "xxx",                      |
+|                              |    "native_vlan": n,                        |
+|                              |    "allowed_vlans": [x, y, z],              |
+|                              |    "default_vlan": n}                       |
 |                              |                                             |
 +------------------------------+---------------------------------------------+
 | disable_port                 | .. code-block::                             |
@@ -402,13 +453,15 @@ the switch.
 |                              | to its defined switchport ``extra``         |
 |                              | property.                                   |
 +------------------------------+---------------------------------------------+
-| remove_provisioning_network  | Reset port back to switch port defaults     |
+| remove_provisioning_network  | Reset port back to switch port defaults, or |
+|                              | set back to "idle" network if configured.   |
 +------------------------------+---------------------------------------------+
 | configure_tenant_networks    | Configure each ports according to the       |
 |                              | ``switchport`` configuration defined in its |
 |                              | ``extra`` property.                         |
 +------------------------------+---------------------------------------------+
-| unconfigure_tenant_networks  | Reset port back to switch port defaults     |
+| unconfigure_tenant_networks  | Reset port back to switch port defaults, or |
+|                              | set back to "idle" network if configured.   |
 +------------------------------+---------------------------------------------+
 | add_cleaning_network         | Configure each ports according to the       |
 |                              | cleaning network configured in the          |
@@ -416,7 +469,8 @@ the switch.
 |                              | to its defined switchport ``extra``         |
 |                              | property.                                   |
 +------------------------------+---------------------------------------------+
-| remove_cleaning_network      | Reset port back to switch port defaults     |
+| remove_cleaning_network      | Reset port back to switch port defaults, or |
+|                              | set back to "idle" network if configured.   |
 +------------------------------+---------------------------------------------+
 | validate_rescue              | N/A                                         |
 +------------------------------+---------------------------------------------+
@@ -426,7 +480,8 @@ the switch.
 |                              | to its defined switchport ``extra``         |
 |                              | property.                                   |
 +------------------------------+---------------------------------------------+
-| remove_rescuing_network      | Reset port back to switch port defaults     |
+| remove_rescuing_network      | Reset port back to switch port defaults, or |
+|                              | set back to "idle" network if configured.   |
 +------------------------------+---------------------------------------------+
 | validate_inspection          |  N/A                                        |
 +------------------------------+---------------------------------------------+
@@ -436,7 +491,8 @@ the switch.
 |                              | to its defined switchport ``extra``         |
 |                              | property.                                   |
 +------------------------------+---------------------------------------------+
-| remove_inspection_network    | Reset port back to switch port defaults     |
+| remove_inspection_network    | Reset port back to switch port defaults, or |
+|                              | set back to "idle" network if configured.   |
 +------------------------------+---------------------------------------------+
 | need_power_on                | False                                       |
 +------------------------------+---------------------------------------------+
@@ -448,7 +504,8 @@ the switch.
 |                              | to its defined switchport ``extra``         |
 |                              | property.                                   |
 +------------------------------+---------------------------------------------+
-| remove_servicing_network     | Reset port back to switch port defaults     |
+| remove_servicing_network     | Reset port back to switch port defaults, or |
+|                              | set back to "idle" network if configured.   |
 +------------------------------+---------------------------------------------+
 
 Nova driver impact
@@ -485,7 +542,8 @@ Security impact
 
 Other end user impact
 ---------------------
-None
+As described in the "State Machine Impact" section.  New nodes must have their
+switch ports configured on the inspection VLAN prior to enrollment.
 
 Scalability impact
 ------------------
@@ -515,8 +573,8 @@ by the driver.  The following attributes can be added to the main
 
 .. code-block::
 
-    [standalone_networking]
-    enabled = <[true|false]>
+    [networking]
+    idle_network = <[access|trunk]/vlan-id{1 to 4094}>
     provisioning_network = <[access|trunk]/vlan-id={1 to 4094}>
     cleaning_network = <[access|trunk]/vlan-id={1 to 4094}>
     servicing_network = <[access|trunk]/vlan-id={1 to 4094}>
@@ -527,8 +585,8 @@ Example:
 
 .. code-block::
 
-    [standalone_networking]
-    enabled = true
+    [networking]
+    idle_network = <[access|trunk]/vlan-id=9
     provisioning_network = access/vlan-id=10
     cleaning_network = access/vlan-id=11
     servicing_network = trunk/vlan-id=12
