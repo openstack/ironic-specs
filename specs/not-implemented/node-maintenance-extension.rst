@@ -1,0 +1,1 @@
+specs/approved/node-maintenance-extension.rst
