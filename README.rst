@@ -1,15 +1,10 @@
-========================
-Team and repository tags
-========================
-
-.. image:: https://governance.openstack.org/tc/badges/ironic-specs.svg
-    :target: https://governance.openstack.org/tc/reference/tags/index.html
-
-.. Change things from this point on
-
 ===============================================
 OpenStack Baremetal Provisioning Specifications
 ===============================================
+
+.. image:: https://governance.openstack.org/tc/badges/ironic-specs.svg
+
+.. Change things from this point on
 
 This git repository is used to hold approved design specifications for
 additions to the Baremetal Provisioning program, and in particular, the Ironic
