@@ -1,0 +1,1 @@
+../approved/firmware-endpoint-hardware-identity.rst
