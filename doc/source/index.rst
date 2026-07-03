@@ -81,6 +81,18 @@ Implemented specifications
 These specifications have been implemented and are grouped in the
 development cycles in which they were completed.
 
+2026.2 (Hibiscus)
+-----------------
+
+36.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/36.0/*
+
 2026.1 (Gazpacho)
 -----------------
 
@@ -93,8 +105,95 @@ development cycles in which they were completed.
 
    specs/35.0/*
 
+33.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/33.0/*
+
+2025.2 (Flamingo)
+-----------------
+
+31.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/31.0/*
+
+2025.1 (Epoxy)
+--------------
+
+29.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/29.0/*
+
+28.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/28.0/*
+
+2024.2 (Dalmatian)
+------------------
+
+26.1
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/26.1/*
+
+2024.1 (Caracal)
+----------------
+
+24.1
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/24.1/*
+
+2023.2 (Bobcat)
+----------------
+
+22.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/22.0/*
+
 Xena
 ----
+
+18.2
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/18.2/*
 
 18.1
 ~~~~
