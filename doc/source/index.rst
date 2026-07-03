@@ -81,6 +81,18 @@ Implemented specifications
 These specifications have been implemented and are grouped in the
 development cycles in which they were completed.
 
+2026.1 (Gazpacho)
+-----------------
+
+35.0
+~~~~
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/35.0/*
+
 Xena
 ----
 
