@@ -1,0 +1,1 @@
+../approved/multi-component-firmware-updates.rst
