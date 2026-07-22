@@ -1,0 +1,1 @@
+../approved/ngs-structured-cli-drivers.rst
