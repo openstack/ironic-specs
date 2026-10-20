@@ -11,6 +11,6 @@ Petitboot boot driver
 This spec was proposed in the Liberty cycle.
 In the Rocky cycle it was moved to the backlog
 folder as it is not presently being worked upon
-with-in the community.
+with-in the community. It was later retired.
 
-See :doc:`../backlog/petitboot-boot-driver`.
+See :doc:`../retired/petitboot-boot-driver`.

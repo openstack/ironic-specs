@@ -10,4 +10,4 @@ iPXE Dynamic Configuration
 
 This spec was proposed in the Liberty cycle.
 
-See :doc:`../approved/ipxe-dynamic-config`.
+See :doc:`../retired/ipxe-dynamic-config`.
