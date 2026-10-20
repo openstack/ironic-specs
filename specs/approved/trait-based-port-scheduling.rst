@@ -18,6 +18,8 @@ Today, Ironic has extremely basic rules for how to perform these mappings,
 which are inadequate in situations with a large number of networks or NICs on
 a machine (among many others).
 
+.. lint: norfe
+
 Problem description
 ===================
 

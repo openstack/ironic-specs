@@ -43,38 +43,6 @@ specification seeks to bridge is the physical baremetal host networking
 so a tenant network can be bridged to the environment's native VXLAN
 networking.
 
-Terminology
-===========
-
-* Virtual eXtensible LAN (VXLAN) - The protocol model this specification seeks
-  to standardize support in Ironic.
-* VXLAN Tunnel Endpoint (VTEP) - Tunnel endpoints, such as switches or hosts
-  which terminate the VXLAN tunnel and attach it to a physical or virtual
-  interface. This may be attached to intermediate interfaces which may also
-  be shared by multiple "devices".
-* Generic Network Virtualization Encapsulation (GENEVE) - This is an IETF
-  effort to unify VXLAN and a competing technology Network Virtualization
-  using Generic Routing Encapsulation (NVGRE).
-* VXLAN Network Identifier (VNI) - A 24-bit field which defines the "number"
-  of the network. In OVN's variation of this protocol, it is restricted to
-  12 bits.
-* Border Gateway Protocol (BGP) - The routing protocol which powers the
-  Internet through a variety of configurations.
-* BGP EVPN - BGP Powered Ethernet VPN - A concept of using BGP to facilitate
-  Layer2 networking between members in a BGP network fabric. This is due to
-  the design of BGP which makes it useful to share other routes and additional
-  structural information to the network members while also spreading context
-  updates quickly in the event of a change to the network.
-* OVS - Short for OpenVSwitch. A toolkit to provide a virtual overlay network.
-* OVN - Open Virtual Network - An evolution of OVS to support virtual network
-  abstractions on top of OVS along with additional SDN capabilities.
-* NGS - Networking-Generic-Switch, the Ironic sub-project which houses an
-  ML2 plugin to facilitate VLAN attachment for baremetal nodes.
-
-Overall, a basic primer for this subject can be found as change
-`965415 <https://review.opendev.org/c/openstack/neutron/+/965415>`_
-if you are curious about additional background context.
-
 Problem description
 ===================
 
@@ -116,8 +84,40 @@ Assuming all hierarchical port binding issues are resolved,
 this leaves two areas which need to be addressed to facilitate the attachment
 of baremetal nodes, which is similar to this `networking example`_.
 
-Proposed Changes
-================
+Terminology
+-----------
+
+* Virtual eXtensible LAN (VXLAN) - The protocol model this specification seeks
+  to standardize support in Ironic.
+* VXLAN Tunnel Endpoint (VTEP) - Tunnel endpoints, such as switches or hosts
+  which terminate the VXLAN tunnel and attach it to a physical or virtual
+  interface. This may be attached to intermediate interfaces which may also
+  be shared by multiple "devices".
+* Generic Network Virtualization Encapsulation (GENEVE) - This is an IETF
+  effort to unify VXLAN and a competing technology Network Virtualization
+  using Generic Routing Encapsulation (NVGRE).
+* VXLAN Network Identifier (VNI) - A 24-bit field which defines the "number"
+  of the network. In OVN's variation of this protocol, it is restricted to
+  12 bits.
+* Border Gateway Protocol (BGP) - The routing protocol which powers the
+  Internet through a variety of configurations.
+* BGP EVPN - BGP Powered Ethernet VPN - A concept of using BGP to facilitate
+  Layer2 networking between members in a BGP network fabric. This is due to
+  the design of BGP which makes it useful to share other routes and additional
+  structural information to the network members while also spreading context
+  updates quickly in the event of a change to the network.
+* OVS - Short for OpenVSwitch. A toolkit to provide a virtual overlay network.
+* OVN - Open Virtual Network - An evolution of OVS to support virtual network
+  abstractions on top of OVS along with additional SDN capabilities.
+* NGS - Networking-Generic-Switch, the Ironic sub-project which houses an
+  ML2 plugin to facilitate VLAN attachment for baremetal nodes.
+
+Overall, a basic primer for this subject can be found as change
+`965415 <https://review.opendev.org/c/openstack/neutron/+/965415>`_
+if you are curious about additional background context.
+
+Proposed change
+===============
 
 At minimum, two fundamental areas are required.
 
