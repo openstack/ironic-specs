@@ -10,6 +10,14 @@ Nodes tagging
 
 https://bugs.launchpad.net/ironic/+bug/1526266
 
+.. NOTE::
+   This specification was retired following discussion at the 2027.1
+   OpenInfra PTG in October 2026.
+
+   Tagging, in particular, is an API construct we believe is still
+   applicable to Ironic, however, this spec is old and needs a
+   significant rewrite before it can be implemented.
+
 This aims to add support for tagging nodes.
 
 Problem description

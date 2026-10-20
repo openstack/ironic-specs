@@ -10,4 +10,4 @@ Nodes tagging
 
 This spec was proposed in the Liberty cycle.
 
-See :doc:`../approved/nodes-tagging`.
+See :doc:`../retired/nodes-tagging`.

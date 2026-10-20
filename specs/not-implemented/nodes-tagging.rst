@@ -1,1 +1,0 @@
-../approved/nodes-tagging.rst
