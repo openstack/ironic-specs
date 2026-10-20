@@ -10,6 +10,12 @@ Redfish Proxy for Ironic Node Power Controls
 
 https://storyboard.openstack.org/#!/story/2009184
 
+.. NOTE::
+   This specification was retired following discussion at the 2027.1
+   OpenInfra PTG in October 2026. The project consensus was that the
+   specification, or the implementation details within, no longer fit
+   with project goals.
+
 One important aspect of our goal of improving support for node multi-tenancy
 is to provide a seamless user experience for node lessees. This includes
 enabling lessees to use their existing provisioning workflows on leased nodes

@@ -10,6 +10,12 @@ Override PXE options via Glance property
 
 https://bugs.launchpad.net/ironic/+bug/1526409
 
+.. NOTE::
+   This specification was retired following discussion at the 2027.1
+   OpenInfra PTG in October 2026. The project consensus was that the
+   specification, or the implementation details within, no longer fit
+   with project goals.
+
 The proposal presents the work required to allow PXE boot an image using
 a specific kernel command line for that image.
 

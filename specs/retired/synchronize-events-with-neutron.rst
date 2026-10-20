@@ -10,6 +10,12 @@ Synchronize events with Neutron
 
 https://storyboard.openstack.org/#!/story/1304673
 
+.. NOTE::
+   This specification was retired following discussion at the 2027.1
+   OpenInfra PTG in October 2026. The project consensus was that the
+   specification, or the implementation details within, no longer fit
+   with project goals.
+
 Most of neutron operations are asynchronous. We need to keep track of their
 results by leveraging neutron's notifications, that it can send on certain
 events to ironic via HTTP calls.

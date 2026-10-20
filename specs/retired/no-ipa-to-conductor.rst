@@ -10,6 +10,12 @@ No IPA to conductor communication
 
 https://storyboard.openstack.org/#!/story/1526486
 
+.. NOTE::
+   This specification was retired following discussion at the 2027.1
+   OpenInfra PTG in October 2026. The project consensus was that the
+   specification, or the implementation details within, no longer fit
+   with project goals.
+
 This spec intends to make agent->ironic communication optional, instead
 using polling to make all communication inbound to the agent.
 

@@ -1,1 +1,0 @@
-../approved/ironic-redfish-proxy.rst

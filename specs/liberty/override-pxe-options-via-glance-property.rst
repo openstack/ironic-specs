@@ -10,4 +10,4 @@ Override PXE options via Glance property
 
 This spec was proposed in the Liberty cycle.
 
-See :doc:`../approved/override-pxe-options-via-glance-property`.
+See :doc:`../retired/override-pxe-options-via-glance-property`.

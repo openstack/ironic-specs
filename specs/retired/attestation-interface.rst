@@ -10,6 +10,12 @@ Attestation Interface and Keylime Integration
 
 https://storyboard.openstack.org/#!/story/2002713
 
+.. NOTE::
+   This specification was retired following discussion at the 2027.1
+   OpenInfra PTG in October 2026. The project consensus was that the
+   specification, or the implementation details within, no longer fit
+   with project goals.
+
 In order to help verify that baremetal nodes are in a trustworthy
 state, we are in need of an interface that allows us to take certain
 actions or verification steps while proceeding along the state machine.

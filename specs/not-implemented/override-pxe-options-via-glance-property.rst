@@ -1,1 +1,0 @@
-../approved/override-pxe-options-via-glance-property.rst
