@@ -50,7 +50,7 @@ NetworkAdapters resource examples:
 - NIC.Slot.3 https://paste.opendev.org/show/bs3Qu9occVxZLzcTpG6Q/
 
 Challenges
-==========
+----------
 
 One of the challenges is that we will have to deal with multiple NICs, that is
 why in the proposed change we want to use the ``Id`` that comes from the

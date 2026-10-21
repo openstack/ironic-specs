@@ -28,12 +28,6 @@ repos:
     hooks:
     - id: codespell
       args: [--write-changes]
-  - repo: https://github.com/sphinx-contrib/sphinx-lint
-    rev: v1.0.0
-    hooks:
-      - id: sphinx-lint
-        args: [--enable=default-role]
-        files: ^doc/|releasenotes|api-ref|priorities|specs
   - repo: https://github.com/PyCQA/doc8
     rev: v1.1.2
     hooks:

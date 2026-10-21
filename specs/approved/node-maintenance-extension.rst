@@ -8,6 +8,8 @@
 Node Maintenance: Extensible Model
 ===================================
 
+https://bugs.launchpad.net/ironic/+bug/2156370
+
 Extract node maintenance from a single boolean into a dedicated table of
 typed entries, and add an API to assert and release them individually,
 so future per-type maintenance behaviour can be composed on top rather

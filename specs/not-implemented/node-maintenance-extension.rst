@@ -1,1 +1,1 @@
-specs/approved/node-maintenance-extension.rst
+../approved/node-maintenance-extension.rst

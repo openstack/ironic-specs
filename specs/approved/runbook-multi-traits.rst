@@ -13,6 +13,8 @@ constraint that a runbook's ``name`` must be a valid trait string.
 A new ``description`` field is also added, consistent with other
 Ironic objects.
 
+.. lint: norfe
+
 Problem description
 ===================
 

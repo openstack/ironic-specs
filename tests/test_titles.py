@@ -15,7 +15,36 @@ import os.path
 import re
 
 import docutils.core
+import docutils.parsers.rst
 import testtools
+
+
+# The spec files are written in Sphinx-flavoured reStructuredText and
+# reference roles (``:doc:``, ``:ref:``) and directives (``TODO``, ``todo``)
+# that are only provided by the Sphinx domain and extensions, which this
+# test does not load.  Docutils would otherwise emit noisy and misleading
+# ``(ERROR/3) Unknown interpreted text role`` / ``Unknown directive type``
+# messages to stderr.  Registering no-op roles/directives keeps the parse
+# silent while still allowing the section headings we actually care about to
+# be extracted.
+def _ignore_unknown(name, rawtext, text, lineno, inliner,
+                    options=None, content=None):
+    return [], []
+
+
+class _NoopDirective(docutils.parsers.rst.Directive):
+    has_content = True
+
+    def run(self):
+        return []
+
+
+def _setup_docutils():
+    docutils.parsers.rst.roles.register_canonical_role('doc', _ignore_unknown)
+    docutils.parsers.rst.roles.register_canonical_role('ref', _ignore_unknown)
+    for name in ('TODO', 'todo'):
+        docutils.parsers.rst.directives.register_directive(name,
+                                                           _NoopDirective)
 
 
 CURRENT_DIR = 'approved'
@@ -144,12 +173,14 @@ class TestTitles(testtools.TestCase):
             if line.startswith('='):
                 break
             header_check = header_check + line
-        self.assertTrue(license_check_str in header_check)
+        self.assertTrue(license_check_str in header_check,
+                        "Required license header is missing or malformed")
 
     def _get_spec_titles(self, filename):
         with open(filename) as f:
             data = f.read()
 
+        _setup_docutils()
         spec = docutils.core.publish_doctree(data)
         titles = self._get_titles(spec)
         return (data, titles)
@@ -157,6 +188,7 @@ class TestTitles(testtools.TestCase):
     def _get_template_titles(self):
         with open("specs/template.rst") as f:
             template = f.read()
+        _setup_docutils()
         spec = docutils.core.publish_doctree(template)
         template_titles = self._get_titles(spec)
         return template_titles
@@ -165,21 +197,35 @@ class TestTitles(testtools.TestCase):
         template_titles = self._get_template_titles()
         files = glob.glob('specs/%s/*' % CURRENT_DIR)
 
+        failures = []
         for filename in files:
-            self._check_file_ext(filename)
+            try:
+                self._check_file_ext(filename)
 
-            (data, titles) = self._get_spec_titles(filename)
-            self._check_titles(filename, template_titles, {}, titles)
-            self._check_license(data)
-            self._check_lp_link(filename, data)
+                (data, titles) = self._get_spec_titles(filename)
+                self._check_titles(filename, template_titles, {}, titles)
+                self._check_license(data)
+                self._check_lp_link(filename, data)
+            except Exception as exc:
+                failures.append("%s: %s" % (filename, exc))
+        if failures:
+            self.fail("%d failure(s) detected:\n%s"
+                      % (len(failures), "\n".join(failures)))
 
     def test_backlog(self):
         template_titles = self._get_template_titles()
         files = glob.glob('specs/%s/*' % DRAFT_DIR)
 
+        failures = []
         for filename in files:
-            self._check_file_ext(filename)
-            (data, titles) = self._get_spec_titles(filename)
-            self._check_titles(filename, DRAFT_REQUIRED_TITLES,
-                                template_titles, titles)
-            self._check_lp_link(filename, data)
+            try:
+                self._check_file_ext(filename)
+                (data, titles) = self._get_spec_titles(filename)
+                self._check_titles(filename, DRAFT_REQUIRED_TITLES,
+                                    template_titles, titles)
+                self._check_lp_link(filename, data)
+            except Exception as exc:
+                failures.append("%s: %s" % (filename, exc))
+        if failures:
+            self.fail("%d failure(s) detected:\n%s"
+                      % (len(failures), "\n".join(failures)))
