@@ -336,7 +336,7 @@ consider include:
   expansion attacks in XML.
 
 For more detailed guidance, please see the OpenStack Security Guidelines as
-a reference (https://wiki.openstack.org/wiki/Security/Guidelines).  These
+a reference (https://security.openstack.org/guidelines/).  These
 guidelines are a work in progress and are designed to help you identify
 security best practices.  For further information, feel free to reach out
 to the OpenStack Security Group at openstack-security@lists.openstack.org.
