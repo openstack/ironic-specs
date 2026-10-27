@@ -1,0 +1,1 @@
+../approved/configdrive-checksum.rst
